@@ -1,0 +1,314 @@
+@extends('layouts.app')
+@section('title', $event->title.' — Wartix')
+
+@section('content')
+<div class="max-w-5xl mx-auto px-4 py-8">
+    <div class="grid md:grid-cols-3 gap-8">
+
+        {{-- Left --}}
+        <div class="md:col-span-2 space-y-6">
+            {{-- Banner --}}
+            <div class="rounded-2xl overflow-hidden bg-gradient-to-br from-indigo-900 to-purple-900 aspect-video flex items-center justify-center">
+                @if($event->banner_image)
+                    <img src="{{ asset('storage/'.$event->banner_image) }}" class="w-full h-full object-cover" alt="{{ $event->title }}">
+                @else
+                    <span class="text-white/50 text-lg font-medium">{{ $event->title }}</span>
+                @endif
+            </div>
+
+            {{-- Info --}}
+            <div class="bg-white border border-gray-100 rounded-2xl p-5">
+                <div class="flex items-start justify-between mb-3">
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">{{ $event->title }}</h1>
+                        <p class="text-sm text-gray-500">{{ $event->artist_name }}</p>
+                    </div>
+                    <span class="text-xs px-2.5 py-1 rounded-full font-medium
+                        {{ $event->status === 'ongoing' ? 'bg-green-50 text-green-700' : 'bg-indigo-50 text-indigo-700' }}">
+                        {{ ucfirst($event->status) }}
+                    </span>
+                </div>
+                <div class="grid grid-cols-2 gap-3 text-sm mb-4">
+                    <div class="flex items-center gap-2 text-gray-500">
+                        <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                        </svg>
+                        {{ $event->venue }}, {{ $event->city }}
+                    </div>
+                    <div class="flex items-center gap-2 text-gray-500">
+                        <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        {{ $event->event_date->format('d M Y') }}
+                    </div>
+                </div>
+                @if($event->description)
+                <p class="text-sm text-gray-500 leading-relaxed">{{ $event->description }}</p>
+                @endif
+            </div>
+
+            {{-- Seatplan --}}
+            @if($event->seatplan_image)
+            <div class="bg-white border border-gray-100 rounded-2xl p-5">
+                <h3 class="text-sm font-semibold text-gray-900 mb-3">Denah Tempat Duduk</h3>
+                <img src="{{ asset('storage/'.$event->seatplan_image) }}" class="w-full rounded-xl" alt="Seatplan">
+            </div>
+            @endif
+
+            {{-- Phases & Categories --}}
+            <div class="bg-white border border-gray-100 rounded-2xl p-5">
+                <h3 class="text-sm font-semibold text-gray-900 mb-4">Sale Phase & Kategori</h3>
+
+                {{-- Phase names --}}
+                @if($event->salePhases->count())
+                <div class="flex flex-wrap gap-2 mb-4">
+                    @foreach($event->salePhases as $phase)
+                    <span class="text-xs bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full font-medium">
+                        {{ $phase->name }}
+                    </span>
+                    @endforeach
+                </div>
+                @endif
+
+                {{-- Categories & fee --}}
+                <div class="space-y-2">
+                    @foreach($event->ticketCategories as $cat)
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                        <span class="text-sm font-medium text-gray-900">{{ $cat->name }}</span>
+                        <span class="text-sm font-semibold text-indigo-600">
+                            Rp {{ number_format($cat->fee_per_ticket) }}/tiket
+                        </span>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+
+        {{-- Right — Order Form --}}
+        <div class="md:col-span-1">
+            <div class="sticky top-20">
+                <div class="bg-white border border-gray-100 rounded-2xl p-5">
+                    <h3 class="text-sm font-semibold text-gray-900 mb-4">Form Order</h3>
+
+                    <form action="{{ route('orders.store') }}" method="POST" id="orderForm">
+                        @csrf
+                        <input type="hidden" name="event_id" value="{{ $event->id }}">
+
+                        {{-- Sale Phase --}}
+                        <div class="mb-3">
+                            <label class="block text-xs font-medium text-gray-700 mb-1.5">Sale Phase</label>
+                            <select name="sale_phase_id" required
+                                class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="">Pilih sale phase</option>
+                                @foreach($event->salePhases as $phase)
+                                <option value="{{ $phase->id }}">{{ $phase->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        {{-- Ticket Category --}}
+                        <div class="mb-3">
+                            <label class="block text-xs font-medium text-gray-700 mb-1.5">Kategori Tiket</label>
+                            <select name="ticket_category_id" id="categorySelect" required
+                                class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="">Pilih kategori</option>
+                                @foreach($event->ticketCategories as $cat)
+                                <option value="{{ $cat->id }}"
+                                    data-fee="{{ $cat->fee_per_ticket }}"
+                                    data-price="{{ $cat->ticket_price }}"
+                                    data-mode="{{ $cat->payment_mode }}">
+                                    {{ $cat->name }} — Rp {{ number_format($cat->fee_per_ticket) }}/tiket
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        {{-- Qty --}}
+                        <div class="mb-4">
+                            <label class="block text-xs font-medium text-gray-700 mb-1.5">Jumlah Tiket</label>
+                            <select name="qty" id="qtySelect" required
+                                class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                @for($i = 1; $i <= $event->max_ticket_per_order; $i++)
+                                <option value="{{ $i }}">{{ $i }} Tiket</option>
+                                @endfor
+                            </select>
+                        </div>
+
+                        {{-- Estimasi Fee --}}
+                        <div id="feeEstimate" class="hidden mb-4 bg-indigo-50 rounded-xl p-3">
+                            <div class="flex justify-between text-xs text-gray-600 mb-1">
+                                <span>Fee Jasa</span>
+                                <span id="feeDisplay">Rp 0</span>
+                            </div>
+                            <div id="ticketPriceRow" class="hidden flex justify-between text-xs text-gray-600 mb-1">
+                                <span>Harga Tiket</span>
+                                <span id="ticketPriceDisplay">Rp 0</span>
+                            </div>
+                            <div class="flex justify-between text-sm font-semibold text-indigo-700 border-t border-indigo-100 pt-1 mt-1">
+                                <span>Total</span>
+                                <span id="totalDisplay">Rp 0</span>
+                            </div>
+                        </div>
+
+                        <hr class="border-gray-100 mb-4">
+
+                        {{-- Platform: Tiket.com --}}
+                        @if($event->platform_type === 'tiketcom')
+
+                        {{-- Sapaan --}}
+                        <div class="mb-3">
+                            <label class="block text-xs font-medium text-gray-700 mb-1.5">Sapaan</label>
+                            <div class="flex gap-2">
+                                @foreach(['Tuan', 'Nyonya', 'Nona'] as $title)
+                                <label class="flex-1 cursor-pointer">
+                                    <input type="radio" name="title" value="{{ $title }}" class="sr-only peer" required>
+                                    <div class="text-center text-xs border border-gray-200 rounded-lg py-2 peer-checked:bg-indigo-600 peer-checked:text-white peer-checked:border-indigo-600 transition-colors">
+                                        {{ $title }}
+                                    </div>
+                                </label>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        @endif
+
+                        {{-- Nama Lengkap --}}
+                        <div class="mb-3">
+                            <label class="block text-xs font-medium text-gray-700 mb-1.5">Nama Lengkap</label>
+                            <input type="text" name="full_name" placeholder="Sesuai KTP"
+                                class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                required>
+                        </div>
+
+                        {{-- No HP --}}
+                        <div class="mb-3">
+                            <label class="block text-xs font-medium text-gray-700 mb-1.5">Nomor Ponsel</label>
+                            <input type="tel" name="phone_number" placeholder="08xxxxxxxxxx"
+                                class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                required>
+                        </div>
+
+                        {{-- Email --}}
+                        <div class="mb-3">
+                            <label class="block text-xs font-medium text-gray-700 mb-1.5">Email</label>
+                            <input type="email" name="email" placeholder="email@example.com"
+                                class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                required>
+                        </div>
+
+                        {{-- NIK --}}
+                        <div class="mb-3">
+                            <label class="block text-xs font-medium text-gray-700 mb-1.5">Nomor KTP / NIK</label>
+                            <input type="text" name="identity_number" placeholder="16 digit NIK"
+                                maxlength="16" minlength="16"
+                                class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                required>
+                        </div>
+
+                        {{-- Telegram --}}
+                        <div class="mb-4">
+                            <label class="block text-xs font-medium text-gray-700 mb-1.5">Username Telegram</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">@</span>
+                                <input type="text" name="telegram_username" placeholder="username"
+                                    class="w-full text-sm border border-gray-200 rounded-xl pl-7 pr-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <p class="text-xs text-gray-400 mt-1">Untuk menerima notifikasi sukses dan QRIS</p>
+                        </div>
+
+                        {{-- Guest NIK (multi guest) --}}
+                        @if($event->guest_enabled && $event->guest_mode === 'multi_guest')
+                        <div id="guestFields" class="hidden mb-4">
+                            <hr class="border-gray-100 mb-4">
+                            <p class="text-xs font-semibold text-gray-700 mb-3">Data Guest Tambahan</p>
+                            <div id="guestContainer" class="space-y-2"></div>
+                        </div>
+                        @endif
+
+                        <button type="submit"
+                            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold py-3 rounded-xl transition-colors">
+                            Submit Order
+                        </button>
+
+                        <p class="text-xs text-gray-400 text-center mt-3">
+                            Dengan submit, kamu menyetujui syarat & ketentuan Wartix
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const categorySelect = document.getElementById('categorySelect');
+const qtySelect      = document.getElementById('qtySelect');
+const feeEstimate    = document.getElementById('feeEstimate');
+const feeDisplay     = document.getElementById('feeDisplay');
+const totalDisplay   = document.getElementById('totalDisplay');
+const ticketPriceRow = document.getElementById('ticketPriceRow');
+const ticketPriceDisp= document.getElementById('ticketPriceDisplay');
+
+function formatRp(num) {
+    return 'Rp ' + num.toLocaleString('id-ID');
+}
+
+function updateEstimate() {
+    const opt  = categorySelect.options[categorySelect.selectedIndex];
+    const qty  = parseInt(qtySelect.value) || 1;
+    const fee  = parseInt(opt?.dataset?.fee || 0);
+    const price= parseInt(opt?.dataset?.price || 0);
+    const mode = opt?.dataset?.mode || '';
+
+    if (!fee && !price) { feeEstimate.classList.add('hidden'); return; }
+
+    feeEstimate.classList.remove('hidden');
+    const totalFee   = fee * qty;
+    const totalPrice = price * qty;
+    let grandTotal   = totalFee;
+
+    feeDisplay.textContent = formatRp(totalFee);
+
+    if (mode === 'full_payment' && price > 0) {
+        ticketPriceRow.classList.remove('hidden');
+        ticketPriceDisp.textContent = formatRp(totalPrice);
+        grandTotal = totalFee + totalPrice;
+    } else {
+        ticketPriceRow.classList.add('hidden');
+    }
+
+    totalDisplay.textContent = formatRp(grandTotal);
+}
+
+categorySelect.addEventListener('change', updateEstimate);
+qtySelect.addEventListener('change', function() {
+    updateEstimate();
+    updateGuestFields();
+});
+
+// Guest fields
+function updateGuestFields() {
+    const guestDiv = document.getElementById('guestFields');
+    const container= document.getElementById('guestContainer');
+    if (!guestDiv || !container) return;
+
+    const qty = parseInt(qtySelect.value) || 1;
+    container.innerHTML = '';
+
+    if (qty > 1) {
+        guestDiv.classList.remove('hidden');
+        for (let i = 2; i <= qty; i++) {
+            container.innerHTML += `
+            <div>
+                <label class="block text-xs text-gray-600 mb-1">Tiket ${i} — Nomor KTP / NIK</label>
+                <input type="text" name="guest_nik_${i}" placeholder="16 digit NIK" maxlength="16" minlength="16"
+                    class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    required>
+            </div>`;
+        }
+    } else {
+        guestDiv.classList.add('hidden');
+    }
+}
+</script>
+@endsection
