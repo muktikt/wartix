@@ -4,8 +4,14 @@ use App\Http\Controllers\Webhook\DompetxCallbackController;
 use App\Http\Controllers\Webhook\SuccessReportController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('webhooks')->middleware('throttle:200,1')->group(function () {
-    Route::post('n8n',              [N8nWebhookController::class, 'handle']);
-    Route::post('dompetx/callback', [DompetxCallbackController::class, 'handle']);
-    Route::post('success-report',   [SuccessReportController::class, 'handle']);
+Route::prefix('webhooks')->group(function () {
+
+    Route::middleware(['throttle:200,1', 'webhook.whitelist:n8n'])
+        ->post('n8n', [N8nWebhookController::class, 'handle']);
+
+    Route::middleware(['throttle:200,1', 'webhook.whitelist:dompetx'])
+        ->post('dompetx/callback', [DompetxCallbackController::class, 'handle']);
+
+    Route::middleware(['throttle:200,1', 'webhook.whitelist:n8n'])
+        ->post('success-report', [SuccessReportController::class, 'handle']);
 });

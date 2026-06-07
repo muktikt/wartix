@@ -10,6 +10,6 @@ Route::get('/events', [EventController::class, 'index'])->name('events.index');
 Route::get('/events/{slug}', [EventController::class, 'show'])->name('events.show');
 Route::post('/orders', [OrderController::class, 'store'])
     ->name('orders.store')
-    ->middleware('throttle:10,1');
+    ->middleware(['throttle:10,1', 'throttle:order-by-email']);
 Route::get('/order-success/{orderCode}', [OrderController::class, 'success'])->name('order.success');
 Route::get('/monitor', [RealtimeMonitorController::class, 'index'])->name('monitor');

@@ -16,14 +16,15 @@ return Application::configure(basePath: dirname(__DIR__))
             Route::middleware('web')
                 ->group(base_path('routes/admin.php'));
 
-            // Webhook — tanpa CSRF
-            Route::middleware('api')
+            // Webhook — pakai web middleware tapi exclude CSRF
+            Route::middleware('web')
                 ->group(base_path('routes/webhook.php'));
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'auth.admin' => \App\Http\Middleware\AdminAuth::class,
+            'webhook.whitelist'=> \App\Http\Middleware\WhitelistWebhookIp::class,
         ]);
 
         // Exclude webhook dari CSRF

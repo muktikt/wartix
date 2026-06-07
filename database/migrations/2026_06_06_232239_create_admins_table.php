@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('role')->default('admin');
+            $table->rememberToken(); // ← tambahkan ini
             $table->timestamp('last_login_at')->nullable();
             $table->timestamps();
         });
