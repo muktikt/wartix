@@ -39,3 +39,29 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+window.Echo.channel('success-monitor-public')
+    .listen('.success.log.created', (data) => {
+        const container = document.getElementById('monitorList');
+        const row = document.createElement('div');
+        row.className = 'flex items-center gap-3 px-5 py-3 text-sm bg-gray-800 border-b border-gray-700 animate-pulse';
+        row.innerHTML = `
+            <span class="bg-green-500/20 text-green-400 text-xs font-mono font-semibold px-2 py-0.5 rounded flex-shrink-0">SUCCESS</span>
+            <span class="text-white font-mono text-xs">${data.publicData.email}</span>
+            <span class="text-gray-600">|</span>
+            <span class="text-gray-300 text-xs">${data.publicData.event}</span>
+            <span class="text-gray-600">|</span>
+            <span class="text-gray-400 text-xs">${data.publicData.phase}</span>
+            <span class="text-gray-600">|</span>
+            <span class="text-gray-400 text-xs">${data.publicData.category}</span>
+            <span class="text-gray-600">|</span>
+            <span class="text-gray-400 text-xs">x${data.publicData.qty}</span>
+            <span class="text-gray-600 text-xs ml-auto">just now</span>
+        `;
+        container.prepend(row);
+        setTimeout(() => row.classList.remove('animate-pulse'), 2000);
+    });
+</script>
+@endpush
