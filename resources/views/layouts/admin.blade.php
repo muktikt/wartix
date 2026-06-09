@@ -187,5 +187,10 @@
     </div>
 </div>
 
+@stack('scripts')
+<script>
+    // Alpine sudah diload via Vite
+</script>
+
 </body>
 </html>

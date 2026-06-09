@@ -10,13 +10,10 @@ class WhitelistWebhookIp
 {
     public function handle(Request $request, Closure $next, string $type = 'n8n')
     {
-        $settingKey = $type === 'dompetx'
-            ? 'dompetx_whitelist_ip'
-            : 'n8n_whitelist_ip';
+        $envKey    = $type === 'dompetx' ? 'DOMPETX_WHITELIST_IP' : 'N8N_WHITELIST_IP';
+        $whitelist = env($envKey, '');
 
-        $whitelist = Setting::get($settingKey, '');
-
-        // Kalau whitelist kosong, skip check (development mode)
+        // Kalau kosong, skip check (development mode)
         if (empty(trim($whitelist))) {
             return $next($request);
         }

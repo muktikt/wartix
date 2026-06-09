@@ -27,6 +27,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'webhook.whitelist'=> \App\Http\Middleware\WhitelistWebhookIp::class,
         ]);
 
+        $middleware->append(\App\Http\Middleware\SecurityHeaders::class);
+
         // Exclude webhook dari CSRF
         $middleware->validateCsrfTokens(except: [
             'webhooks/*',

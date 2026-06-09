@@ -10,55 +10,91 @@ use Illuminate\Support\Str;
 
 class DompetxService
 {
-    private string $merchantId;
     private string $apiKey;
-    private string $baseUrl = 'https://api.dompetx.id/v1';
+    private string $baseUrl = 'https://api.dompetx.com/v1';
 
     public function __construct()
     {
-        $this->merchantId = Setting::get('dompetx_merchant_id', '');
-        $this->apiKey     = Setting::get('dompetx_api_key', '');
+        $this->apiKey = Setting::get('dompetx_api_key', '');
+    }
+
+    private function generateSignature(string $timestamp, string $body): string
+    {
+        // Format: HMAC-SHA256(timestamp + '.' + body, apiKey)
+        $signatureData = $timestamp . '.' . $body;
+        return hash_hmac('sha256', $signatureData, $this->apiKey);
+    }
+
+    private function getHeaders(string $body): array
+    {
+        $timestamp      = (string) time();
+        $signature      = $this->generateSignature($timestamp, $body);
+        $idempotencyKey = (string) Str::uuid();
+
+        return [
+            'Content-Type'       => 'application/json',
+            'X-DOMPAY-API-Key'   => $this->apiKey,
+            'X-DOMPAY-Signature' => $signature,
+            'X-DOMPAY-Timestamp' => $timestamp,
+            'Idempotency-Key'    => $idempotencyKey,
+        ];
     }
 
     public function createPayment(Order $order): ?array
     {
-        if (!$this->merchantId || !$this->apiKey) {
-            Log::warning('DompetX not configured');
+        if (!$this->apiKey) {
+            Log::warning('DompetX API key not configured');
             return null;
         }
 
         $reference = 'WRTX-' . strtoupper(Str::random(12));
         $expired   = (int) Setting::get('payment_expired_minutes', 10);
 
+        $payload = [
+            'method'          => 'QRIS',
+            'amount'          => $order->grand_total,
+            'currency'        => 'IDR',
+            'reference'       => $reference,
+            'settlementSpeed' => 'standard',
+            'metadata'        => [
+                'order_code' => $order->order_code,
+                'event'      => $order->event->title ?? '',
+                'customer'   => $order->full_name,
+                'email'      => $order->email,
+            ],
+        ];
+
+        $body = json_encode($payload);
+
         try {
-            $response = Http::withHeaders([
-                'Authorization' => 'Bearer ' . $this->apiKey,
-                'Content-Type'  => 'application/json',
-            ])->post("{$this->baseUrl}/qris/create", [
-                'merchant_id'    => $this->merchantId,
-                'reference_id'   => $reference,
-                'amount'         => $order->grand_total,
-                'expired_minute' => $expired,
-                'description'    => "Fee Jasa Wartix - {$order->order_code}",
-                'callback_url'   => url('/webhooks/dompetx/callback'),
+            $response = Http::withHeaders($this->getHeaders($body))
+                ->withBody($body, 'application/json')
+                ->post("{$this->baseUrl}/payments");
+
+            Log::info('DompetX create payment response', [
+                'status' => $response->status(),
+                'body'   => $response->body(),
             ]);
 
             if ($response->successful()) {
                 $data = $response->json();
 
                 PaymentLog::create([
-                    'order_id'          => $order->id,
-                    'provider'          => 'dompetx',
-                    'payment_reference' => $reference,
-                    'qris_url'          => $data['data']['qris_url'] ?? null,
-                    'amount'            => $order->grand_total,
-                    'status'            => 'pending',
-                    'expired_at'        => now()->addMinutes($expired),
-                ]);
+                'order_id'          => $order->id,
+                'provider'          => 'dompetx',
+                'payment_reference' => $reference,
+                'qris_url'          => $data['qris_url'] ?? null,
+                'amount'            => $order->grand_total,
+                'status'            => 'pending',
+                'expired_at' => now()->addMinutes(
+                    (int) env('DOMPETX_EXPIRED_MINUTES', 10)
+                ),
+            ]);
 
                 $order->update(['payment_status' => 'pending']);
 
-                return $data['data'] ?? null;
+                Log::info("DompetX payment created: {$reference}");
+                return $data;
             }
 
             Log::error('DompetX create payment failed: ' . $response->body());
@@ -70,52 +106,124 @@ class DompetxService
         }
     }
 
-    public function verifySignature(string $payload, string $signature): bool
-    {
-        $secret   = $this->apiKey;
-        $expected = hash_hmac('sha256', $payload, $secret);
+    public function verifyCallback(
+        string $rawBody,
+        string $signature,
+        string $timestamp
+    ): bool {
+        if (!$this->apiKey) return false;
+
+        // Toleransi timestamp ±5 menit untuk mencegah replay attack
+        $now = time();
+        if (abs($now - (int)$timestamp) > 300) {
+            Log::warning('DompetX callback: timestamp expired');
+            return false;
+        }
+
+        $expected = $this->generateSignature($timestamp, $rawBody);
         return hash_equals($expected, $signature);
     }
 
-    public function handleCallback(array $data): bool
-    {
-        $reference = $data['reference_id'] ?? null;
-        $status    = $data['status'] ?? null;
+    public function handleCallback(
+        array $data,
+        string $rawBody,
+        string $signature,
+        string $timestamp
+    ): bool {
+        // Verify signature
+        if (!$this->verifyCallback($rawBody, $signature, $timestamp)) {
+            Log::warning('DompetX callback: invalid signature');
+            return false;
+        }
 
-        if (!$reference || !$status) return false;
+        $reference = $data['data']['reference'] ?? null;
+        $status    = $data['data']['status'] ?? null;
+
+        if (!$reference || !$status) {
+            Log::warning('DompetX callback: missing data', $data);
+            return false;
+        }
 
         // Idempotency check
         $paymentLog = PaymentLog::where('payment_reference', $reference)->first();
-        if (!$paymentLog) return false;
 
-        if ($paymentLog->status === 'paid') return true;
+        if (!$paymentLog) {
+            Log::warning("DompetX callback: payment log not found for {$reference}");
+            return false;
+        }
+
+        if ($paymentLog->status === 'paid') {
+            Log::info("DompetX callback: already processed {$reference}");
+            return true;
+        }
+
+        $newStatus = match($status) {
+            'paid'    => 'paid',
+            'expired' => 'expired',
+            'failed'  => 'failed',
+            default   => 'pending',
+        };
 
         $paymentLog->update([
-            'status'           => $status === 'SUCCESS' ? 'paid' : ($status === 'EXPIRED' ? 'expired' : 'failed'),
-            'paid_at'          => $status === 'SUCCESS' ? now() : null,
+            'status'           => $newStatus,
+            'paid_at'          => $status === 'paid' ? now() : null,
             'callback_payload' => $data,
         ]);
 
         $order = $paymentLog->order;
+        if (!$order) return false;
 
-        if ($status === 'SUCCESS') {
+        if ($status === 'paid') {
             $order->update(['payment_status' => 'paid']);
+            $this->handlePaid($order);
+
+        } elseif ($status === 'expired') {
+            $order->update(['payment_status' => 'expired']);
+            $this->handleExpired($order);
+        }
+
+        Log::info("DompetX callback processed: {$reference} → {$newStatus}");
+        return true;
+    }
+
+    private function handlePaid(Order $order): void
+    {
+        $chatId = $this->getChatId($order);
+
+        if ($chatId) {
             dispatch(new \App\Jobs\SendTelegramNotification([
                 'type'       => 'payment_paid',
                 'order_id'   => $order->id,
                 'order_code' => $order->order_code,
-                'chat_id'    => $order->telegram_chat_id,
+                'chat_id'    => $chatId,
             ]));
-        } elseif ($status === 'EXPIRED') {
-            $order->update(['payment_status' => 'expired']);
+        }
+
+        dispatch(new \App\Jobs\TriggerN8nWebhook([
+            'event_type'  => 'payment_paid',
+            'order_code'  => $order->order_code,
+            'amount'      => $order->grand_total,
+        ]));
+    }
+
+    private function handleExpired(Order $order): void
+    {
+        $chatId = $this->getChatId($order);
+
+        if ($chatId) {
             dispatch(new \App\Jobs\SendTelegramNotification([
                 'type'       => 'payment_expired',
                 'order_id'   => $order->id,
                 'order_code' => $order->order_code,
-                'chat_id'    => $order->telegram_chat_id,
+                'chat_id'    => $chatId,
             ]));
         }
+    }
 
-        return true;
+    private function getChatId(Order $order): ?string
+    {
+        return $order->telegram_chat_id
+            ?? $order->telegramConnection?->telegram_chat_id
+            ?? null;
     }
 }

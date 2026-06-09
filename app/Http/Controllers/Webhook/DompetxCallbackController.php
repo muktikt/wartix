@@ -10,21 +10,21 @@ class DompetxCallbackController extends Controller
 {
     public function handle(Request $request, DompetxService $dompetx)
     {
-        // Verify HMAC signature
-        $signature = $request->header('X-DompetX-Signature', '');
-        $payload   = $request->getContent();
+        $rawBody   = $request->getContent();
+        $signature = $request->header('X-DOMPAY-Signature', '');
+        $timestamp = $request->header('X-DOMPAY-Timestamp', '');
 
-        if (!$dompetx->verifySignature($payload, $signature)) {
-            Log::warning('DompetX callback: invalid signature');
-            return response()->json(['error' => 'Invalid signature'], 401);
-        }
+        Log::info('DompetX callback received', [
+            'signature' => $signature,
+            'timestamp' => $timestamp,
+            'body'      => $rawBody,
+        ]);
 
         $data   = $request->all();
-        $result = $dompetx->handleCallback($data);
+        $result = $dompetx->handleCallback($data, $rawBody, $signature, $timestamp);
 
         if (!$result) {
-            Log::warning('DompetX callback: failed to process', $data);
-            return response()->json(['error' => 'Failed to process'], 422);
+            return response()->json(['error' => 'Failed to process callback'], 422);
         }
 
         return response()->json(['status' => 'ok']);

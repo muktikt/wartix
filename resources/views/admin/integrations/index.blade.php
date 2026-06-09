@@ -65,6 +65,26 @@
                         class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 </div>
                 <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1.5">
+                        Callback URL
+                        <span class="text-gray-400 font-normal">(daftarkan ke DompetX dashboard)</span>
+                    </label>
+                    <div class="flex gap-2">
+                        <input type="text"
+                            value="{{ url('/webhooks/dompetx/callback') }}"
+                            readonly
+                            class="flex-1 text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 text-gray-500 cursor-not-allowed">
+                        <button type="button"
+                            onclick="navigator.clipboard.writeText('{{ url('/webhooks/dompetx/callback') }}')"
+                            class="text-xs border border-gray-200 px-3 py-2.5 rounded-xl hover:bg-gray-50 text-gray-600">
+                            Copy
+                        </button>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-1">
+                        Daftarkan URL ini di dashboard DompetX → Settings → Webhook
+                    </p>
+                </div>
+                <div>
                     <label class="block text-xs font-medium text-gray-700 mb-1.5">Payment Expired (menit)</label>
                     <input type="number" name="payment_expired_minutes" value="{{ $settings['payment_expired_minutes'] ?? 10 }}"
                         min="5" max="60"
