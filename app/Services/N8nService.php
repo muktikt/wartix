@@ -71,7 +71,7 @@ class N8nService
 
     public function buildEventFinishedPayload(Event $event): array
     {
-        $successLogs = SuccessLog::where('event_id', $event->id)
+        $successLogs  = SuccessLog::where('event_id', $event->id)
             ->where('status', 'success')
             ->with(['salePhase', 'ticketCategory'])
             ->get();
@@ -94,12 +94,52 @@ class N8nService
         $message .= "📊 TOTAL SUCCESS: {$totalSuccess} Orders\n\n";
         $message .= "Thank you for trusting Wartix.";
 
+        // Generate rekap image dengan watermark
+        $rekapImagePath = null;
+        try {
+            $watermark      = app(\App\Services\ImageWatermarkService::class);
+            $rekapImagePath = $this->generateRekapImageWithText($event, $successLogs, $totalSuccess, $byPhase, $watermark);
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Generate rekap image failed: ' . $e->getMessage());
+        }
+
         return [
-            'event_id'         => $event->id,
-            'event_title'      => $event->title,
-            'total_success'    => $totalSuccess,
-            'telegram_message' => $message,
+            'event_id'          => $event->id,
+            'event_title'       => $event->title,
+            'total_success'     => $totalSuccess,
+            'telegram_message'  => $message,
+            'rekap_image_path'  => $rekapImagePath,
         ];
+    }
+
+    private function generateRekapImageWithText(
+        Event $event,
+        $successLogs,
+        int $totalSuccess,
+        string $byPhase,
+        \App\Services\ImageWatermarkService $watermark
+    ): ?string {
+        // Buat HTML rekap → convert ke gambar
+        // Untuk sekarang pakai GD langsung
+
+        $width   = 1080;
+        $height  = 1350;
+        $manager = new \Intervention\Image\ImageManager(
+            new \Intervention\Image\Drivers\Gd\Driver()
+        );
+
+        // Background gelap premium
+        $image = $manager->create($width, $height)->fill('#0F172A');
+
+        // Simpan sementara untuk ditambah watermark
+        $tempPath = storage_path('app/temp/rekap_base_' . time() . '.jpg');
+        if (!file_exists(dirname($tempPath))) {
+            mkdir(dirname($tempPath), 0755, true);
+        }
+        $image->save($tempPath);
+
+        // Tambah watermark
+        return $watermark->addWatermark($tempPath);
     }
 
     private function buildAnnouncementMessage(Event $event, string $phases, string $categories): string

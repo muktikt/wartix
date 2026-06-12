@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+
+    {{-- Favicon --}}
+    <meta property="og:image" content="{{ asset('images/logo-full.png') }}">
+    <meta name="twitter:image" content="{{ asset('images/logo-full.png') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/logo-w.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/logo-w.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/logo-w.png') }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -26,16 +34,10 @@
 
             {{-- Logo --}}
             <a href="{{ route('home') }}" class="flex items-center gap-2 flex-shrink-0">
-                <div class="w-7 h-7 bg-indigo-600 rounded-lg flex items-center justify-center">
-                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/>
-                    </svg>
-                </div>
-                <div>
-                    <span class="text-sm font-semibold text-gray-900">Wartix</span>
-                    <span class="block text-xs text-gray-400 leading-none -mt-0.5">Ticket Assistance</span>
-                </div>
+                <img src="{{ asset('images/logo-w.png') }}"
+                    alt="Wartix"
+                    class="h-8 w-auto">
+                <span class="text-sm font-semibold text-gray-900">Wartix</span>
             </a>
 
             {{-- Nav Links --}}
@@ -78,22 +80,17 @@
 {{-- PAGE CONTENT --}}
 @yield('content')
 
-{{-- FOOTER --}}
-<footer class="bg-gray-900 text-gray-400 mt-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
-            <div class="col-span-2 md:col-span-1">
+            {{-- FOOTER --}}
+            <div class="footer-brand">
                 <div class="flex items-center gap-2 mb-3">
-                    <div class="w-6 h-6 bg-indigo-600 rounded-md flex items-center justify-center">
-                        <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/>
-                        </svg>
-                    </div>
+                    <img src="{{ asset('images/logo-w.png') }}"
+                        alt="Wartix"
+                        class="h-6 w-auto">
                     <span class="text-sm font-semibold text-white">Wartix</span>
                 </div>
-                <p class="text-xs leading-relaxed">
-                    Platform Ticket Assistance untuk event high-demand. Priority Access, Realtime Monitoring, dan update via Telegram.
+                <p class="text-xs leading-relaxed text-gray-400">
+                    Platform Ticket Assistance untuk event high-demand.
+                    Priority Access, Realtime Monitoring, dan update via Telegram.
                 </p>
             </div>
             <div>

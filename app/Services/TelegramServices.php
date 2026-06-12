@@ -108,4 +108,29 @@ class TelegramService
 
         return $this->sendMessage($chatId, $text);
     }
+
+    public function sendRekapWithPhoto(
+        string $chatId,
+        string $imagePath,
+        string $caption
+    ): bool {
+        if (!$this->token) return false;
+
+        try {
+            $response = Http::attach(
+                'photo',
+                file_get_contents($imagePath),
+                'rekap_' . time() . '.jpg'
+            )->post("{$this->baseUrl}/sendPhoto", [
+                'chat_id'    => $chatId,
+                'caption'    => $caption,
+                'parse_mode' => 'HTML',
+            ]);
+
+            return $response->successful();
+        } catch (\Exception $e) {
+            Log::error('Telegram sendRekapWithPhoto failed: ' . $e->getMessage());
+            return false;
+        }
+    }
 }

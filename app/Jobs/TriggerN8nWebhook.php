@@ -38,15 +38,43 @@ class TriggerN8nWebhook implements ShouldQueue
                 $threads->postEventAnnouncement($event, $fullPayload['threads_caption']);
 
             } elseif ($eventType === 'event_finished') {
-                $event = Event::find($this->payload['event_id']);
-                if (!$event) return;
+            $event = Event::with(['salePhases', 'ticketCategories'])
+                ->find($this->payload['event_id']);
+            if (!$event) return;
 
-                $fullPayload = $n8n->buildEventFinishedPayload($event);
-                $n8n->trigger('event_finished', $fullPayload);
+            $fullPayload    = $n8n->buildEventFinishedPayload($event);
+            $telegramService= app(\App\Services\TelegramService::class);
+            $groupChatId    = \App\Models\Setting::get('telegram_group_chat_id', '');
 
-            } else {
-                $n8n->trigger($eventType, $this->payload);
+            // Kirim ke Telegram group dengan foto
+            if ($groupChatId) {
+                if (!empty($fullPayload['rekap_image_path'])
+                    && file_exists($fullPayload['rekap_image_path'])) {
+                    $telegramService->sendRekapWithPhoto(
+                        $groupChatId,
+                        $fullPayload['rekap_image_path'],
+                        $fullPayload['telegram_message']
+                    );
+                } else {
+                    // Fallback kirim teks saja
+                    $telegramService->sendMessage(
+                        $groupChatId,
+                        $fullPayload['telegram_message']
+                    );
+                }
             }
+
+            // Kirim ke Threads juga
+            if ($event->banner_image) {
+                $threads->postEventAnnouncement(
+                    $event,
+                    $fullPayload['telegram_message']
+                );
+            }
+
+            // Trigger n8n
+            $n8n->trigger('event_finished', $fullPayload);
+        }
 
         } catch (\Exception $e) {
             Log::error("TriggerN8nWebhook [{$eventType}] failed: " . $e->getMessage());
