@@ -38,25 +38,31 @@ class TriggerN8nWebhook implements ShouldQueue
                 $threads->postEventAnnouncement($event, $fullPayload['threads_caption']);
 
             } elseif ($eventType === 'event_finished') {
-            $event = Event::with(['salePhases', 'ticketCategories'])
-                ->find($this->payload['event_id']);
+            $event = Event::with([
+                'salePhases',
+                'ticketCategories',
+            ])->find($this->payload['event_id']);
+
             if (!$event) return;
 
-            $fullPayload    = $n8n->buildEventFinishedPayload($event);
-            $telegramService= app(\App\Services\TelegramService::class);
-            $groupChatId    = \App\Models\Setting::get('telegram_group_chat_id', '');
+            $fullPayload     = $n8n->buildEventFinishedPayload($event);
+            $telegramService = app(\App\Services\TelegramService::class);
+            $watermarkService= app(\App\Services\ImageWatermarkService::class);
+            $groupChatId     = \App\Models\Setting::get('telegram_group_chat_id', '');
 
-            // Kirim ke Telegram group dengan foto
+            // Generate foto rekap dengan watermark
+            $rekapImagePath = $watermarkService->generateRekapImage($event);
+
             if ($groupChatId) {
-                if (!empty($fullPayload['rekap_image_path'])
-                    && file_exists($fullPayload['rekap_image_path'])) {
-                    $telegramService->sendRekapWithPhoto(
+                if ($rekapImagePath && file_exists($rekapImagePath)) {
+                    // Kirim foto + caption ke Telegram group
+                    $telegramService->sendEventRekapWithPhoto(
                         $groupChatId,
-                        $fullPayload['rekap_image_path'],
+                        $rekapImagePath,
                         $fullPayload['telegram_message']
                     );
                 } else {
-                    // Fallback kirim teks saja
+                    // Fallback teks saja
                     $telegramService->sendMessage(
                         $groupChatId,
                         $fullPayload['telegram_message']
@@ -64,8 +70,8 @@ class TriggerN8nWebhook implements ShouldQueue
                 }
             }
 
-            // Kirim ke Threads juga
-            if ($event->banner_image) {
+            // Kirim ke Threads (teks + banner event)
+            if (Setting::get('threads_auto_post', '0') === '1') {
                 $threads->postEventAnnouncement(
                     $event,
                     $fullPayload['telegram_message']
@@ -74,6 +80,11 @@ class TriggerN8nWebhook implements ShouldQueue
 
             // Trigger n8n
             $n8n->trigger('event_finished', $fullPayload);
+
+            // Cleanup temp file
+            if ($rekapImagePath) {
+                $watermarkService->cleanup($rekapImagePath);
+            }
         }
 
         } catch (\Exception $e) {

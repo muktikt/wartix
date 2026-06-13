@@ -109,12 +109,15 @@ class TelegramService
         return $this->sendMessage($chatId, $text);
     }
 
-    public function sendRekapWithPhoto(
-        string $chatId,
-        string $imagePath,
-        string $caption
+    public function sendEventRekapWithPhoto(
+    string $chatId,
+    string $imagePath,
+    string $caption
     ): bool {
-        if (!$this->token) return false;
+        if (!$this->token || !file_exists($imagePath)) {
+            Log::warning('sendEventRekapWithPhoto: token missing or image not found');
+            return false;
+        }
 
         try {
             $response = Http::attach(
@@ -127,9 +130,16 @@ class TelegramService
                 'parse_mode' => 'HTML',
             ]);
 
-            return $response->successful();
+            if (!$response->successful()) {
+                Log::error('Telegram sendPhoto failed: ' . $response->body());
+
+                // Fallback: kirim teks saja
+                return $this->sendMessage($chatId, $caption);
+            }
+
+            return true;
         } catch (\Exception $e) {
-            Log::error('Telegram sendRekapWithPhoto failed: ' . $e->getMessage());
+            Log::error('sendEventRekapWithPhoto exception: ' . $e->getMessage());
             return false;
         }
     }

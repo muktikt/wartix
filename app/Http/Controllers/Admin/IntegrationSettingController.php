@@ -28,11 +28,17 @@ class IntegrationSettingController extends Controller
         ]);
 
         $keys = [
-            'telegram_group_link', 'telegram_bot_token',
-            'n8n_webhook_url', 'n8n_webhook_secret',
-            'dompetx_merchant_id', 'dompetx_api_key',
-            'dompetx_callback_url', 'threads_access_token',
-            'threads_user_id', 'payment_expired_minutes',
+            'telegram_group_link',
+            'telegram_bot_token',
+            'telegram_group_chat_id', // ← tambahkan
+            'n8n_webhook_url',
+            'n8n_webhook_secret',
+            'dompetx_merchant_id',
+            'dompetx_api_key',
+            'dompetx_callback_url',
+            'threads_access_token',
+            'threads_user_id',
+            'payment_expired_minutes',
         ];
 
         foreach ($keys as $key) {
