@@ -58,6 +58,17 @@
         </p>
         @endif
 
+        @if(isset($event->total_accounts))
+        <div class="flex items-center justify-between gap-2 text-xs mb-3">
+            <span class="text-gray-500">
+                {{ number_format($event->success_accounts ?? 0) }} sukses / {{ number_format($event->total_accounts ?? 0) }} akun
+            </span>
+            <span class="font-semibold {{ ($event->success_rate ?? 0) >= 80 ? 'text-green-600' : 'text-indigo-600' }}">
+                {{ $event->success_rate ?? 0 }}%
+            </span>
+        </div>
+        @endif
+
         <a href="{{ route('events.show', $event->slug) }}"
             class="block w-full text-center bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium py-2 rounded-lg transition-colors">
             View Detail

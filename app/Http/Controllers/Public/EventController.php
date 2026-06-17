@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
@@ -43,6 +44,24 @@ class EventController extends Controller
         }
 
         $events = $query->latest('event_date')->paginate(12)->withQueryString();
+        $events->getCollection()->transform(function (Event $event) {
+            $totalAccounts = Order::where('event_id', $event->id)
+                ->distinct('email')
+                ->count('email');
+
+            $successAccounts = Order::where('event_id', $event->id)
+                ->where('order_status', 'success')
+                ->distinct('email')
+                ->count('email');
+
+            $event->setAttribute('total_accounts', $totalAccounts);
+            $event->setAttribute('success_accounts', $successAccounts);
+            $event->setAttribute('success_rate', $totalAccounts > 0
+                ? round(($successAccounts / $totalAccounts) * 100, 1)
+                : 0.0);
+
+            return $event;
+        });
 
         $cities    = Event::whereIn('status', ['upcoming', 'ongoing'])->distinct()->pluck('city');
         $types     = Event::whereIn('status', ['upcoming', 'ongoing'])->distinct()->pluck('event_type');

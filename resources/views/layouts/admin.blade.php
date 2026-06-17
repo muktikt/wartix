@@ -23,7 +23,8 @@
         <div class="h-14 flex items-center gap-2.5 px-4 border-b border-gray-100">
             <img src="{{ asset('images/logo-w.png') }}"
                 alt="Wartix"
-                class="h-7 w-auto">
+                class="h-7 w-auto"
+                style="filter: brightness(0) saturate(100%) invert(29%) sepia(89%) saturate(1234%) hue-rotate(220deg) brightness(97%) contrast(97%);">
             <span class="text-sm font-semibold text-gray-900">Wartix</span>
             <span class="ml-auto text-xs bg-indigo-50 text-indigo-600 px-1.5 py-0.5 rounded font-medium">
                 Admin
@@ -43,16 +44,18 @@
                     </svg>
                     Dashboard
                 </a>
-                <a href="#"
-                    class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-50">
+                <a href="{{ route('admin.events.index') }}"
+                    class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm
+                    {{ request()->routeIs('admin.events.*') ? 'bg-indigo-50 text-indigo-600 font-medium' : 'text-gray-600 hover:bg-gray-50' }}">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                     </svg>
                     Events
                 </a>
-                <a href="#"
-                    class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-50">
+                <a href="{{ route('admin.orders.index') }}"
+                    class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm
+                    {{ request()->routeIs('admin.orders.*') ? 'bg-indigo-50 text-indigo-600 font-medium' : 'text-gray-600 hover:bg-gray-50' }}">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
@@ -63,24 +66,27 @@
 
             <div class="px-3 mt-3 mb-1">
                 <p class="text-xs text-gray-400 uppercase tracking-wider px-2 mb-1">Monitor</p>
-                <a href="#"
-                    class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-50">
+                <a href="{{ route('admin.monitor.index') }}"
+                    class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm
+                    {{ request()->routeIs('admin.monitor.*') ? 'bg-indigo-50 text-indigo-600 font-medium' : 'text-gray-600 hover:bg-gray-50' }}">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M13 10V3L4 14h7v7l9-11h-7z"/>
                     </svg>
                     Realtime Monitor
                 </a>
-                <a href="#"
-                    class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-50">
+                <a href="{{ route('admin.reports.index') }}"
+                    class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm
+                    {{ request()->routeIs('admin.reports.*') ? 'bg-indigo-50 text-indigo-600 font-medium' : 'text-gray-600 hover:bg-gray-50' }}">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
                     </svg>
                     Reports
                 </a>
-                <a href="#"
-                    class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-50">
+                <a href="{{ route('admin.search.index') }}"
+                    class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm
+                    {{ request()->routeIs('admin.search.*') ? 'bg-indigo-50 text-indigo-600 font-medium' : 'text-gray-600 hover:bg-gray-50' }}">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
@@ -91,15 +97,16 @@
 
             <div class="px-3 mt-3 mb-1">
                 <p class="text-xs text-gray-400 uppercase tracking-wider px-2 mb-1">Settings</p>
-                <a href="#"
-                    class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-50">
+                <a href="{{ route('admin.integrations.index') }}"
+                    class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm
+                    {{ request()->routeIs('admin.integrations.*') ? 'bg-indigo-50 text-indigo-600 font-medium' : 'text-gray-600 hover:bg-gray-50' }}">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
                     </svg>
                     Integration
                 </a>
-                <a href="#"
+                <a href="{{ route('admin.export.orders') }}"
                     class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-50">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -107,8 +114,9 @@
                     </svg>
                     Export Excel
                 </a>
-                <a href="#"
-                    class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-50">
+                <a href="{{ route('admin.statistics.index') }}"
+                    class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm
+                    {{ request()->routeIs('admin.statistics.*') ? 'bg-indigo-50 text-indigo-600 font-medium' : 'text-gray-600 hover:bg-gray-50' }}">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/>

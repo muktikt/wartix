@@ -41,32 +41,32 @@
             </p>
 
             <div class="flex flex-wrap gap-3">
-                <a href="{{ route('events.index') }}"
+                <a href="#active-events"
                     class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm px-5 py-2.5 rounded-xl transition-colors">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                     </svg>
                     View Active Events
                 </a>
-                <a href="{{ \App\Models\Setting::get('telegram_group_link', '#') }}" target="_blank"
+                <a href="https://t.me/mhtixcom" target="_blank" rel="noopener noreferrer"
                     class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 font-medium text-sm px-5 py-2.5 rounded-xl transition-colors">
-                    <svg class="w-4 h-4 text-blue-500" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.412 14.02l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.834.566z"/>
+                    <svg class="w-4 h-4 text-[#229ED9]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M9.04 15.38 8.9 19.33c.42 0 .6-.18.83-.4l1.98-1.9 4.1 3c.75.42 1.29.2 1.48-.7l2.68-12.63c.24-1.12-.4-1.56-1.14-1.28L3.8 9.56c-1.1.43-1.08 1.05-.2 1.33l4.05 1.26 9.4-5.92c.44-.29.84-.13.51.17z"/>
                     </svg>
-                    Join Telegram Group
+                    Join Telegram Channel
                 </a>
             </div>
         </div>
 
-        {{-- Right — Flow Card --}}
+        {{-- Right --}}
         <div class="flex justify-center md:justify-end">
             <div class="bg-white border border-gray-100 rounded-2xl p-5 w-full max-w-sm shadow-sm">
-                <div class="flex items-center justify-between mb-5">
+                <div class="flex items-center justify-between mb-4">
                     <div class="flex items-center gap-2">
                         <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
                         </svg>
-                        <span class="text-sm font-semibold text-gray-900">Alur Order Wartix</span>
+                        <span class="text-sm font-semibold text-gray-900">Preview Realtime Monitor</span>
                     </div>
                     <span class="flex items-center gap-1 text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded-full font-medium">
                         <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
@@ -74,40 +74,49 @@
                     </span>
                 </div>
 
+                <div class="text-xs text-gray-500 leading-relaxed mb-4">
+                    Klik <span class="font-medium text-gray-700">Lihat detail</span> untuk langsung turun ke bagian Realtime Success Monitor di dashboard ini.
+                </div>
+
                 @php
-                $steps = [
-                    ['num'=>'1','color'=>'indigo','icon'=>'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z','label'=>'Pilih event','desc'=>'Buka wartix.id, pilih event konser atau festival yang tersedia'],
-                    ['num'=>'2','color'=>'indigo','icon'=>'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2','label'=>'Isi form order','desc'=>'Pilih sale phase, kategori, qty, dan lengkapi data diri kamu'],
-                    ['num'=>'3','color'=>'orange','icon'=>'M13 10V3L4 14h7v7l9-11h-7z','label'=>'Tim Wartix beraksi','desc'=>'Tim kami siap siaga membantu proses reservasi tiket kamu saat sale dibuka'],
-                    ['num'=>'4','color'=>'green','icon'=>'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z','label'=>'Tiket berhasil','desc'=>'Kamu langsung dapat notifikasi sukses via Telegram'],
-                    ['num'=>'5','color'=>'indigo','icon'=>'M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z','label'=>'Bayar fee jasa via QRIS','desc'=>'QRIS dikirim otomatis ke Telegram kamu, bayar fee jasa dan selesai'],
-                ];
+                    $previewSuccess = $recentSuccess->take(4);
                 @endphp
 
-                <div class="space-y-0">
-                    @foreach($steps as $i => $step)
-                    <div class="flex gap-3 {{ !$loop->last ? 'pb-4' : '' }}">
-                        <div class="flex flex-col items-center">
-                            <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold flex-shrink-0
-                                {{ $step['color'] === 'orange' ? 'bg-orange-50 text-orange-600' : ($step['color'] === 'green' ? 'bg-green-50 text-green-600' : 'bg-indigo-50 text-indigo-600') }}">
-                                {{ $step['num'] }}
+                <div class="space-y-2">
+                    @forelse($previewSuccess as $log)
+                        @php
+                            $email = \App\Services\MaskService::email($log->email ?? 'us***@example.com');
+                            $event = $log->event->title ?? '-';
+                            $phase = $log->salePhase->name ?? '-';
+                            $qty = $log->qty;
+                        @endphp
+                        <div class="rounded-xl border border-gray-100 bg-gray-50 px-3 py-2">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="bg-green-500/15 text-green-600 text-[10px] font-semibold px-2 py-0.5 rounded">SUCCESS</span>
+                                <span class="text-xs text-gray-500 truncate">{{ $email }}</span>
                             </div>
-                            @if(!$loop->last)
-                            <div class="w-px flex-1 bg-gray-100 mt-1"></div>
-                            @endif
+                            <div class="flex items-center gap-2 text-xs text-gray-700">
+                                <span class="font-medium truncate">{{ $event }}</span>
+                                <span class="text-gray-300">&bull;</span>
+                                <span class="truncate">{{ $phase }}</span>
+                                <span class="text-gray-300">&bull;</span>
+                                <span>x{{ $qty }}</span>
+                            </div>
                         </div>
-                        <div class="flex-1 {{ !$loop->last ? 'pb-1' : '' }}">
-                            <p class="text-sm font-medium text-gray-900 mb-0.5 flex items-center gap-1.5">
-                                <svg class="w-3.5 h-3.5 {{ $step['color'] === 'orange' ? 'text-orange-500' : ($step['color'] === 'green' ? 'text-green-500' : 'text-indigo-500') }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $step['icon'] }}"/>
-                                </svg>
-                                {{ $step['label'] }}
-                            </p>
-                            <p class="text-xs text-gray-500 leading-relaxed">{{ $step['desc'] }}</p>
+                    @empty
+                        <div class="rounded-xl border border-dashed border-gray-200 bg-gray-50 px-3 py-6 text-center text-xs text-gray-400">
+                            Belum ada data sukses untuk ditampilkan.
                         </div>
-                    </div>
-                    @endforeach
+                    @endforelse
                 </div>
+
+                <a href="#monitor"
+                    class="mt-4 inline-flex items-center gap-2 text-sm font-medium text-indigo-600 hover:text-indigo-700">
+                    Lihat detail
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </a>
             </div>
         </div>
     </div>
@@ -119,9 +128,9 @@
         <div class="grid grid-cols-2 md:grid-cols-4 divide-x divide-gray-100">
             @php
             $statsDisplay = [
-                ['value' => $stats['success_rate'].'%', 'label' => 'Success Rate',     'sub' => 'Tingkat keberhasilan'],
-                ['value' => number_format($stats['total_checkout']), 'label' => 'Total Checkout', 'sub' => 'Total order berhasil'],
-                ['value' => $stats['total_events'],      'label' => 'Events Handled',  'sub' => 'Total event dibantu'],
+                ['value' => $stats['success_rate'].'%', 'label' => 'Success Rate',     'sub' => 'Akun sukses'],
+                ['value' => number_format($stats['total_accounts']), 'label' => 'Total Accounts', 'sub' => 'Akun yang pernah order'],
+                ['value' => number_format($stats['success_accounts']), 'label' => 'Success Accounts', 'sub' => 'Akun yang berhasil'],
                 ['value' => $stats['active_events'],     'label' => 'Active Events',   'sub' => 'Event berlangsung'],
             ];
             @endphp
@@ -137,7 +146,7 @@
 </section>
 
 {{-- ACTIVE EVENTS --}}
-<section class="py-14 px-4">
+<section class="py-14 px-4" id="active-events">
     <div class="max-w-7xl mx-auto">
         <div class="flex items-end justify-between mb-8">
             <div>
@@ -203,8 +212,81 @@
         </div>
         <div class="text-center mt-4">
             <a href="{{ route('monitor') }}" class="text-sm text-indigo-400 hover:text-indigo-300">
-                Lihat semua di Realtime Monitor →
+                Lihat semua di Realtime Monitor ->
             </a>
+        </div>
+    </div>
+</section>
+
+{{-- CARA ORDER --}}
+<section class="py-14 px-4 bg-white" id="cara-order">
+    <div class="max-w-7xl mx-auto">
+        <div class="flex items-center gap-3 mb-6">
+            <div class="w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></div>
+            <h2 class="text-lg font-semibold text-gray-900">Cara Order</h2>
+            <span class="text-xs text-gray-500 ml-auto">Langkah order dari awal sampai selesai</span>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+            @php
+                $orderSteps = [
+                    ['num' => '1', 'title' => 'Pilih event', 'desc' => 'Buka daftar event yang tersedia, lalu pilih event yang mau kamu amankan.'],
+                    ['num' => '2', 'title' => 'Buka detail event', 'desc' => 'Cek sale phase, kategori tiket, fee jasa, dan informasi event.'],
+                    ['num' => '3', 'title' => 'Isi form order', 'desc' => 'Lengkapi data diri, jumlah tiket, dan detail yang dibutuhkan.'],
+                    ['num' => '4', 'title' => 'Tunggu proses', 'desc' => 'Setelah order masuk, pantau status di monitor dan Telegram.'],
+                ];
+            @endphp
+
+            <div class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        <span class="text-sm font-semibold text-gray-900">Panduan Order</span>
+                    </div>
+                    <span class="flex items-center gap-1 text-xs text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full font-medium">
+                        4 Step
+                    </span>
+                </div>
+
+                <div class="space-y-3">
+                    @foreach($orderSteps as $step)
+                    <div class="flex gap-3">
+                        <div class="w-7 h-7 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-semibold flex-shrink-0">
+                            {{ $step['num'] }}
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-900 mb-0.5">{{ $step['title'] }}</p>
+                            <p class="text-xs text-gray-500 leading-relaxed">{{ $step['desc'] }}</p>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-br from-indigo-50 via-white to-purple-50 border border-gray-100 rounded-2xl p-5 shadow-sm">
+                <div class="flex items-center gap-2 mb-4">
+                    <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                    <span class="text-sm font-semibold text-gray-900">Ringkas Alur</span>
+                </div>
+
+                <div class="space-y-3">
+                    @foreach($orderSteps as $step)
+                    <div class="flex items-start gap-3">
+                        <div class="mt-0.5 w-6 h-6 rounded-full bg-white border border-indigo-100 text-indigo-600 flex items-center justify-center text-[11px] font-semibold flex-shrink-0">
+                            {{ $step['num'] }}
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-900">{{ $step['title'] }}</p>
+                            <p class="text-xs text-gray-500 leading-relaxed">{{ $step['desc'] }}</p>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -218,7 +300,7 @@
         @php
         $faqs = [
             ['q' => 'Apa itu Wartix?', 'a' => 'Wartix adalah platform Ticket Assistance yang membantu kamu mendapatkan tiket konser, festival, dan fanmeeting high-demand dengan layanan profesional dan update realtime via Telegram.'],
-            ['q' => 'Apakah ada jaminan berhasil?', 'a' => 'Kami berusaha sebaik mungkin untuk membantu proses reservasi tiket kamu. Success rate kami di atas 98%, namun hasil tetap bergantung pada ketersediaan tiket di platform resmi.'],
+            ['q' => 'Apakah ada jaminan berhasil?', 'a' => 'Kami menampilkan success rate berdasarkan data akun yang benar-benar masuk dan berhasil. Hasil tetap bergantung pada ketersediaan tiket di platform resmi.'],
             ['q' => 'Kapan saya membayar fee jasa?', 'a' => 'Pembayaran fee jasa dilakukan setelah tiket berhasil didapatkan. QRIS akan dikirim otomatis ke Telegram kamu begitu proses berhasil.'],
             ['q' => 'Data saya aman?', 'a' => 'Ya, data kamu dienkripsi dan hanya digunakan untuk keperluan reservasi tiket. Data sensitif tidak pernah ditampilkan secara publik.'],
             ['q' => 'Bagaimana cara memantau status order?', 'a' => 'Kamu akan mendapat notifikasi langsung via Telegram. Selain itu, kamu juga bisa memantau di halaman Realtime Monitor kami.'],
@@ -248,3 +330,8 @@
 </section>
 
 @endsection
+
+
+
+
+

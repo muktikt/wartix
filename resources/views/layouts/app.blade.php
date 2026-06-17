@@ -27,27 +27,30 @@
 </head>
 <body class="bg-white font-sans antialiased">
 
+@php
+    $telegramLink = 'https://t.me/mhtixcom';
+@endphp
+
 {{-- NAVBAR --}}
 <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center h-14 gap-6">
 
             {{-- Logo --}}
-            <a href="{{ route('home') }}" class="flex items-center gap-2 flex-shrink-0">
+            <a href="{{ route('home') }}" class="flex items-center gap-2 flex-shrink-0 -ml-5 sm:-ml-8">
                 <img src="{{ asset('images/logo-w.png') }}"
-                    alt="Wartix"
-                    class="h-8 w-auto">
-                <span class="text-sm font-semibold text-gray-900">Wartix</span>
+                    alt="Dashboard"
+                    class="h-10 sm:h-11 w-auto max-w-[210px] object-contain">
+                <span class="text-sm font-semibold text-gray-900">Dashboard</span>
             </a>
 
             {{-- Nav Links --}}
             <div class="hidden md:flex items-center gap-1 flex-1">
-                <a href="{{ route('events.index') }}"
-                    class="px-3 py-1.5 text-sm rounded-lg transition-colors
-                    {{ request()->routeIs('events.*') ? 'text-indigo-600 bg-indigo-50' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50' }}">
+                <a href="{{ route('home') }}#active-events"
+                    class="px-3 py-1.5 text-sm rounded-lg transition-colors text-gray-600 hover:text-gray-900 hover:bg-gray-50">
                     Events
                 </a>
-                <a href="{{ route('monitor') }}"
+                <a href="{{ route('home') }}#monitor"
                     class="px-3 py-1.5 text-sm rounded-lg transition-colors
                     {{ request()->routeIs('monitor') ? 'text-indigo-600 bg-indigo-50' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50' }}">
                     Realtime Monitor
@@ -64,11 +67,10 @@
 
             {{-- CTA --}}
             <div class="ml-auto flex items-center gap-2">
-                @php $tgLink = \App\Models\Setting::get('telegram_group_link', '#'); @endphp
-                <a href="{{ $tgLink }}" target="_blank"
+                <a href="{{ $telegramLink }}" target="_blank" rel="noopener noreferrer"
                     class="flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-3.5 py-1.5 rounded-lg transition-colors">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.412 14.02l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.834.566z"/>
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M9.04 15.38 8.9 19.33c.42 0 .6-.18.83-.4l1.98-1.9 4.1 3c.75.42 1.29.2 1.48-.7l2.68-12.63c.24-1.12-.4-1.56-1.14-1.28L3.8 9.56c-1.1.43-1.08 1.05-.2 1.33l4.05 1.26 9.4-5.92c.44-.29.84-.13.51.17z"/>
                     </svg>
                     Join Telegram
                 </a>
@@ -80,59 +82,64 @@
 {{-- PAGE CONTENT --}}
 @yield('content')
 
-            {{-- FOOTER --}}
-            <div class="footer-brand">
-                <div class="flex items-center gap-2 mb-3">
-                    <img src="{{ asset('images/logo-w.png') }}"
-                        alt="Wartix"
-                        class="h-6 w-auto">
-                    <span class="text-sm font-semibold text-white">Wartix</span>
+    {{-- FOOTER --}}
+    <footer class="bg-gray-900 text-gray-400 py-12 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+                <div class="footer-brand">
+                    <div class="flex items-center gap-2 mb-3">
+                        <img src="{{ asset('images/logo-w.png') }}"
+                            alt="Wartix"
+                            class="h-6 w-auto">
+                        <span class="text-sm font-semibold text-white">Wartix</span>
+                    </div>
+                    <p class="text-xs leading-relaxed text-gray-400">
+                        Platform Ticket Assistance untuk event high-demand.
+                        Priority Access, Realtime Monitoring, dan update via Telegram.
+                    </p>
                 </div>
-                <p class="text-xs leading-relaxed text-gray-400">
-                    Platform Ticket Assistance untuk event high-demand.
-                    Priority Access, Realtime Monitoring, dan update via Telegram.
-                </p>
+                <div>
+                    <h4 class="text-xs font-semibold text-white uppercase tracking-wider mb-3">Product</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="{{ route('events.index') }}" class="hover:text-white transition-colors">Events</a></li>
+                        <li><a href="{{ route('home') }}#monitor" class="hover:text-white transition-colors">Realtime Monitor</a></li>
+                        <li><a href="{{ route('home') }}#cara-order" class="hover:text-white transition-colors">Cara Order</a></li>
+                        <li><a href="{{ route('home') }}#faq" class="hover:text-white transition-colors">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xs font-semibold text-white uppercase tracking-wider mb-3">Community</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="{{ $telegramLink }}" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">Telegram Channel</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Testimoni</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Event Recap</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xs font-semibold text-white uppercase tracking-wider mb-3">Legal</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Refund Policy</a></li>
+                    </ul>
+                </div>
             </div>
-            <div>
-                <h4 class="text-xs font-semibold text-white uppercase tracking-wider mb-3">Product</h4>
-                <ul class="space-y-2 text-xs">
-                    <li><a href="{{ route('events.index') }}" class="hover:text-white transition-colors">Events</a></li>
-                    <li><a href="{{ route('monitor') }}" class="hover:text-white transition-colors">Realtime Monitor</a></li>
-                    <li><a href="{{ route('home') }}#cara-order" class="hover:text-white transition-colors">Cara Order</a></li>
-                    <li><a href="{{ route('home') }}#faq" class="hover:text-white transition-colors">FAQ</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-xs font-semibold text-white uppercase tracking-wider mb-3">Community</h4>
-                <ul class="space-y-2 text-xs">
-                    <li><a href="{{ \App\Models\Setting::get('telegram_group_link', '#') }}" target="_blank" class="hover:text-white transition-colors">Telegram Group</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Testimoni</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Event Recap</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-xs font-semibold text-white uppercase tracking-wider mb-3">Legal</h4>
-                <ul class="space-y-2 text-xs">
-                    <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Refund Policy</a></li>
-                </ul>
+            <div class="border-t border-gray-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2">
+                <p class="text-xs">&copy; {{ date('Y') }} Wartix. All rights reserved.</p>
+                <p class="text-xs">Event Assistance Platform</p>
             </div>
         </div>
-        <div class="border-t border-gray-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2">
-            <p class="text-xs">&copy; {{ date('Y') }} Wartix. All rights reserved.</p>
-            <p class="text-xs">Event Assistance Platform</p>
-        </div>
-    </div>
-</footer>
+    </footer>
 
 {{-- Floating Telegram Button --}}
-<a href="{{ \App\Models\Setting::get('telegram_group_link', '#') }}" target="_blank"
-    class="fixed bottom-6 right-6 w-12 h-12 bg-green-500 hover:bg-green-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors z-50">
-    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.412 14.02l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.834.566z"/>
+<a href="{{ $telegramLink }}" target="_blank" rel="noopener noreferrer"
+    class="fixed bottom-6 right-6 w-12 h-12 bg-[#229ED9] hover:bg-[#1e8dcc] text-white rounded-full flex items-center justify-center shadow-lg transition-colors z-50">
+    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M9.04 15.38 8.9 19.33c.42 0 .6-.18.83-.4l1.98-1.9 4.1 3c.75.42 1.29.2 1.48-.7l2.68-12.63c.24-1.12-.4-1.56-1.14-1.28L3.8 9.56c-1.1.43-1.08 1.05-.2 1.33l4.05 1.26 9.4-5.92c.44-.29.84-.13.51.17z"/>
     </svg>
 </a>
 
 </body>
 </html>
+
+

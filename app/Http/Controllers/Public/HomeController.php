@@ -12,9 +12,15 @@ class HomeController extends Controller
     public function index()
     {
         $stats = Cache::remember('home_stats', 300, function () {
+            $totalAccounts = Order::distinct('email')->count('email');
+            $successAccounts = Order::where('order_status', 'success')
+                ->distinct('email')
+                ->count('email');
+
             return [
                 'success_rate'   => $this->getSuccessRate(),
-                'total_checkout' => Order::where('order_status', 'success')->count(),
+                'total_accounts' => $totalAccounts,
+                'success_accounts' => $successAccounts,
                 'total_events'   => Event::count(),
                 'active_events'  => Event::whereIn('status', ['upcoming', 'ongoing'])->count(),
             ];
@@ -27,6 +33,8 @@ class HomeController extends Controller
                 ->limit(6)
                 ->get();
         });
+
+        $activeEvents = $activeEvents->map(fn (Event $event) => $this->attachAccountStats($event));
 
         $finishedEvents = Event::where('status', 'finished')
             ->latest()
@@ -46,8 +54,33 @@ class HomeController extends Controller
 
     private function getSuccessRate(): float
     {
-        $total   = Order::count();
-        $success = Order::where('order_status', 'success')->count();
-        return $total > 0 ? round(($success / $total) * 100, 1) : 98.7;
+        $totalAccounts = Order::distinct('email')->count('email');
+        $successAccounts = Order::where('order_status', 'success')
+            ->distinct('email')
+            ->count('email');
+
+        return $totalAccounts > 0
+            ? round(($successAccounts / $totalAccounts) * 100, 1)
+            : 0.0;
+    }
+
+    private function attachAccountStats(Event $event): Event
+    {
+        $totalAccounts = Order::where('event_id', $event->id)
+            ->distinct('email')
+            ->count('email');
+
+        $successAccounts = Order::where('event_id', $event->id)
+            ->where('order_status', 'success')
+            ->distinct('email')
+            ->count('email');
+
+        $event->setAttribute('total_accounts', $totalAccounts);
+        $event->setAttribute('success_accounts', $successAccounts);
+        $event->setAttribute('success_rate', $totalAccounts > 0
+            ? round(($successAccounts / $totalAccounts) * 100, 1)
+            : 0.0);
+
+        return $event;
     }
 }
