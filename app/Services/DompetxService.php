@@ -20,22 +20,22 @@ class DompetxService
 
     private function generateSignature(string $timestamp, string $body): string
     {
-        // Format: HMAC-SHA256(timestamp + '.' + body, apiKey)
         $signatureData = $timestamp . '.' . $body;
         return hash_hmac('sha256', $signatureData, $this->apiKey);
     }
 
-    private function getHeaders(string $body): array
+    private function getHeaders(string $body, string $idempotencyKey): array
     {
-        $timestamp      = (string) time();
-        $signature      = $this->generateSignature($timestamp, $body);
-        $idempotencyKey = (string) Str::uuid();
+        $timestamp = (string) time();
+        $signature = $this->generateSignature($timestamp, $body);
 
         return [
             'Content-Type'       => 'application/json',
             'X-DOMPAY-API-Key'   => $this->apiKey,
             'X-DOMPAY-Signature' => $signature,
             'X-DOMPAY-Timestamp' => $timestamp,
+            // Deterministik per order, bukan random tiap call,
+            // supaya retry tidak membuat charge dobel di sisi gateway.
             'Idempotency-Key'    => $idempotencyKey,
         ];
     }
@@ -47,8 +47,8 @@ class DompetxService
             return null;
         }
 
-        $reference = 'WRTX-' . strtoupper(Str::random(12));
-        $expired   = (int) Setting::get('payment_expired_minutes', 10);
+        $reference     = 'WRTX-' . strtoupper(Str::random(12));
+        $expiredMinutes = (int) Setting::get('payment_expired_minutes', 10);
 
         $payload = [
             'method'          => 'QRIS',
@@ -65,9 +65,12 @@ class DompetxService
         ];
 
         $body = json_encode($payload);
+        // Idempotency key deterministik berbasis order, bukan reference acak,
+        // supaya kalau job ini dijalankan ulang untuk order yang sama tetap konsisten.
+        $idempotencyKey = 'order-' . $order->id . '-payment';
 
         try {
-            $response = Http::withHeaders($this->getHeaders($body))
+            $response = Http::withHeaders($this->getHeaders($body, $idempotencyKey))
                 ->withBody($body, 'application/json')
                 ->post("{$this->baseUrl}/payments");
 
@@ -80,16 +83,14 @@ class DompetxService
                 $data = $response->json();
 
                 PaymentLog::create([
-                'order_id'          => $order->id,
-                'provider'          => 'dompetx',
-                'payment_reference' => $reference,
-                'qris_url'          => $data['qris_url'] ?? null,
-                'amount'            => $order->grand_total,
-                'status'            => 'pending',
-                'expired_at' => now()->addMinutes(
-                    (int) env('DOMPETX_EXPIRED_MINUTES', 10)
-                ),
-            ]);
+                    'order_id'          => $order->id,
+                    'provider'          => 'dompetx',
+                    'payment_reference' => $reference,
+                    'qris_url'          => $data['qris_url'] ?? null,
+                    'amount'            => $order->grand_total,
+                    'status'            => 'pending',
+                    'expired_at'        => now()->addMinutes($expiredMinutes),
+                ]);
 
                 $order->update(['payment_status' => 'pending']);
 
@@ -106,16 +107,12 @@ class DompetxService
         }
     }
 
-    public function verifyCallback(
-        string $rawBody,
-        string $signature,
-        string $timestamp
-    ): bool {
+    public function verifyCallback(string $rawBody, string $signature, string $timestamp): bool
+    {
         if (!$this->apiKey) return false;
 
-        // Toleransi timestamp ±5 menit untuk mencegah replay attack
         $now = time();
-        if (abs($now - (int)$timestamp) > 300) {
+        if (abs($now - (int) $timestamp) > 300) {
             Log::warning('DompetX callback: timestamp expired');
             return false;
         }
@@ -124,13 +121,8 @@ class DompetxService
         return hash_equals($expected, $signature);
     }
 
-    public function handleCallback(
-        array $data,
-        string $rawBody,
-        string $signature,
-        string $timestamp
-    ): bool {
-        // Verify signature
+    public function handleCallback(array $data, string $rawBody, string $signature, string $timestamp): bool
+    {
         if (!$this->verifyCallback($rawBody, $signature, $timestamp)) {
             Log::warning('DompetX callback: invalid signature');
             return false;
@@ -144,7 +136,6 @@ class DompetxService
             return false;
         }
 
-        // Idempotency check
         $paymentLog = PaymentLog::where('payment_reference', $reference)->first();
 
         if (!$paymentLog) {
@@ -176,7 +167,6 @@ class DompetxService
         if ($status === 'paid') {
             $order->update(['payment_status' => 'paid']);
             $this->handlePaid($order);
-
         } elseif ($status === 'expired') {
             $order->update(['payment_status' => 'expired']);
             $this->handleExpired($order);

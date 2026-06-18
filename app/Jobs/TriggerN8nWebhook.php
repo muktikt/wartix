@@ -74,7 +74,7 @@ class TriggerN8nWebhook implements ShouldQueue
             if (Setting::get('threads_auto_post', '0') === '1') {
                 $threads->postEventAnnouncement(
                     $event,
-                    $fullPayload['telegram_message']
+                    $fullPayload['threads_caption']
                 );
             }
 

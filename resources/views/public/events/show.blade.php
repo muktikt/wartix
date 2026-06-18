@@ -216,6 +216,35 @@
                             <p class="text-xs text-gray-400 mt-1">Untuk menerima notifikasi sukses dan QRIS</p>
                         </div>
 
+                        {{-- Custom Fields --}}
+                        @php $activeCustomFields = $event->customFields->where('is_active', true); @endphp
+                        @if($activeCustomFields->count())
+                        <hr class="border-gray-100 mb-4">
+                        @foreach($activeCustomFields as $field)
+                        <div class="mb-3">
+                            <label class="block text-xs font-medium text-gray-700 mb-1.5">
+                                {{ $field->label }} @if($field->is_required)<span class="text-red-500">*</span>@endif
+                            </label>
+                            @if($field->field_type === 'select')
+                                <select name="custom_fields[{{ $field->id }}]" {{ $field->is_required ? 'required' : '' }}
+                                    class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                    <option value="">Pilih {{ $field->label }}</option>
+                                    @foreach(($field->options ?? []) as $opt)
+                                    <option value="{{ $opt }}">{{ $opt }}</option>
+                                    @endforeach
+                                </select>
+                            @elseif($field->field_type === 'textarea')
+                                <textarea name="custom_fields[{{ $field->id }}]" rows="3" {{ $field->is_required ? 'required' : '' }}
+                                    class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                            @else
+                                <input type="{{ $field->field_type === 'password' ? 'password' : ($field->field_type === 'number' ? 'number' : 'text') }}"
+                                    name="custom_fields[{{ $field->id }}]" {{ $field->is_required ? 'required' : '' }}
+                                    class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            @endif
+                        </div>
+                        @endforeach
+                        @endif
+
                         {{-- Guest NIK (multi guest) --}}
                         @if($event->guest_enabled && $event->guest_mode === 'multi_guest')
                         <div id="guestFields" class="hidden mb-4">

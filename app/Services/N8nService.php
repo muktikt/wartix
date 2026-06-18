@@ -99,7 +99,18 @@ class N8nService
             'event_title'      => $event->title,
             'total_success'    => $totalSuccess,
             'telegram_message' => $message,
+            'threads_caption'  => $this->buildFinishedThreadsCaption($event, $totalSuccess),
         ];
+    }
+
+    private function buildFinishedThreadsCaption(Event $event, int $totalSuccess): string
+    {
+        $hashtags = '#Wartix #WarTiket #' . str_replace(' ', '', $event->city);
+
+        return "✅ {$event->title} — SELESAI\n\n"
+            . "📊 Total Success: {$totalSuccess} orders\n\n"
+            . "Terima kasih sudah mempercayai Wartix.\n\n"
+            . $hashtags;
     }
 
     private function buildAnnouncementMessage(Event $event, string $phases, string $categories): string
@@ -111,18 +122,5 @@ class N8nService
             . "📍 Venue:\n{$event->venue}, {$event->city}\n\n"
             . "📅 {$event->event_date->format('d M Y')}\n\n"
             . "🔗 Order sekarang:\n" . url("/events/{$event->slug}");
-    }
-
-    private function buildThreadsCaption(Event $event, string $phases, string $categories): string
-    {
-        $hashtags = '#Wartix #WarTiket #' . str_replace(' ', '', $event->city);
-
-        return "🎫 {$event->title}\n\n"
-            . "📍 {$event->venue}, {$event->city}\n"
-            . "📅 {$event->event_date->format('d M Y')}\n\n"
-            . "🎟 {$phases}\n\n"
-            . "{$categories}\n\n"
-            . "🔗 Order sekarang:\n" . url("/events/{$event->slug}") . "\n\n"
-            . $hashtags;
     }
 }

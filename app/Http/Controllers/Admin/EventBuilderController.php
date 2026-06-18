@@ -18,24 +18,7 @@ class EventBuilderController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'title'               => 'required|string|max:255',
-            'artist_name'         => 'required|string|max:255',
-            'venue'               => 'required|string|max:255',
-            'city'                => 'required|string|max:255',
-            'event_type'          => 'required|string|max:100',
-            'event_date'          => 'required|date',
-            'platform_type'       => 'required|in:tiketcom,loket,yesplis,custom',
-            'status'              => 'required|in:upcoming,ongoing,finished',
-            'banner_image'        => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'seatplan_image'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'max_ticket_per_order'=> 'required|integer|min:1|max:10',
-            'phases'              => 'required|array|min:1',
-            'phases.*.name'       => 'required|string|max:100',
-            'categories'          => 'required|array|min:1',
-            'categories.*.name'   => 'required|string|max:100',
-            'categories.*.fee_per_ticket' => 'required|integer|min:0',
-        ]);
+        $request->validate($this->rules());
 
         $bannerPath   = null;
         $seatplanPath = null;
@@ -65,62 +48,18 @@ class EventBuilderController extends Controller
             'checkout_type'                => $request->checkout_type ?? 'managed_checkout',
             'guest_enabled'                => $request->boolean('guest_enabled'),
             'guest_mode'                   => $request->guest_mode ?? 'single_buyer',
-            'guest_identity_only'          => $request->boolean('guest_identity_only', true),
-            'same_title_for_guest'         => $request->boolean('same_title_for_guest', true),
-            'require_unique_identity_number' => $request->boolean('require_unique_identity_number', true),
+            'guest_identity_only'          => $request->boolean('guest_identity_only'),
+            'same_title_for_guest'         => $request->boolean('same_title_for_guest'),
+            'require_unique_identity_number' => $request->boolean('require_unique_identity_number'),
             'identity_mode'                => $request->identity_mode ?? 'nik_only',
             'telegram_group_link'          => $request->telegram_group_link,
             'slot_availability'            => $request->slot_availability,
         ]);
 
-        // Simpan sale phases
-        foreach ($request->phases as $i => $phase) {
-            SalePhase::create([
-                'event_id'   => $event->id,
-                'name'       => $phase['name'],
-                'start_time' => $phase['start_time'] ?? null,
-                'end_time'   => $phase['end_time'] ?? null,
-                'status'     => $phase['status'] ?? 'upcoming',
-                'slot_limit' => $phase['slot_limit'] ?? null,
-                'description'=> $phase['description'] ?? null,
-                'sort_order' => $i,
-            ]);
-        }
+        $this->syncSalePhases($event, $request->phases);
+        $this->syncTicketCategories($event, $request->categories);
+        $this->syncCustomFields($event, $request->custom_fields ?? []);
 
-        // Simpan ticket categories
-        foreach ($request->categories as $i => $cat) {
-            TicketCategory::create([
-                'event_id'             => $event->id,
-                'name'                 => $cat['name'],
-                'fee_per_ticket'       => $cat['fee_per_ticket'],
-                'ticket_price'         => $cat['ticket_price'] ?? 0,
-                'payment_mode'         => $cat['payment_mode'] ?? 'service_fee_only',
-                'custom_payment_amount'=> $cat['custom_payment_amount'] ?? null,
-                'max_qty'              => $cat['max_qty'] ?? 4,
-                'slot_limit'           => $cat['slot_limit'] ?? null,
-                'payment_timeout'      => $cat['payment_timeout'] ?? 10,
-                'is_active'            => true,
-                'sort_order'           => $i,
-            ]);
-        }
-
-        // Simpan custom fields jika ada
-        if ($request->has('custom_fields')) {
-            foreach ($request->custom_fields as $i => $field) {
-                CustomField::create([
-                    'event_id'   => $event->id,
-                    'label'      => $field['label'],
-                    'field_name' => Str::slug($field['label'], '_'),
-                    'field_type' => $field['field_type'] ?? 'text',
-                    'options'    => $field['options'] ?? null,
-                    'is_required'=> $field['is_required'] ?? false,
-                    'is_active'  => true,
-                    'sort_order' => $i,
-                ]);
-            }
-        }
-
-        // Trigger n8n announcement
         if ($event->status === 'ongoing' || $event->status === 'upcoming') {
             dispatch(new \App\Jobs\TriggerN8nWebhook([
                 'event_type'  => 'event_created',
@@ -143,21 +82,7 @@ class EventBuilderController extends Controller
 
     public function update(Request $request, Event $event)
     {
-        $request->validate([
-            'title'               => 'required|string|max:255',
-            'artist_name'         => 'required|string|max:255',
-            'venue'               => 'required|string|max:255',
-            'city'                => 'required|string|max:255',
-            'event_type'          => 'required|string|max:100',
-            'event_date'          => 'required|date',
-            'platform_type'       => 'required|in:tiketcom,loket,yesplis,custom',
-            'status'              => 'required|in:upcoming,ongoing,finished',
-            'banner_image'        => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'seatplan_image'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'max_ticket_per_order'=> 'required|integer|min:1|max:10',
-            'phases'              => 'required|array|min:1',
-            'categories'          => 'required|array|min:1',
-        ]);
+        $request->validate($this->rules());
 
         if ($request->hasFile('banner_image')) {
             $event->banner_image = $request->file('banner_image')->store('banners', 'public');
@@ -180,49 +105,179 @@ class EventBuilderController extends Controller
             'max_ticket_per_order'           => $request->max_ticket_per_order,
             'guest_enabled'                  => $request->boolean('guest_enabled'),
             'guest_mode'                     => $request->guest_mode ?? 'single_buyer',
-            'guest_identity_only'            => $request->boolean('guest_identity_only', true),
-            'same_title_for_guest'           => $request->boolean('same_title_for_guest', true),
-            'require_unique_identity_number' => $request->boolean('require_unique_identity_number', true),
+            'guest_identity_only'            => $request->boolean('guest_identity_only'),
+            'same_title_for_guest'           => $request->boolean('same_title_for_guest'),
+            'require_unique_identity_number' => $request->boolean('require_unique_identity_number'),
             'identity_mode'                  => $request->identity_mode ?? 'nik_only',
             'telegram_group_link'            => $request->telegram_group_link,
             'slot_availability'              => $request->slot_availability,
         ]);
 
-        // Update phases — hapus lama, buat baru
-        $event->salePhases()->delete();
-        foreach ($request->phases as $i => $phase) {
-            SalePhase::create([
-                'event_id'   => $event->id,
-                'name'       => $phase['name'],
-                'start_time' => $phase['start_time'] ?? null,
-                'end_time'   => $phase['end_time'] ?? null,
-                'status'     => $phase['status'] ?? 'upcoming',
-                'slot_limit' => $phase['slot_limit'] ?? null,
-                'description'=> $phase['description'] ?? null,
-                'sort_order' => $i,
-            ]);
-        }
+        // Catat phase/kategori yang admin coba hapus tapi sudah punya order,
+        // supaya bisa diberi tahu (sync di bawah otomatis tidak akan menghapusnya).
+        $submittedPhaseIds = collect($request->phases)->pluck('id')->filter()->map(fn ($id) => (int) $id);
+        $lockedPhases = $event->salePhases()
+            ->whereHas('orders')
+            ->whereNotIn('id', $submittedPhaseIds)
+            ->pluck('name');
 
-        // Update categories
-        $event->ticketCategories()->delete();
-        foreach ($request->categories as $i => $cat) {
-            TicketCategory::create([
-                'event_id'             => $event->id,
-                'name'                 => $cat['name'],
-                'fee_per_ticket'       => $cat['fee_per_ticket'],
-                'ticket_price'         => $cat['ticket_price'] ?? 0,
-                'payment_mode'         => $cat['payment_mode'] ?? 'service_fee_only',
-                'custom_payment_amount'=> $cat['custom_payment_amount'] ?? null,
-                'max_qty'              => $cat['max_qty'] ?? 4,
-                'slot_limit'           => $cat['slot_limit'] ?? null,
-                'payment_timeout'      => $cat['payment_timeout'] ?? 10,
-                'is_active'            => true,
-                'sort_order'           => $i,
-            ]);
+        $submittedCategoryIds = collect($request->categories)->pluck('id')->filter()->map(fn ($id) => (int) $id);
+        $lockedCategories = $event->ticketCategories()
+            ->whereHas('orders')
+            ->whereNotIn('id', $submittedCategoryIds)
+            ->pluck('name');
+
+        $this->syncSalePhases($event, $request->phases);
+        $this->syncTicketCategories($event, $request->categories);
+        $this->syncCustomFields($event, $request->custom_fields ?? []);
+
+        $message = 'Event berhasil diupdate!';
+        $locked  = $lockedPhases->merge($lockedCategories);
+        if ($locked->isNotEmpty()) {
+            $message .= ' Catatan: ' . $locked->implode(', ') . ' tidak dihapus karena sudah punya order terkait.';
         }
 
         return redirect()
             ->route('admin.events.show', $event)
-            ->with('success', 'Event berhasil diupdate!');
+            ->with('success', $message);
+    }
+
+    private function rules(): array
+    {
+        return [
+            'title'               => 'required|string|max:255',
+            'artist_name'         => 'required|string|max:255',
+            'venue'               => 'required|string|max:255',
+            'city'                => 'required|string|max:255',
+            'event_type'          => 'required|string|max:100',
+            'event_date'          => 'required|date',
+            'platform_type'       => 'required|in:tiketcom,loket,yesplis,custom',
+            'status'              => 'required|in:upcoming,ongoing,finished',
+            'banner_image'        => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'seatplan_image'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'max_ticket_per_order'=> 'required|integer|min:1|max:10',
+            'phases'              => 'required|array|min:1',
+            'phases.*.name'       => 'required|string|max:100',
+            'categories'          => 'required|array|min:1',
+            'categories.*.name'   => 'required|string|max:100',
+            'categories.*.fee_per_ticket'        => 'required|integer|min:0',
+            'categories.*.payment_mode'          => 'nullable|in:service_fee_only,full_payment,custom_payment',
+            'categories.*.ticket_price'          => 'required_if:categories.*.payment_mode,full_payment|nullable|integer|min:1',
+            'categories.*.custom_payment_amount' => 'required_if:categories.*.payment_mode,custom_payment|nullable|integer|min:1',
+        ];
+    }
+
+    private function syncSalePhases(Event $event, array $phasesInput): void
+    {
+        $keepIds = [];
+
+        foreach ($phasesInput as $i => $phase) {
+            $data = [
+                'event_id'    => $event->id,
+                'name'        => $phase['name'],
+                'start_time'  => $phase['start_time'] ?? null,
+                'end_time'    => $phase['end_time'] ?? null,
+                'status'      => $phase['status'] ?? 'upcoming',
+                'slot_limit'  => $phase['slot_limit'] ?? null,
+                'description' => $phase['description'] ?? null,
+                'sort_order'  => $i,
+            ];
+
+            $id       = $phase['id'] ?? null;
+            $existing = $id ? $event->salePhases()->find($id) : null;
+
+            if ($existing) {
+                $existing->update($data);
+                $keepIds[] = $existing->id;
+            } else {
+                $keepIds[] = SalePhase::create($data)->id;
+            }
+        }
+
+        // Hanya hapus phase lama yang TIDAK disubmit lagi DAN belum punya order.
+        $event->salePhases()
+            ->whereNotIn('id', $keepIds)
+            ->whereDoesntHave('orders')
+            ->delete();
+    }
+
+    private function syncTicketCategories(Event $event, array $categoriesInput): void
+    {
+        $keepIds = [];
+
+        foreach ($categoriesInput as $i => $cat) {
+            $data = [
+                'event_id'              => $event->id,
+                'name'                  => $cat['name'],
+                'fee_per_ticket'        => $cat['fee_per_ticket'],
+                'ticket_price'          => $cat['ticket_price'] ?? 0,
+                'payment_mode'          => $cat['payment_mode'] ?? 'service_fee_only',
+                'custom_payment_amount' => $cat['custom_payment_amount'] ?? null,
+                'max_qty'               => $cat['max_qty'] ?? 4,
+                'slot_limit'            => $cat['slot_limit'] ?? null,
+                'payment_timeout'       => $cat['payment_timeout'] ?? 10,
+                'is_active'             => true,
+                'sort_order'            => $i,
+            ];
+
+            $id       = $cat['id'] ?? null;
+            $existing = $id ? $event->ticketCategories()->find($id) : null;
+
+            if ($existing) {
+                $existing->update($data);
+                $keepIds[] = $existing->id;
+            } else {
+                $keepIds[] = TicketCategory::create($data)->id;
+            }
+        }
+
+        $event->ticketCategories()
+            ->whereNotIn('id', $keepIds)
+            ->whereDoesntHave('orders')
+            ->delete();
+    }
+
+    private function syncCustomFields(Event $event, array $fieldsInput): void
+    {
+        $keepIds = [];
+
+        foreach ($fieldsInput as $i => $field) {
+            if (empty($field['label'])) {
+                continue;
+            }
+
+            $type    = $field['field_type'] ?? 'text';
+            $options = null;
+
+            if ($type === 'select' && !empty($field['options'])) {
+                $options = array_values(array_filter(array_map('trim', explode(',', $field['options']))));
+            }
+
+            $data = [
+                'event_id'    => $event->id,
+                'label'       => $field['label'],
+                'field_name'  => Str::slug($field['label'], '_'),
+                'field_type'  => $type,
+                'options'     => $options,
+                'is_required' => !empty($field['is_required']),
+                'is_active'   => true,
+                'sort_order'  => $i,
+            ];
+
+            $id       = $field['id'] ?? null;
+            $existing = $id ? $event->customFields()->find($id) : null;
+
+            if ($existing) {
+                $existing->update($data);
+                $keepIds[] = $existing->id;
+            } else {
+                $keepIds[] = CustomField::create($data)->id;
+            }
+        }
+
+        $event->customFields()
+            ->whereNotIn('id', $keepIds)
+            ->whereDoesntHave('orderAnswers')
+            ->delete();
     }
 }

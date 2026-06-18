@@ -20,4 +20,9 @@ class CustomField extends Model
     {
         return $this->belongsTo(Event::class);
     }
+
+    public function orderAnswers()
+    {
+        return $this->hasMany(OrderCustomField::class);
+    }
 }

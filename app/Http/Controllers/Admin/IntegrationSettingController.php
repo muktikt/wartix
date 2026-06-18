@@ -25,12 +25,14 @@ class IntegrationSettingController extends Controller
             'threads_access_token'   => 'nullable|string',
             'threads_user_id'        => 'nullable|string',
             'payment_expired_minutes'=> 'nullable|integer|min:5|max:60',
+            'n8n_whitelist_ip'       => 'nullable|string',
+            'dompetx_whitelist_ip'   => 'nullable|string',
         ]);
 
         $keys = [
             'telegram_group_link',
             'telegram_bot_token',
-            'telegram_group_chat_id', // ← tambahkan
+            'telegram_group_chat_id',
             'n8n_webhook_url',
             'n8n_webhook_secret',
             'dompetx_merchant_id',
@@ -39,6 +41,8 @@ class IntegrationSettingController extends Controller
             'threads_access_token',
             'threads_user_id',
             'payment_expired_minutes',
+            'n8n_whitelist_ip',
+            'dompetx_whitelist_ip',
         ];
 
         foreach ($keys as $key) {

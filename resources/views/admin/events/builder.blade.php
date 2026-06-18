@@ -128,6 +128,7 @@
                             <div class="grid grid-cols-3 gap-3">
                                 <div>
                                     <label class="block text-xs text-gray-600 mb-1">Nama Phase *</label>
+                                    <input type="hidden" name="phases[{{ $i }}][id]" value="{{ $phase->id }}">
                                     <input type="text" name="phases[{{ $i }}][name]" value="{{ $phase->name }}"
                                         class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                         required>
@@ -190,6 +191,7 @@
                             <div class="grid grid-cols-4 gap-3">
                                 <div>
                                     <label class="block text-xs text-gray-600 mb-1">Nama Kategori *</label>
+                                    <input type="hidden" name="categories[{{ $i }}][id]" value="{{ $cat->id }}">
                                     <input type="text" name="categories[{{ $i }}][name]" value="{{ $cat->name }}"
                                         class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                         required>
@@ -255,6 +257,57 @@
                     + Tambah Kategori
                 </button>
             </div>
+            {{-- Step 6: Custom Fields --}}
+            <div class="bg-white border border-gray-100 rounded-xl p-5">
+                <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                    <span class="w-5 h-5 bg-indigo-600 text-white rounded-full text-xs flex items-center justify-center">6</span>
+                    Custom Fields
+                    <span class="text-xs text-gray-400 font-normal ml-1">(opsional, data tambahan dari pembeli)</span>
+                </h3>
+                <div class="space-y-3" id="customFieldsContainer">
+                    @if($isEdit && $event->customFields->count())
+                        @foreach($event->customFields as $i => $field)
+                        <div class="border border-gray-100 rounded-xl p-4 custom-field-item">
+                            <input type="hidden" name="custom_fields[{{ $i }}][id]" value="{{ $field->id }}">
+                            <div class="grid grid-cols-4 gap-3">
+                                <div>
+                                    <label class="block text-xs text-gray-600 mb-1">Label *</label>
+                                    <input type="text" name="custom_fields[{{ $i }}][label]" value="{{ $field->label }}"
+                                        class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-600 mb-1">Tipe</label>
+                                    <select name="custom_fields[{{ $i }}][field_type]"
+                                        class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                        @foreach(['text','password','number','textarea','select'] as $type)
+                                        <option value="{{ $type }}" {{ $field->field_type === $type ? 'selected' : '' }}>{{ ucfirst($type) }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-600 mb-1">Options (pisah koma, khusus Select)</label>
+                                    <input type="text" name="custom_fields[{{ $i }}][options]" value="{{ implode(',', $field->options ?? []) }}"
+                                        class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                </div>
+                                <div class="flex items-end gap-2">
+                                    <label class="flex items-center gap-1.5 text-xs text-gray-600">
+                                        <input type="checkbox" name="custom_fields[{{ $i }}][is_required]" value="1" {{ $field->is_required ? 'checked' : '' }}
+                                            class="w-4 h-4 text-indigo-600 border-gray-300 rounded">
+                                        Wajib
+                                    </label>
+                                    <button type="button" onclick="this.closest('.custom-field-item').remove()"
+                                        class="text-xs text-red-400 hover:text-red-600 ml-auto">Hapus</button>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                    @endif
+                </div>
+                <button type="button" onclick="addCustomField()"
+                    class="mt-3 w-full border border-dashed border-indigo-300 text-indigo-600 text-xs py-2 rounded-xl hover:bg-indigo-50 transition-colors">
+                    + Tambah Custom Field
+                </button>
+            </div>
         </div>
 
         {{-- SIDEBAR --}}
@@ -275,13 +328,22 @@
                             class="w-4 h-4 text-indigo-600 border-gray-300 rounded">
                     </label>
                     <label class="flex items-center justify-between">
+                        <span class="text-xs text-gray-700">Guest Wajib Isi Identitas</span>
+                        <input type="hidden" name="guest_identity_only" value="0">
+                        <input type="checkbox" name="guest_identity_only" value="1"
+                            {{ old('guest_identity_only', $event->guest_identity_only ?? true) ? 'checked' : '' }}
+                            class="w-4 h-4 text-indigo-600 border-gray-300 rounded">
+                    </label>
+                    <label class="flex items-center justify-between">
                         <span class="text-xs text-gray-700">Same Title for Guest</span>
+                        <input type="hidden" name="same_title_for_guest" value="0">
                         <input type="checkbox" name="same_title_for_guest" value="1"
                             {{ old('same_title_for_guest', $event->same_title_for_guest ?? true) ? 'checked' : '' }}
                             class="w-4 h-4 text-indigo-600 border-gray-300 rounded">
                     </label>
                     <label class="flex items-center justify-between">
                         <span class="text-xs text-gray-700">Unique NIK Required</span>
+                        <input type="hidden" name="require_unique_identity_number" value="0">
                         <input type="checkbox" name="require_unique_identity_number" value="1"
                             {{ old('require_unique_identity_number', $event->require_unique_identity_number ?? true) ? 'checked' : '' }}
                             class="w-4 h-4 text-indigo-600 border-gray-300 rounded">
@@ -326,6 +388,48 @@
 <script>
 let phaseIndex   = {{ $isEdit ? $event->salePhases->count() : 1 }};
 let categoryIndex= {{ $isEdit ? $event->ticketCategories->count() : 1 }};
+let customFieldIndex = {{ $isEdit ? $event->customFields->count() : 0 }};
+
+function addCustomField() {
+    const container = document.getElementById('customFieldsContainer');
+    const div = document.createElement('div');
+    div.className = 'border border-gray-100 rounded-xl p-4 custom-field-item';
+    div.innerHTML = `
+        <div class="grid grid-cols-4 gap-3">
+            <div>
+                <label class="block text-xs text-gray-600 mb-1">Label *</label>
+                <input type="text" name="custom_fields[${customFieldIndex}][label]" placeholder="Username Tiket.com"
+                    class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+            </div>
+            <div>
+                <label class="block text-xs text-gray-600 mb-1">Tipe</label>
+                <select name="custom_fields[${customFieldIndex}][field_type]"
+                    class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <option value="text">Text</option>
+                    <option value="password">Password</option>
+                    <option value="number">Number</option>
+                    <option value="textarea">Textarea</option>
+                    <option value="select">Select</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-xs text-gray-600 mb-1">Options (pisah koma, khusus Select)</label>
+                <input type="text" name="custom_fields[${customFieldIndex}][options]"
+                    class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+            <div class="flex items-end gap-2">
+                <label class="flex items-center gap-1.5 text-xs text-gray-600">
+                    <input type="checkbox" name="custom_fields[${customFieldIndex}][is_required]" value="1"
+                        class="w-4 h-4 text-indigo-600 border-gray-300 rounded">
+                    Wajib
+                </label>
+                <button type="button" onclick="this.closest('.custom-field-item').remove()"
+                    class="text-xs text-red-400 hover:text-red-600 ml-auto">Hapus</button>
+            </div>
+        </div>`;
+    container.appendChild(div);
+    customFieldIndex++;
+}
 
 function addPhase() {
     const container = document.getElementById('phasesContainer');

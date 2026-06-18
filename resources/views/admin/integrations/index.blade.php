@@ -60,6 +60,13 @@
                     <input type="password" name="n8n_webhook_secret" value="{{ $settings['n8n_webhook_secret'] ?? '' }}"
                         placeholder="secret key"
                         class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                {{-- di card n8n, setelah Webhook Secret --}}
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1.5">Whitelist IP (pisah koma, kosongkan = skip cek)</label>
+                        <input type="text" name="n8n_whitelist_ip" value="{{ $settings['n8n_whitelist_ip'] ?? '' }}"
+                            placeholder="1.2.3.4, 5.6.7.8"
+                            class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
                 </div>
             </div>
         </div>
@@ -103,6 +110,12 @@
                     <input type="number" name="payment_expired_minutes" value="{{ $settings['payment_expired_minutes'] ?? 10 }}"
                         min="5" max="60"
                         class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1.5">Whitelist IP (pisah koma, kosongkan = skip cek)</label>
+                    <input type="text" name="dompetx_whitelist_ip" value="{{ $settings['dompetx_whitelist_ip'] ?? '' }}"
+                        placeholder="1.2.3.4, 5.6.7.8"
+                        class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
                 </div>
             </div>
         </div>

@@ -2,6 +2,7 @@
 namespace App\Jobs;
 
 use App\Models\Order;
+use App\Models\PaymentLog;
 use App\Services\DompetxService;
 use App\Services\TelegramService;
 use Illuminate\Bus\Queueable;
@@ -22,34 +23,43 @@ class CreateDompetxPayment implements ShouldQueue
 
     public function handle(DompetxService $dompetx, TelegramService $telegram): void
     {
-        $order = Order::with(['event', 'salePhase', 'ticketCategory'])
-            ->find($this->orderId);
+        $order = Order::with(['event', 'salePhase', 'ticketCategory'])->find($this->orderId);
 
         if (!$order) {
             Log::warning("CreateDompetxPayment: order {$this->orderId} not found");
             return;
         }
 
-        // Jangan buat payment kalau sudah paid
         if ($order->payment_status === 'paid') {
             Log::info("CreateDompetxPayment: order {$order->order_code} already paid");
             return;
         }
 
-        $paymentData = $dompetx->createPayment($order);
+        // Cegah pembuatan payment dobel kalau job ini di-retry / dipanggil ulang.
+        $existingPending = PaymentLog::where('order_id', $order->id)
+            ->where('status', 'pending')
+            ->where('expired_at', '>', now())
+            ->latest()
+            ->first();
+
+        if ($existingPending) {
+            Log::info("CreateDompetxPayment: pending payment already exists for order {$order->order_code}");
+            return;
+        }
 
         $chatId = $order->telegram_chat_id
             ?? $order->telegramConnection?->telegram_chat_id;
 
         if (!$chatId) {
-            Log::warning("CreateDompetxPayment: no chat_id for order {$order->order_code}");
+            Log::warning("CreateDompetxPayment: no chat_id for order {$order->order_code}, skip payment creation");
             return;
         }
+
+        $paymentData = $dompetx->createPayment($order);
 
         if (!$paymentData) {
             Log::error("CreateDompetxPayment: failed for order {$order->order_code}");
 
-            // Tetap kirim info manual ke user kalau payment gagal dibuat
             $telegram->sendMessage($chatId,
                 "⚠️ <b>Info Pembayaran — Wartix</b>\n\n" .
                 "Tiket untuk order <code>{$order->order_code}</code> berhasil!\n\n" .
@@ -58,21 +68,18 @@ class CreateDompetxPayment implements ShouldQueue
             return;
         }
 
-        // Kirim payment info ke Telegram
         dispatch(new SendTelegramNotification([
             'type'     => 'payment_info',
             'order_id' => $order->id,
             'chat_id'  => $chatId,
         ]));
 
-        // Kirim QRIS image kalau ada URL nya
         $qrisUrl = $paymentData['qris_url']
             ?? $paymentData['payment_url']
             ?? $paymentData['data']['qris_url']
             ?? null;
 
         if ($qrisUrl) {
-            // Delay 2 detik biar pesan info payment terkirim dulu
             sleep(2);
             $telegram->sendPhoto(
                 $chatId,

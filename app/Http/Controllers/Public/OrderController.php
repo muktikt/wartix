@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\Order;
 use App\Models\OrderGuest;
+use App\Models\OrderCustomField;
 use App\Models\SalePhase;
 use App\Models\TicketCategory;
 use Illuminate\Http\Request;
@@ -14,19 +15,37 @@ class OrderController extends Controller
 {
     public function store(Request $request)
     {
-        $event    = Event::findOrFail($request->event_id);
-        $phase    = SalePhase::findOrFail($request->sale_phase_id);
-        $category = TicketCategory::findOrFail($request->ticket_category_id);
-
-        $rules = [
+        $request->validate([
             'event_id'           => 'required|exists:events,id',
             'sale_phase_id'      => 'required|exists:sale_phases,id',
             'ticket_category_id' => 'required|exists:ticket_categories,id',
-            'qty'                => 'required|integer|min:1|max:' . $event->max_ticket_per_order,
             'full_name'          => 'required|string|max:255',
             'phone_number'       => 'required|string|max:20',
             'email'              => 'required|email|max:255',
             'telegram_username'  => 'nullable|string|max:100',
+        ]);
+
+        $event = Event::with('customFields')->findOrFail($request->event_id);
+
+        $phase    = SalePhase::where('event_id', $event->id)->find($request->sale_phase_id);
+        $category = TicketCategory::where('event_id', $event->id)->find($request->ticket_category_id);
+
+        if (!$phase || !$category) {
+            return back()->withInput()->withErrors([
+                'ticket_category_id' => 'Sale phase atau kategori tidak valid untuk event ini.',
+            ]);
+        }
+
+        if ($phase->status !== 'open') {
+            return back()->withInput()->withErrors([
+                'sale_phase_id' => 'Sale phase ini belum dibuka atau sudah ditutup.',
+            ]);
+        }
+
+        $maxQty = min($event->max_ticket_per_order, $category->max_qty ?: $event->max_ticket_per_order);
+
+        $rules = [
+            'qty' => "required|integer|min:1|max:{$maxQty}",
         ];
 
         if ($event->identity_mode === 'nik_only') {
@@ -37,9 +56,41 @@ class OrderController extends Controller
             $rules['title'] = 'required|in:Tuan,Nyonya,Nona';
         }
 
+        $activeCustomFields = $event->customFields->where('is_active', true);
+
+        foreach ($activeCustomFields as $field) {
+            $rules["custom_fields.{$field->id}"] = $field->is_required
+                ? 'required|string|max:1000'
+                : 'nullable|string|max:1000';
+        }
+
         $request->validate($rules);
 
         $qty = (int) $request->qty;
+
+        if ($category->slot_limit) {
+            $soldCategory = Order::where('ticket_category_id', $category->id)
+                ->whereNotIn('order_status', ['failed', 'cancelled'])
+                ->sum('qty');
+
+            if ($soldCategory + $qty > $category->slot_limit) {
+                return back()->withInput()->withErrors([
+                    'ticket_category_id' => 'Slot untuk kategori ini sudah penuh.',
+                ]);
+            }
+        }
+
+        if ($phase->slot_limit) {
+            $soldPhase = Order::where('sale_phase_id', $phase->id)
+                ->whereNotIn('order_status', ['failed', 'cancelled'])
+                ->sum('qty');
+
+            if ($soldPhase + $qty > $phase->slot_limit) {
+                return back()->withInput()->withErrors([
+                    'sale_phase_id' => 'Slot untuk sale phase ini sudah penuh.',
+                ]);
+            }
+        }
 
         $serviceFeeTotal  = $category->fee_per_ticket * $qty;
         $ticketPriceTotal = 0;
@@ -51,7 +102,7 @@ class OrderController extends Controller
             $ticketPriceTotal = $category->ticket_price * $qty;
             $grandTotal       = $serviceFeeTotal + $ticketPriceTotal;
         } elseif ($category->payment_mode === 'custom_payment') {
-            $grandTotal = $category->custom_payment_amount;
+            $grandTotal = $category->custom_payment_amount ?? $serviceFeeTotal;
         }
 
         $order = Order::create([
@@ -97,6 +148,17 @@ class OrderController extends Controller
                         'identity_number' => $guestNik,
                     ]);
                 }
+            }
+        }
+
+        foreach ($activeCustomFields as $field) {
+            $value = $request->input("custom_fields.{$field->id}");
+            if ($value !== null && $value !== '') {
+                OrderCustomField::create([
+                    'order_id'        => $order->id,
+                    'custom_field_id' => $field->id,
+                    'value'           => $value,
+                ]);
             }
         }
 
