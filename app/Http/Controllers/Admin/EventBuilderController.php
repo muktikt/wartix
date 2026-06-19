@@ -6,6 +6,7 @@ use App\Models\Event;
 use App\Models\SalePhase;
 use App\Models\TicketCategory;
 use App\Models\CustomField;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -53,7 +54,7 @@ class EventBuilderController extends Controller
             'require_unique_identity_number' => $request->boolean('require_unique_identity_number'),
             'identity_mode'                => $request->identity_mode ?? 'nik_only',
             'telegram_group_link'          => $request->telegram_group_link,
-            'slot_availability'            => $request->slot_availability,
+            'slot_availability'            => Setting::get('default_slot_availability', null),
         ]);
 
         $this->syncSalePhases($event, $request->phases);
@@ -110,7 +111,7 @@ class EventBuilderController extends Controller
             'require_unique_identity_number' => $request->boolean('require_unique_identity_number'),
             'identity_mode'                  => $request->identity_mode ?? 'nik_only',
             'telegram_group_link'            => $request->telegram_group_link,
-            'slot_availability'              => $request->slot_availability,
+            'slot_availability'              => Setting::get('default_slot_availability', null),
         ]);
 
         // Catat phase/kategori yang admin coba hapus tapi sudah punya order,
@@ -164,6 +165,11 @@ class EventBuilderController extends Controller
             'categories.*.payment_mode'          => 'nullable|in:service_fee_only,full_payment,custom_payment',
             'categories.*.ticket_price'          => 'required_if:categories.*.payment_mode,full_payment|nullable|integer|min:1',
             'categories.*.custom_payment_amount' => 'required_if:categories.*.payment_mode,custom_payment|nullable|integer|min:1',
+            'custom_fields'                    => 'nullable|array',
+            'custom_fields.*.label'            => 'required_with:custom_fields|string|max:255',
+            'custom_fields.*.field_type'       => 'required_with:custom_fields|in:text,password,number,textarea,select',
+            'custom_fields.*.options'          => 'nullable|string|max:1000',
+            'custom_fields.*.is_required'      => 'nullable|boolean',
         ];
     }
 

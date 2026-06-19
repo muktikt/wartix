@@ -4,26 +4,43 @@
 
 @section('content')
 {{-- Search & Filter --}}
-<form method="GET" class="flex gap-3 mb-5">
-    <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari order code, nama, email..."
-        class="flex-1 text-sm border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-    <select name="order_status"
-        class="text-sm border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-        <option value="">Semua Status</option>
-        @foreach(['waiting','processing','success','failed','cancelled'] as $s)
-        <option value="{{ $s }}" {{ request('order_status') === $s ? 'selected' : '' }}>{{ ucfirst($s) }}</option>
-        @endforeach
-    </select>
-    <select name="payment_status"
-        class="text-sm border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-        <option value="">Semua Payment</option>
-        @foreach(['unpaid','pending','paid','expired','failed'] as $s)
-        <option value="{{ $s }}" {{ request('payment_status') === $s ? 'selected' : '' }}>{{ ucfirst($s) }}</option>
-        @endforeach
-    </select>
-    <button type="submit" class="bg-indigo-600 text-white text-sm px-4 py-2 rounded-xl hover:bg-indigo-700">Filter</button>
-    <a href="{{ route('admin.orders.index') }}" class="text-sm text-gray-500 px-4 py-2 border border-gray-200 rounded-xl hover:bg-gray-50">Reset</a>
-</form>
+<div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+    <form method="GET" class="flex flex-wrap gap-3">
+        <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari order code, nama, email..."
+            class="flex-1 min-w-[220px] text-sm border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <select name="order_status"
+            class="text-sm border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <option value="">Semua Status</option>
+            @foreach(['waiting','processing','success','failed','cancelled'] as $s)
+            <option value="{{ $s }}" {{ request('order_status') === $s ? 'selected' : '' }}>{{ ucfirst($s) }}</option>
+            @endforeach
+        </select>
+        <select name="payment_status"
+            class="text-sm border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <option value="">Semua Payment</option>
+            @foreach(['unpaid','pending','paid','expired','failed'] as $s)
+            <option value="{{ $s }}" {{ request('payment_status') === $s ? 'selected' : '' }}>{{ ucfirst($s) }}</option>
+            @endforeach
+        </select>
+        <button type="submit" class="bg-indigo-600 text-white text-sm px-4 py-2 rounded-xl hover:bg-indigo-700">Filter</button>
+        <a href="{{ route('admin.orders.index') }}" class="text-sm text-gray-500 px-4 py-2 border border-gray-200 rounded-xl hover:bg-gray-50">Reset</a>
+    </form>
+
+    <div class="flex flex-wrap items-center gap-2">
+        <a href="{{ route('admin.export.orders', request()->only(['q', 'order_status', 'payment_status', 'event_id'])) }}"
+            class="inline-flex items-center gap-1.5 text-sm border border-gray-200 text-gray-600 px-4 py-2 rounded-xl hover:bg-gray-50">
+            Export Orders
+        </a>
+        <a href="{{ route('admin.export.guests', request()->only(['event_id', 'order_status'])) }}"
+            class="inline-flex items-center gap-1.5 text-sm border border-gray-200 text-gray-600 px-4 py-2 rounded-xl hover:bg-gray-50">
+            Export Guests
+        </a>
+        <a href="{{ route('admin.export.reports', request()->only(['event_id', 'order_status', 'payment_status', 'date_from', 'date_to'])) }}"
+            class="inline-flex items-center gap-1.5 text-sm border border-gray-200 text-gray-600 px-4 py-2 rounded-xl hover:bg-gray-50">
+            Export Reports
+        </a>
+    </div>
+</div>
 
 <div class="bg-white border border-gray-100 rounded-xl overflow-hidden">
     <table class="w-full">
@@ -78,8 +95,15 @@
                     <span class="text-xs px-2 py-0.5 rounded font-medium {{ $pc }}">{{ ucfirst($order->payment_status) }}</span>
                 </td>
                 <td class="px-4 py-3 text-right">
-                    <a href="{{ route('admin.orders.show', $order) }}"
-                        class="text-xs text-indigo-600 hover:text-indigo-700 font-medium">Detail</a>
+                    <div class="flex items-center justify-end gap-2">
+                        <a href="{{ route('admin.orders.show', $order) }}"
+                            class="text-xs text-indigo-600 hover:text-indigo-700 font-medium">Detail</a>
+                        <form action="{{ route('admin.orders.destroy', $order) }}" method="POST" class="inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-xs text-red-600 hover:text-red-700 font-medium" onclick="return confirm('Yakin hapus order ini?')">Hapus</button>
+                        </form>
+                    </div>
                 </td>
             </tr>
             @empty

@@ -25,6 +25,7 @@ class IntegrationSettingController extends Controller
             'threads_access_token'   => 'nullable|string',
             'threads_user_id'        => 'nullable|string',
             'payment_expired_minutes'=> 'nullable|integer|min:5|max:60',
+            'default_slot_availability' => 'nullable|integer|min:0',
             'n8n_whitelist_ip'       => 'nullable|string',
             'dompetx_whitelist_ip'   => 'nullable|string',
         ]);
@@ -41,6 +42,7 @@ class IntegrationSettingController extends Controller
             'threads_access_token',
             'threads_user_id',
             'payment_expired_minutes',
+            'default_slot_availability',
             'n8n_whitelist_ip',
             'dompetx_whitelist_ip',
         ];

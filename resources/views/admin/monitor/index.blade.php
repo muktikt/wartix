@@ -7,14 +7,6 @@
     <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
     <span class="text-sm font-medium text-gray-700">Live Monitor</span>
     <span class="text-xs text-gray-400 ml-auto">Data lengkap — admin only</span>
-    <a href="{{ route('admin.export.orders') }}"
-        class="inline-flex items-center gap-1.5 text-xs border border-gray-200 text-gray-600 px-3 py-1.5 rounded-lg hover:bg-gray-50">
-        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-        </svg>
-        Export
-    </a>
 </div>
 
 {{-- Filter --}}

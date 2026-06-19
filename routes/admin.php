@@ -38,6 +38,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
         Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
         Route::patch('orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.status');
+        Route::delete('orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
 
         // Monitor
         Route::get('realtime-monitor', [RealtimeMonitorController::class, 'index'])->name('monitor.index');
@@ -55,6 +56,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Export
         Route::get('export/orders', [ExportController::class, 'orders'])->name('export.orders');
         Route::get('export/guests', [ExportController::class, 'guests'])->name('export.guests');
+        Route::get('export/reports', [ExportController::class, 'reports'])->name('export.reports');
 
         // Statistics
         Route::get('statistics', [StatisticsController::class, 'index'])->name('statistics.index');

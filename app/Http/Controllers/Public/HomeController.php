@@ -26,7 +26,7 @@ class HomeController extends Controller
             ];
         });
 
-        $activeEvents = Cache::remember('active_events', 60, function () {
+        $activeEvents = Cache::remember('active_events', 15, function () {
             return Event::whereIn('status', ['upcoming', 'ongoing'])
                 ->with(['salePhases', 'ticketCategories'])
                 ->latest()
@@ -80,6 +80,8 @@ class HomeController extends Controller
         $event->setAttribute('success_rate', $totalAccounts > 0
             ? round(($successAccounts / $totalAccounts) * 100, 1)
             : 0.0);
+        $event->setAttribute('total_slots', $event->resolved_total_slots);
+        $event->setAttribute('available_slots', $event->resolved_available_slots);
 
         return $event;
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class EventController extends Controller
 {
@@ -38,7 +39,10 @@ class EventController extends Controller
     public function destroy(Event $event)
     {
         $event->delete();
-        return back()->with('success', 'Event berhasil dihapus.');
+        Cache::forget('active_events');
+        Cache::forget('home_stats');
+
+        return redirect()->route('admin.events.index')->with('success', 'Event berhasil dihapus.');
     }
 
     public function updateStatus(Request $request, Event $event)

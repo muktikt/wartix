@@ -10,6 +10,16 @@
     @csrf
     @if($isEdit) @method('PUT') @endif
 
+    @if($errors->any())
+    <div class="mb-4 bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-lg">
+        <ul class="list-disc pl-5 space-y-1">
+            @foreach($errors->all() as $err)
+            <li>{{ $err }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
     <div class="grid grid-cols-3 gap-5">
 
         {{-- MAIN --}}
@@ -125,7 +135,7 @@
                     @if($isEdit && $event->salePhases->count())
                         @foreach($event->salePhases as $i => $phase)
                         <div class="border border-gray-100 rounded-xl p-4 phase-item">
-                            <div class="grid grid-cols-3 gap-3">
+                            <div class="grid grid-cols-4 gap-3">
                                 <div>
                                     <label class="block text-xs text-gray-600 mb-1">Nama Phase *</label>
                                     <input type="hidden" name="phases[{{ $i }}][id]" value="{{ $phase->id }}">
@@ -145,12 +155,20 @@
                                         value="{{ $phase->end_time?->format('Y-m-d\TH:i') }}"
                                         class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                 </div>
+                                <div>
+                                    <label class="block text-xs text-gray-600 mb-1">Slot Phase</label>
+                                    <input type="number" name="phases[{{ $i }}][slot_limit]"
+                                        value="{{ $phase->slot_limit ?? '' }}"
+                                        placeholder="Kosongkan untuk tak terbatas"
+                                        min="0"
+                                        class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                </div>
                             </div>
                         </div>
                         @endforeach
                     @else
                     <div class="border border-gray-100 rounded-xl p-4 phase-item">
-                        <div class="grid grid-cols-3 gap-3">
+                        <div class="grid grid-cols-4 gap-3">
                             <div>
                                 <label class="block text-xs text-gray-600 mb-1">Nama Phase *</label>
                                 <input type="text" name="phases[0][name]" placeholder="Artist Presale"
@@ -165,6 +183,13 @@
                             <div>
                                 <label class="block text-xs text-gray-600 mb-1">End Time</label>
                                 <input type="datetime-local" name="phases[0][end_time]"
+                                    class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-gray-600 mb-1">Slot Phase</label>
+                                <input type="number" name="phases[0][slot_limit]"
+                                    placeholder="Kosongkan untuk tak terbatas"
+                                    min="0"
                                     class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                             </div>
                         </div>
@@ -386,6 +411,12 @@
 </form>
 
 <script>
+function eventBuilder() {
+    return {
+        platform: @json(old('platform_type', $isEdit ? ($event->platform_type ?? 'tiketcom') : 'tiketcom')),
+    };
+}
+
 let phaseIndex   = {{ $isEdit ? $event->salePhases->count() : 1 }};
 let categoryIndex= {{ $isEdit ? $event->ticketCategories->count() : 1 }};
 let customFieldIndex = {{ $isEdit ? $event->customFields->count() : 0 }};
@@ -441,7 +472,7 @@ function addPhase() {
             <button type="button" onclick="this.closest('.phase-item').remove()"
                 class="text-xs text-red-400 hover:text-red-600">Hapus</button>
         </div>
-        <div class="grid grid-cols-3 gap-3">
+        <div class="grid grid-cols-4 gap-3">
             <div>
                 <label class="block text-xs text-gray-600 mb-1">Nama Phase *</label>
                 <input type="text" name="phases[${phaseIndex}][name]" placeholder="General Sale"
@@ -455,6 +486,13 @@ function addPhase() {
             <div>
                 <label class="block text-xs text-gray-600 mb-1">End Time</label>
                 <input type="datetime-local" name="phases[${phaseIndex}][end_time]"
+                    class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+            <div>
+                <label class="block text-xs text-gray-600 mb-1">Slot Phase</label>
+                <input type="number" name="phases[${phaseIndex}][slot_limit]"
+                    placeholder="Kosongkan untuk tak terbatas"
+                    min="0"
                     class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
             </div>
         </div>`;

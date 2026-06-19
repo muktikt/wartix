@@ -83,6 +83,13 @@
                     <p class="text-sm text-gray-700">{{ ucfirst(str_replace('_', ' ', $order->payment_mode)) }}</p>
                 </div>
             </div>
+            <div class="mt-4">
+                <form action="{{ route('admin.orders.destroy', $order) }}" method="POST" onsubmit="return confirm('Yakin hapus order ini?');">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="bg-red-600 hover:bg-red-700 text-white text-sm font-semibold px-4 py-2 rounded-xl">Hapus Order</button>
+                </form>
+            </div>
         </div>
 
         {{-- Buyer Info --}}

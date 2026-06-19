@@ -64,6 +64,11 @@
                             class="text-xs text-indigo-600 hover:text-indigo-700 font-medium">Detail</a>
                         <a href="{{ route('admin.events.builder.edit', $event) }}"
                             class="text-xs text-gray-500 hover:text-gray-700">Edit</a>
+                        <form action="{{ route('admin.events.destroy', $event) }}" method="POST" class="inline" onsubmit="return confirm('Yakin hapus event ini? Semua phase, kategori, dan order terkait akan ikut terhapus.');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-xs text-red-600 hover:text-red-700 font-medium">Hapus</button>
+                        </form>
                     </div>
                 </td>
             </tr>

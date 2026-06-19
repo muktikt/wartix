@@ -16,6 +16,15 @@
             class="inline-flex items-center gap-1.5 text-sm border border-gray-200 text-gray-600 px-3 py-1.5 rounded-lg hover:bg-gray-50">
             Edit Event
         </a>
+        <form action="{{ route('admin.events.destroy', $event) }}" method="POST" class="inline"
+            onsubmit="return confirm('Yakin hapus event ini? Semua phase, kategori, dan order terkait akan ikut terhapus.');">
+            @csrf
+            @method('DELETE')
+            <button type="submit"
+                class="inline-flex items-center gap-1.5 text-sm border border-red-200 text-red-600 px-3 py-1.5 rounded-lg hover:bg-red-50">
+                Hapus Event
+            </button>
+        </form>
         <form action="{{ route('admin.events.status', $event) }}" method="POST" class="inline">
             @csrf @method('PATCH')
             <select name="status" onchange="this.form.submit()"
@@ -77,6 +86,12 @@
                 <div>
                     <p class="text-xs text-gray-400">Max Tiket/Order</p>
                     <p class="text-xs font-medium text-gray-700">{{ $event->max_ticket_per_order }}</p>
+                </div>
+            </div>
+                <div class="grid grid-cols-4 gap-4 mt-3">
+                <div>
+                    <p class="text-xs text-gray-400">Total Slot</p>
+                    <p class="text-xs font-medium text-gray-700">{{ $event->resolved_total_slots ?? '∞' }}</p>
                 </div>
             </div>
         </div>

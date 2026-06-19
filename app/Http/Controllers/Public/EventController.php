@@ -59,6 +59,8 @@ class EventController extends Controller
             $event->setAttribute('success_rate', $totalAccounts > 0
                 ? round(($successAccounts / $totalAccounts) * 100, 1)
                 : 0.0);
+            $event->setAttribute('total_slots', $event->resolved_total_slots);
+            $event->setAttribute('available_slots', $event->resolved_available_slots);
 
             return $event;
         });
@@ -79,6 +81,9 @@ class EventController extends Controller
             }])
             ->firstOrFail();
 
-        return view('public.events.show', compact('event'));
+        $totalSlots = $event->resolved_total_slots;
+        $availableSlots = $event->resolved_available_slots;
+
+        return view('public.events.show', compact('event', 'totalSlots', 'availableSlots'));
     }
 }

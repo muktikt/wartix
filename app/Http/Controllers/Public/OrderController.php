@@ -10,6 +10,7 @@ use App\Models\SalePhase;
 use App\Models\TicketCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
 
 class OrderController extends Controller
 {
@@ -68,7 +69,7 @@ class OrderController extends Controller
 
         $qty = (int) $request->qty;
 
-        if ($category->slot_limit) {
+        if ($category->slot_limit !== null) {
             $soldCategory = Order::where('ticket_category_id', $category->id)
                 ->whereNotIn('order_status', ['failed', 'cancelled'])
                 ->sum('qty');
@@ -80,7 +81,7 @@ class OrderController extends Controller
             }
         }
 
-        if ($phase->slot_limit) {
+        if ($phase->slot_limit !== null) {
             $soldPhase = Order::where('sale_phase_id', $phase->id)
                 ->whereNotIn('order_status', ['failed', 'cancelled'])
                 ->sum('qty');
@@ -161,6 +162,10 @@ class OrderController extends Controller
                 ]);
             }
         }
+
+        // Invalidate cache agar slot update real-time
+        Cache::forget('active_events');
+        Cache::forget('home_stats');
 
         return redirect()->route('order.success', $order->order_code);
     }

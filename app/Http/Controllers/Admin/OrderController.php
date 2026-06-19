@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Services\MaskService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class OrderController extends Controller
 {
@@ -64,6 +65,20 @@ class OrderController extends Controller
 
         $order->update(['order_status' => $request->order_status]);
 
+        // Invalidate cache agar slot update real-time
+        Cache::forget('active_events');
+        Cache::forget('home_stats');
+
         return back()->with('success', 'Status order berhasil diupdate.');
+    }
+
+    public function destroy(Order $order)
+    {
+        $order->delete();
+
+        Cache::forget('active_events');
+        Cache::forget('home_stats');
+
+        return redirect()->route('admin.orders.index')->with('success', 'Order berhasil dihapus.');
     }
 }

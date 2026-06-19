@@ -42,6 +42,25 @@
                         {{ $event->event_date->format('d M Y') }}
                     </div>
                 </div>
+                @if($totalSlots !== null)
+                <div class="flex items-center justify-between p-3 bg-indigo-50 rounded-xl">
+                    <div>
+                        <p class="text-xs text-indigo-600 font-semibold">Slot Tersedia</p>
+                        <p class="text-lg font-bold text-indigo-700">{{ $availableSlots }}<span class="text-sm text-indigo-600">/{{ $totalSlots }}</span></p>
+                    </div>
+                    <div class="flex flex-col items-center gap-1">
+                        <div class="w-12 h-12 rounded-full {{ $availableSlots > 0 ? 'bg-green-100' : 'bg-red-100' }} flex items-center justify-center">
+                            <span class="text-lg font-bold {{ $availableSlots > 0 ? 'text-green-600' : 'text-red-600' }}">{{ $availableSlots > 0 ? '✓' : '✕' }}</span>
+                        </div>
+                        <span class="text-xs font-medium {{ $availableSlots > 0 ? 'text-green-600' : 'text-red-600' }}">{{ $availableSlots > 0 ? 'Tersedia' : 'Penuh' }}</span>
+                    </div>
+                </div>
+                @endif
+                @if(request('debug'))
+                <div class="mt-3 text-xs text-gray-500 bg-gray-50 p-2 rounded">
+                    <pre class="whitespace-pre-wrap text-xs">{{ json_encode(array_merge($event->toArray(), ['totalSlots' => $totalSlots, 'availableSlots' => $availableSlots]), JSON_PRETTY_PRINT) }}</pre>
+                </div>
+                @endif
                 @if($event->description)
                 <p class="text-sm text-gray-500 leading-relaxed">{{ $event->description }}</p>
                 @endif

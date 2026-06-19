@@ -142,6 +142,21 @@
                 </label>
             </div>
         </div>
+        
+        {{-- Events --}}
+        <div class="bg-white border border-gray-100 rounded-xl p-5">
+            <h3 class="text-sm font-semibold text-gray-900 mb-4">Event Defaults</h3>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1.5">Default Slot Availability</label>
+                    <input type="number" name="default_slot_availability" value="{{ $settings['default_slot_availability'] ?? '' }}"
+                        placeholder="Kosongkan untuk tak terbatas"
+                        min="0"
+                        class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <p class="text-xs text-gray-400 mt-1">Jika diisi, akan menjadi default slot untuk event baru (kosong = ∞).</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="mt-5 flex justify-end">
