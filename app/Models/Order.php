@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use App\Models\Scopes\HideUnlinkedOrdersScope;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
@@ -9,14 +10,21 @@ class Order extends Model
         'order_code', 'event_id', 'sale_phase_id', 'ticket_category_id',
         'qty', 'title', 'full_name', 'phone_number', 'email',
         'identity_number', 'telegram_username', 'telegram_user_id',
-        'telegram_chat_id', 'service_fee_total', 'ticket_price_total',
+        'telegram_chat_id', 'telegram_link_token', 'telegram_linked_at',
+        'service_fee_total', 'ticket_price_total',
         'admin_fee', 'grand_total', 'payment_mode', 'payment_status',
         'order_status', 'notes',
     ];
 
     protected $casts = [
-        'identity_number' => 'encrypted',
+        'identity_number'    => 'encrypted',
+        'telegram_linked_at' => 'datetime',
     ];
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new HideUnlinkedOrdersScope());
+    }
 
     public function event()
     {

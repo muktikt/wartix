@@ -12,3 +12,4 @@ Schedule::command('wartix:retry-failed')->hourly();
 Schedule::command('queue:prune-failed', ['--hours' => 48])->daily();
 Schedule::command('wartix:warm-cache')->everyFiveMinutes();
 Schedule::command('wartix:check-expired-payments')->everyMinute();
+Schedule::command('wartix:cancel-unlinked-orders')->everyMinute();

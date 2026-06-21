@@ -11,14 +11,16 @@ class DashboardController extends Controller
     public function index()
     {
         $stats = [
-            'total_orders'   => Order::count(),
-            'success_orders' => Order::where('order_status', 'success')->count(),
-            'pending_orders' => Order::where('order_status', 'waiting')->count(),
-            'failed_orders'  => Order::whereIn('order_status', ['failed', 'cancelled'])->count(),
-            'active_events'  => Event::whereIn('status', ['upcoming', 'ongoing'])->count(),
-            'total_revenue'  => Order::where('payment_status', 'paid')->sum('grand_total'),
-            'success_rate'   => 0,
-        ];
+        'total_orders'    => Order::count(),
+        'success_orders'  => Order::where('order_status', 'success')->count(),
+        'pending_orders'  => Order::where('order_status', 'waiting')->count(),
+        'failed_orders'   => Order::whereIn('order_status', ['failed', 'cancelled'])->count(),
+        'active_events'   => Event::whereIn('status', ['upcoming', 'ongoing'])->count(),
+        'total_revenue'   => Order::where('payment_status', 'paid')->sum('grand_total'),
+        'pending_link_count' => Order::withoutGlobalScope(\App\Models\Scopes\HideUnlinkedOrdersScope::class)
+            ->where('order_status', 'pending_link')->count(),
+        'success_rate'    => 0,
+    ];
 
         $total = $stats['total_orders'];
         $stats['success_rate'] = $total > 0

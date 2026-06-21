@@ -36,11 +36,26 @@
                 </div>
             </div>
 
+            @if($telegramLinkUrl)
+            <div id="telegramPrompt" class="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-5">
+                <p class="text-xs text-blue-700 mb-3 text-center">
+                    Mengalihkan ke Telegram untuk konfirmasi order...
+                </p>
+                <a href="{{ $telegramLinkUrl }}"
+                    class="block w-full text-center bg-[#229ED9] hover:bg-[#1e8dcc] text-white text-sm font-medium py-2.5 rounded-xl transition-colors">
+                    Buka Bot Telegram Wartix
+                </a>
+                <p class="text-xs text-blue-500 mt-2 text-center">
+                    Belum teralihkan otomatis? Klik tombol di atas.
+                </p>
+            </div>
+            @else
             <div class="bg-blue-50 border border-blue-100 rounded-xl p-3 mb-5">
                 <p class="text-xs text-blue-700 text-center">
                     Pantau status order kamu via Telegram. QRIS akan dikirim otomatis setelah tiket berhasil.
                 </p>
             </div>
+            @endif
 
             <div class="flex gap-2">
                 <a href="{{ route('home') }}"
@@ -55,4 +70,13 @@
         </div>
     </div>
 </div>
+
+@if($telegramLinkUrl)
+<script>
+    // Auto-redirect setelah 1.5 detik, kasih waktu customer baca ringkasan order
+    setTimeout(function() {
+        window.location.href = "{{ $telegramLinkUrl }}";
+    }, 1500);
+</script>
+@endif
 @endsection

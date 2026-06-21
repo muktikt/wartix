@@ -119,4 +119,15 @@
         </a>
     </div>
 </div>
+
+@if($stats['pending_link_count'] > 0)
+<div class="bg-yellow-50 border border-yellow-100 rounded-xl p-3 mb-6 flex items-center gap-2">
+    <svg class="w-4 h-4 text-yellow-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+    </svg>
+    <span class="text-xs text-yellow-700">
+        <strong>{{ $stats['pending_link_count'] }}</strong> order sedang menunggu konfirmasi Telegram (auto-cancel dalam 10 menit jika tidak diklik).
+    </span>
+</div>
+@endif
 @endsection

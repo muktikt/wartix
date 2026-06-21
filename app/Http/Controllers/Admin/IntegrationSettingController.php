@@ -18,6 +18,7 @@ class IntegrationSettingController extends Controller
         $request->validate([
             'telegram_group_link'    => 'nullable|url',
             'telegram_bot_token'     => 'nullable|string',
+            'telegram_bot_username'  => 'nullable|string|max:100',
             'n8n_webhook_url'        => 'nullable|url',
             'n8n_webhook_secret'     => 'nullable|string',
             'dompetx_merchant_id'    => 'nullable|string',
@@ -33,6 +34,7 @@ class IntegrationSettingController extends Controller
         $keys = [
             'telegram_group_link',
             'telegram_bot_token',
+            'telegram_bot_username',
             'telegram_group_chat_id',
             'n8n_webhook_url',
             'n8n_webhook_secret',

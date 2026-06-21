@@ -23,6 +23,8 @@ class SettingSeeder extends Seeder
             ['key' => 'n8n_whitelist_ip',          'value' => '',    'type' => 'string'],
             ['key' => 'dompetx_whitelist_ip',      'value' => '',    'type' => 'string'],
             ['key' => 'telegram_group_chat_id', 'value' => '', 'type' => 'string'],
+            ['key' => 'telegram_bot_username', 'value' => '', 'type' => 'string'],
+            ['key' => 'telegram_admin_username', 'value' => '', 'type' => 'string'],
         ];
 
         foreach ($settings as $setting) {

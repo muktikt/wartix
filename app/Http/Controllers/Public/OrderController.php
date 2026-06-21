@@ -11,6 +11,7 @@ use App\Models\TicketCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
+use App\Services\TelegramLinkTokenService;
 
 class OrderController extends Controller
 {
@@ -106,6 +107,8 @@ class OrderController extends Controller
             $grandTotal = $category->custom_payment_amount ?? $serviceFeeTotal;
         }
 
+        $linkToken = (new TelegramLinkTokenService())->generate($event);
+
         $order = Order::create([
             'order_code'          => 'WRTX-' . date('Y') . '-' . strtoupper(Str::random(6)),
             'event_id'            => $event->id,
@@ -118,13 +121,14 @@ class OrderController extends Controller
             'email'               => $request->email,
             'identity_number'     => $request->identity_number,
             'telegram_username'   => $request->telegram_username,
+            'telegram_link_token' => $linkToken,
             'service_fee_total'   => $serviceFeeTotal,
             'ticket_price_total'  => $ticketPriceTotal,
             'admin_fee'           => 0,
             'grand_total'         => $grandTotal,
             'payment_mode'        => $category->payment_mode,
             'payment_status'      => 'unpaid',
-            'order_status'        => 'waiting',
+            'order_status'        => 'pending_link',
         ]);
 
         if ($event->guest_enabled && $event->guest_mode === 'multi_guest' && $qty > 1) {
@@ -172,10 +176,18 @@ class OrderController extends Controller
 
     public function success(string $orderCode)
     {
-        $order = Order::where('order_code', $orderCode)
+        $order = Order::withoutGlobalScope(\App\Models\Scopes\HideUnlinkedOrdersScope::class)
+            ->where('order_code', $orderCode)
             ->with(['event', 'salePhase', 'ticketCategory', 'guests'])
             ->firstOrFail();
 
-        return view('public.order-success', compact('order'));
+        $telegramBotUsername = \App\Models\Setting::get('telegram_bot_username', '');
+        $telegramLinkUrl     = null;
+
+        if ($telegramBotUsername && $order->telegram_link_token && $order->order_status === 'pending_link') {
+            $telegramLinkUrl = "https://t.me/{$telegramBotUsername}?start={$order->telegram_link_token}";
+        }
+
+        return view('public.order-success', compact('order', 'telegramLinkUrl'));
     }
 }
