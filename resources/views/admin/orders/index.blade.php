@@ -57,7 +57,7 @@
         </thead>
         <tbody class="divide-y divide-gray-50">
             @forelse($orders as $order)
-            <tr class="hover:bg-gray-50">
+            <tr class="hover:bg-gray-50" id="order-row-{{ $order->id }}">
                 <td class="px-4 py-3">
                     <div class="text-xs font-mono font-medium text-gray-900">{{ $order->order_code }}</div>
                     <div class="text-xs text-gray-400">{{ $order->created_at->format('d M Y H:i') }}</div>
@@ -92,7 +92,7 @@
                         default   => 'bg-red-50 text-red-700',
                     };
                     @endphp
-                    <span class="text-xs px-2 py-0.5 rounded font-medium {{ $pc }}">{{ ucfirst($order->payment_status) }}</span>
+                    <span id="payment-badge-{{ $order->id }}" class="text-xs px-2 py-0.5 rounded font-medium {{ $pc }}">{{ ucfirst($order->payment_status) }}</span>
                 </td>
                 <td class="px-4 py-3 text-right">
                     <div class="flex items-center justify-end gap-2">
@@ -117,4 +117,31 @@
     <div class="px-4 py-3 border-t border-gray-100">{{ $orders->links() }}</div>
     @endif
 </div>
+
+<script>
+window.Echo.channel('orders-admin')
+    .listen('.payment.status.updated', (data) => {
+        const badge = document.getElementById('payment-badge-' + data.order_id);
+        if (!badge) return; // order ini tidak ada di halaman saat ini (misal beda filter/pagination)
+
+        const colorMap = {
+            paid:    'bg-green-50 text-green-700',
+            pending: 'bg-yellow-50 text-yellow-700',
+            unpaid:  'bg-gray-100 text-gray-500',
+            expired: 'bg-red-50 text-red-700',
+            failed:  'bg-red-50 text-red-700',
+        };
+
+        // Reset semua class warna lama, pasang yang baru
+        badge.className = 'text-xs px-2 py-0.5 rounded font-medium ' + (colorMap[data.payment_status] || 'bg-gray-100 text-gray-500');
+        badge.textContent = data.payment_status.charAt(0).toUpperCase() + data.payment_status.slice(1);
+
+        // Highlight sebentar biar admin notice ada perubahan
+        const row = document.getElementById('order-row-' + data.order_id);
+        if (row) {
+            row.classList.add('bg-green-50');
+            setTimeout(() => row.classList.remove('bg-green-50'), 3000);
+        }
+    });
+</script>
 @endsection

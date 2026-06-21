@@ -43,15 +43,14 @@ class SendTelegramNotification implements ShouldQueue
         if (!$order) return;
 
         $telegram->sendPaymentInfo($chatId, [
-            'event'           => $order->event->title,
-            'phase'           => $order->salePhase->name,
-            'category'        => $order->ticketCategory->name,
-            'qty'             => $order->qty,
-            'ticket_price'    => $order->ticket_price_total,
-            'service_fee'     => $order->service_fee_total,
-            'admin_fee'       => $order->admin_fee,
-            'grand_total'     => $order->grand_total,
-            'expired_minutes' => \App\Models\Setting::get('payment_expired_minutes', 10),
+            'event'        => $order->event->title,
+            'phase'        => $order->salePhase->name,
+            'category'     => $order->ticketCategory->name,
+            'qty'          => $order->qty,
+            'ticket_price' => $order->ticket_price_total,
+            'service_fee'  => $order->service_fee_total,
+            'admin_fee'    => $order->admin_fee,
+            'grand_total'  => $order->grand_total,
         ]);
     }
 

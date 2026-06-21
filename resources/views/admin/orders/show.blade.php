@@ -44,9 +44,9 @@
                     <span class="text-xs px-2.5 py-1 rounded-lg font-medium {{ $oc }}">
                         Order: {{ ucfirst($order->order_status) }}
                     </span>
-                    <span class="text-xs px-2.5 py-1 rounded-lg font-medium {{ $pc }}">
-                        Payment: {{ ucfirst($order->payment_status) }}
-                    </span>
+                    <span id="payment-badge-detail" class="text-xs px-2.5 py-1 rounded-lg font-medium {{ $pc }}">
+                    Payment: {{ ucfirst($order->payment_status) }}
+                </span>
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-4">
@@ -269,12 +269,6 @@
                             {{ ucfirst($order->paymentLog->status) }}
                         </span>
                     </div>
-                    @if($order->paymentLog->expired_at)
-                    <div class="flex justify-between text-xs">
-                        <span class="text-gray-500">Expired</span>
-                        <span class="text-gray-700">{{ $order->paymentLog->expired_at->format('d M Y H:i') }}</span>
-                    </div>
-                    @endif
                     @if($order->paymentLog->paid_at)
                     <div class="flex justify-between text-xs">
                         <span class="text-gray-500">Paid At</span>
@@ -349,5 +343,24 @@ function toggleNik() {
         full.classList.remove('hidden');
     }
 }
+</script>
+
+<script>
+window.Echo.channel('orders-admin')
+    .listen('.payment.status.updated', (data) => {
+        if (data.order_id !== {{ $order->id }}) return;
+
+        const badge = document.getElementById('payment-badge-detail');
+        const colorMap = {
+            paid:    'bg-green-50 text-green-700',
+            pending: 'bg-yellow-50 text-yellow-700',
+            unpaid:  'bg-gray-100 text-gray-500',
+            expired: 'bg-red-50 text-red-700',
+            failed:  'bg-red-50 text-red-700',
+        };
+
+        badge.className = 'text-xs px-2.5 py-1 rounded-lg font-medium ' + (colorMap[data.payment_status] || 'bg-gray-100 text-gray-500');
+        badge.textContent = 'Payment: ' + data.payment_status.charAt(0).toUpperCase() + data.payment_status.slice(1);
+    });
 </script>
 @endsection

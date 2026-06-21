@@ -73,7 +73,6 @@ class TelegramService
         $text .= "Admin Fee: Rp " . number_format($data['admin_fee'] ?? 0) . "\n";
         $text .= "Grand Total: <b>Rp " . number_format($data['grand_total']) . "</b>\n";
         $text .= "━━━━━━━━━━━━━━━\n\n";
-        $text .= "⏳ Payment Expired: {$data['expired_minutes']} Menit\n\n";
         $text .= "Silakan scan QRIS berikut untuk melanjutkan proses ticket release.";
 
         return $this->sendMessage($chatId, $text);

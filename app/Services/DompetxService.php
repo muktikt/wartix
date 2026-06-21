@@ -47,8 +47,7 @@ class DompetxService
             return null;
         }
 
-        $reference     = 'WRTX-' . strtoupper(Str::random(12));
-        $expiredMinutes = (int) Setting::get('payment_expired_minutes', 10);
+        $reference = 'WRTX-' . strtoupper(Str::random(12));
 
         $payload = [
             'method'          => 'QRIS',
@@ -65,8 +64,6 @@ class DompetxService
         ];
 
         $body = json_encode($payload);
-        // Idempotency key deterministik berbasis order, bukan reference acak,
-        // supaya kalau job ini dijalankan ulang untuk order yang sama tetap konsisten.
         $idempotencyKey = 'order-' . $order->id . '-payment';
 
         try {
@@ -89,7 +86,7 @@ class DompetxService
                     'qris_url'          => $data['qris_url'] ?? null,
                     'amount'            => $order->grand_total,
                     'status'            => 'pending',
-                    'expired_at'        => now()->addMinutes($expiredMinutes),
+                    'expired_at'        => null,
                 ]);
 
                 $order->update(['payment_status' => 'pending']);
@@ -171,6 +168,9 @@ class DompetxService
             $order->update(['payment_status' => 'expired']);
             $this->handleExpired($order);
         }
+
+        // Broadcast realtime ke admin Orders page
+        broadcast(new \App\Events\PaymentStatusUpdated($order))->toOthers();
 
         Log::info("DompetX callback processed: {$reference} → {$newStatus}");
         return true;
