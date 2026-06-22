@@ -38,7 +38,7 @@ class OrderController extends Controller
             ]);
         }
 
-        if ($phase->status !== 'open') {
+        if ($phase->status !== 'open' && $event->status !== 'ongoing') {
             return back()->withInput()->withErrors([
                 'sale_phase_id' => 'Sale phase ini belum dibuka atau sudah ditutup.',
             ]);
