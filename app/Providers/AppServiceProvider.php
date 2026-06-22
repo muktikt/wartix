@@ -13,10 +13,15 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('order-by-email', function (Request $request) {
             return Limit::perHour(3)
                 ->by($request->input('email', $request->ip()))
-                ->response(function () {
-                    return response()->json([
-                        'message' => 'Terlalu banyak order. Coba lagi dalam 1 jam.'
-                    ], 429);
+                ->response(function (Request $request) {
+                    if ($request->expectsJson()) {
+                        return response()->json([
+                            'message' => 'Terlalu banyak order. Coba lagi dalam 1 jam.'
+                        ], 429);
+                    }
+                    return back()->withInput()->withErrors([
+                        'email' => 'Terlalu banyak order untuk email ini. Coba lagi dalam 1 jam.'
+                    ]);
                 });
         });
     }

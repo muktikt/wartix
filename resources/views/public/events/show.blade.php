@@ -101,6 +101,63 @@
                     @endforeach
                 </div>
             </div>
+                    <div>
+                        <p class="text-xs text-indigo-600 font-semibold">Slot Tersedia</p>
+                        <p class="text-lg font-bold text-indigo-700">{{ $availableSlots }}<span class="text-sm text-indigo-600">/{{ $totalSlots }}</span></p>
+                    </div>
+                    <div class="flex flex-col items-center gap-1">
+                        <div class="w-12 h-12 rounded-full {{ $availableSlots > 0 ? 'bg-green-100' : 'bg-red-100' }} flex items-center justify-center">
+                            <span class="text-lg font-bold {{ $availableSlots > 0 ? 'text-green-600' : 'text-red-600' }}">{{ $availableSlots > 0 ? '✓' : '✕' }}</span>
+                        </div>
+                        <span class="text-xs font-medium {{ $availableSlots > 0 ? 'text-green-600' : 'text-red-600' }}">{{ $availableSlots > 0 ? 'Tersedia' : 'Penuh' }}</span>
+                    </div>
+                </div>
+                @endif
+                @if(request('debug'))
+                <div class="mt-3 text-xs text-gray-500 bg-gray-50 p-2 rounded">
+                    <pre class="whitespace-pre-wrap text-xs">{{ json_encode(array_merge($event->toArray(), ['totalSlots' => $totalSlots, 'availableSlots' => $availableSlots]), JSON_PRETTY_PRINT) }}</pre>
+                </div>
+                @endif
+                @if($event->description)
+                <p class="text-sm text-gray-500 leading-relaxed">{{ $event->description }}</p>
+                @endif
+            </div>
+
+            {{-- Seatplan --}}
+            @if($event->seatplan_image)
+            <div class="bg-white border border-gray-100 rounded-2xl p-5">
+                <h3 class="text-sm font-semibold text-gray-900 mb-3">Denah Tempat Duduk</h3>
+                <img src="{{ asset('storage/'.$event->seatplan_image) }}" class="w-full rounded-xl" alt="Seatplan">
+            </div>
+            @endif
+
+            {{-- Phases & Categories --}}
+            <div class="bg-white border border-gray-100 rounded-2xl p-5">
+                <h3 class="text-sm font-semibold text-gray-900 mb-4">Sale Phase & Kategori</h3>
+
+                {{-- Phase names --}}
+                @if($event->salePhases->count())
+                <div class="flex flex-wrap gap-2 mb-4">
+                    @foreach($event->salePhases as $phase)
+                    <span class="text-xs bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full font-medium">
+                        {{ $phase->name }}
+                    </span>
+                    @endforeach
+                </div>
+                @endif
+
+                {{-- Categories & fee --}}
+                <div class="space-y-2">
+                    @foreach($event->ticketCategories as $cat)
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                        <span class="text-sm font-medium text-gray-900">{{ $cat->name }}</span>
+                        <span class="text-sm font-semibold text-indigo-600">
+                            Rp {{ number_format($cat->fee_per_ticket) }}/tiket
+                        </span>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
         </div>
 
         {{-- Right — Order Form --}}
@@ -113,6 +170,27 @@
                         @csrf
                         <input type="hidden" name="event_id" value="{{ $event->id }}">
 
+                        {{-- Validation Errors --}}
+                        @if ($errors->any())
+                        <div class="mb-4 p-4 bg-red-50 border-l-4 border-red-500 rounded-xl">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <svg class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                                <div class="ml-3">
+                                    <h3 class="text-xs font-semibold text-red-800">Ada kesalahan pengisian form:</h3>
+                                    <ul class="mt-1 list-disc list-inside text-xs text-red-700 space-y-0.5">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+
                         {{-- Sale Phase --}}
                         <div class="mb-3">
                             <label class="block text-xs font-medium text-gray-700 mb-1.5">Sale Phase</label>
@@ -120,7 +198,7 @@
                                 class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                 <option value="">Pilih sale phase</option>
                                 @foreach($event->salePhases as $phase)
-                                <option value="{{ $phase->id }}">{{ $phase->name }}</option>
+                                <option value="{{ $phase->id }}" {{ old('sale_phase_id') == $phase->id ? 'selected' : '' }}>{{ $phase->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -135,7 +213,8 @@
                                 <option value="{{ $cat->id }}"
                                     data-fee="{{ $cat->fee_per_ticket }}"
                                     data-price="{{ $cat->ticket_price }}"
-                                    data-mode="{{ $cat->payment_mode }}">
+                                    data-mode="{{ $cat->payment_mode }}"
+                                    {{ old('ticket_category_id') == $cat->id ? 'selected' : '' }}>
                                     {{ $cat->name }} — Rp {{ number_format($cat->fee_per_ticket) }}/tiket
                                 </option>
                                 @endforeach
@@ -148,7 +227,7 @@
                             <select name="qty" id="qtySelect" required
                                 class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                 @for($i = 1; $i <= $event->max_ticket_per_order; $i++)
-                                <option value="{{ $i }}">{{ $i }} Tiket</option>
+                                <option value="{{ $i }}" {{ old('qty', 1) == $i ? 'selected' : '' }}>{{ $i }} Tiket</option>
                                 @endfor
                             </select>
                         </div>
@@ -180,7 +259,8 @@
                             <div class="flex gap-2">
                                 @foreach(['Tuan', 'Nyonya', 'Nona'] as $title)
                                 <label class="flex-1 cursor-pointer">
-                                    <input type="radio" name="title" value="{{ $title }}" class="sr-only peer" required>
+                                    <input type="radio" name="title" value="{{ $title }}" class="sr-only peer" required
+                                        {{ old('title') === $title ? 'checked' : '' }}>
                                     <div class="text-center text-xs border border-gray-200 rounded-lg py-2 peer-checked:bg-indigo-600 peer-checked:text-white peer-checked:border-indigo-600 transition-colors">
                                         {{ $title }}
                                     </div>
@@ -194,7 +274,7 @@
                         {{-- Nama Lengkap --}}
                         <div class="mb-3">
                             <label class="block text-xs font-medium text-gray-700 mb-1.5">Nama Lengkap</label>
-                            <input type="text" name="full_name" placeholder="Sesuai KTP"
+                            <input type="text" name="full_name" value="{{ old('full_name') }}" placeholder="Sesuai KTP"
                                 class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 required>
                         </div>
@@ -202,7 +282,7 @@
                         {{-- No HP --}}
                         <div class="mb-3">
                             <label class="block text-xs font-medium text-gray-700 mb-1.5">Nomor Ponsel</label>
-                            <input type="tel" name="phone_number" placeholder="08xxxxxxxxxx"
+                            <input type="tel" name="phone_number" value="{{ old('phone_number') }}" placeholder="08xxxxxxxxxx"
                                 class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 required>
                         </div>
@@ -210,7 +290,7 @@
                         {{-- Email --}}
                         <div class="mb-3">
                             <label class="block text-xs font-medium text-gray-700 mb-1.5">Email</label>
-                            <input type="email" name="email" placeholder="email@example.com"
+                            <input type="email" name="email" value="{{ old('email') }}" placeholder="email@example.com"
                                 class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 required>
                         </div>
@@ -218,7 +298,7 @@
                         {{-- NIK --}}
                         <div class="mb-3">
                             <label class="block text-xs font-medium text-gray-700 mb-1.5">Nomor KTP / NIK</label>
-                            <input type="text" name="identity_number" placeholder="16 digit NIK"
+                            <input type="text" name="identity_number" value="{{ old('identity_number') }}" placeholder="16 digit NIK"
                                 maxlength="16" minlength="16"
                                 class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 required>
@@ -229,7 +309,7 @@
                             <label class="block text-xs font-medium text-gray-700 mb-1.5">Username Telegram</label>
                             <div class="relative">
                                 <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">@</span>
-                                <input type="text" name="telegram_username" placeholder="username"
+                                <input type="text" name="telegram_username" value="{{ old('telegram_username') }}" placeholder="username"
                                     class="w-full text-sm border border-gray-200 rounded-xl pl-7 pr-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
                             </div>
                             <p class="text-xs text-gray-400 mt-1">Untuk menerima notifikasi sukses dan QRIS</p>
@@ -249,15 +329,15 @@
                                     class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                     <option value="">Pilih {{ $field->label }}</option>
                                     @foreach(($field->options ?? []) as $opt)
-                                    <option value="{{ $opt }}">{{ $opt }}</option>
+                                    <option value="{{ $opt }}" {{ old("custom_fields.{$field->id}") === $opt ? 'selected' : '' }}>{{ $opt }}</option>
                                     @endforeach
                                 </select>
                             @elseif($field->field_type === 'textarea')
                                 <textarea name="custom_fields[{{ $field->id }}]" rows="3" {{ $field->is_required ? 'required' : '' }}
-                                    class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                                    class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">{{ old("custom_fields.{$field->id}") }}</textarea>
                             @else
                                 <input type="{{ $field->field_type === 'password' ? 'password' : ($field->field_type === 'number' ? 'number' : 'text') }}"
-                                    name="custom_fields[{{ $field->id }}]" {{ $field->is_required ? 'required' : '' }}
+                                    name="custom_fields[{{ $field->id }}]" value="{{ old("custom_fields.{$field->id}") }}" {{ $field->is_required ? 'required' : '' }}
                                     class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
                             @endif
                         </div>
@@ -296,6 +376,7 @@ const feeDisplay     = document.getElementById('feeDisplay');
 const totalDisplay   = document.getElementById('totalDisplay');
 const ticketPriceRow = document.getElementById('ticketPriceRow');
 const ticketPriceDisp= document.getElementById('ticketPriceDisplay');
+const oldGuestNiks = @json(collect(range(2, $event->max_ticket_per_order))->mapWithKeys(fn($i) => ["guest_nik_$i" => old("guest_nik_$i")]));
 
 function formatRp(num) {
     return 'Rp ' + num.toLocaleString('id-ID');
@@ -346,10 +427,11 @@ function updateGuestFields() {
     if (qty > 1) {
         guestDiv.classList.remove('hidden');
         for (let i = 2; i <= qty; i++) {
+            const oldVal = oldGuestNiks[`guest_nik_${i}`] || '';
             container.innerHTML += `
             <div>
                 <label class="block text-xs text-gray-600 mb-1">Tiket ${i} — Nomor KTP / NIK</label>
-                <input type="text" name="guest_nik_${i}" placeholder="16 digit NIK" maxlength="16" minlength="16"
+                <input type="text" name="guest_nik_${i}" value="${oldVal}" placeholder="16 digit NIK" maxlength="16" minlength="16"
                     class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     required>
             </div>`;
@@ -358,5 +440,9 @@ function updateGuestFields() {
         guestDiv.classList.add('hidden');
     }
 }
+
+// Initialize on page load
+updateEstimate();
+updateGuestFields();
 </script>
 @endsection
