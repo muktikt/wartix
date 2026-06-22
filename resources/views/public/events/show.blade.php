@@ -101,63 +101,6 @@
                     @endforeach
                 </div>
             </div>
-                    <div>
-                        <p class="text-xs text-indigo-600 font-semibold">Slot Tersedia</p>
-                        <p class="text-lg font-bold text-indigo-700">{{ $availableSlots }}<span class="text-sm text-indigo-600">/{{ $totalSlots }}</span></p>
-                    </div>
-                    <div class="flex flex-col items-center gap-1">
-                        <div class="w-12 h-12 rounded-full {{ $availableSlots > 0 ? 'bg-green-100' : 'bg-red-100' }} flex items-center justify-center">
-                            <span class="text-lg font-bold {{ $availableSlots > 0 ? 'text-green-600' : 'text-red-600' }}">{{ $availableSlots > 0 ? '✓' : '✕' }}</span>
-                        </div>
-                        <span class="text-xs font-medium {{ $availableSlots > 0 ? 'text-green-600' : 'text-red-600' }}">{{ $availableSlots > 0 ? 'Tersedia' : 'Penuh' }}</span>
-                    </div>
-                </div>
-                @endif
-                @if(request('debug'))
-                <div class="mt-3 text-xs text-gray-500 bg-gray-50 p-2 rounded">
-                    <pre class="whitespace-pre-wrap text-xs">{{ json_encode(array_merge($event->toArray(), ['totalSlots' => $totalSlots, 'availableSlots' => $availableSlots]), JSON_PRETTY_PRINT) }}</pre>
-                </div>
-                @endif
-                @if($event->description)
-                <p class="text-sm text-gray-500 leading-relaxed">{{ $event->description }}</p>
-                @endif
-            </div>
-
-            {{-- Seatplan --}}
-            @if($event->seatplan_image)
-            <div class="bg-white border border-gray-100 rounded-2xl p-5">
-                <h3 class="text-sm font-semibold text-gray-900 mb-3">Denah Tempat Duduk</h3>
-                <img src="{{ asset('storage/'.$event->seatplan_image) }}" class="w-full rounded-xl" alt="Seatplan">
-            </div>
-            @endif
-
-            {{-- Phases & Categories --}}
-            <div class="bg-white border border-gray-100 rounded-2xl p-5">
-                <h3 class="text-sm font-semibold text-gray-900 mb-4">Sale Phase & Kategori</h3>
-
-                {{-- Phase names --}}
-                @if($event->salePhases->count())
-                <div class="flex flex-wrap gap-2 mb-4">
-                    @foreach($event->salePhases as $phase)
-                    <span class="text-xs bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full font-medium">
-                        {{ $phase->name }}
-                    </span>
-                    @endforeach
-                </div>
-                @endif
-
-                {{-- Categories & fee --}}
-                <div class="space-y-2">
-                    @foreach($event->ticketCategories as $cat)
-                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
-                        <span class="text-sm font-medium text-gray-900">{{ $cat->name }}</span>
-                        <span class="text-sm font-semibold text-indigo-600">
-                            Rp {{ number_format($cat->fee_per_ticket) }}/tiket
-                        </span>
-                    </div>
-                    @endforeach
-                </div>
-            </div>
         </div>
 
         {{-- Right — Order Form --}}
@@ -376,7 +319,7 @@ const feeDisplay     = document.getElementById('feeDisplay');
 const totalDisplay   = document.getElementById('totalDisplay');
 const ticketPriceRow = document.getElementById('ticketPriceRow');
 const ticketPriceDisp= document.getElementById('ticketPriceDisplay');
-const oldGuestNiks = @json(collect(range(2, $event->max_ticket_per_order))->mapWithKeys(fn($i) => ["guest_nik_$i" => old("guest_nik_$i")]));
+const oldGuestNiks = @json(collect(($event->max_ticket_per_order ?? 0) >= 2 ? range(2, $event->max_ticket_per_order) : [])->mapWithKeys(fn($i) => ["guest_nik_$i" => old("guest_nik_$i")]));
 
 function formatRp(num) {
     return 'Rp ' + num.toLocaleString('id-ID');
