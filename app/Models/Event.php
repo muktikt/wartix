@@ -89,7 +89,7 @@ class Event extends Model
 
         $usedSlots = $this->orders()
             ->whereNotIn('order_status', ['failed', 'cancelled'])
-            ->sum('qty');
+            ->count();
 
         return max(0, $totalSlots - $usedSlots);
     }

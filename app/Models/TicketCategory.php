@@ -31,7 +31,7 @@ class TicketCategory extends Model
             return null;
         }
 
-        $used = $this->orders()->whereNotIn('order_status', ['failed', 'cancelled'])->sum('qty');
+        $used = $this->orders()->whereNotIn('order_status', ['failed', 'cancelled'])->count();
         return max(0, $this->slot_limit - $used);
     }
 }

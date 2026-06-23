@@ -77,9 +77,9 @@ class OrderController extends Controller
         if ($category->slot_limit !== null) {
             $soldCategory = Order::where('ticket_category_id', $category->id)
                 ->whereNotIn('order_status', ['failed', 'cancelled'])
-                ->sum('qty');
+                ->count();
 
-            if ($soldCategory + $qty > $category->slot_limit) {
+            if ($soldCategory + 1 > $category->slot_limit) {
                 return back()->withInput()->withErrors([
                     'ticket_category_id' => 'Slot untuk kategori ini sudah penuh.',
                 ]);
@@ -89,9 +89,9 @@ class OrderController extends Controller
         if ($phase->slot_limit !== null) {
             $soldPhase = Order::where('sale_phase_id', $phase->id)
                 ->whereNotIn('order_status', ['failed', 'cancelled'])
-                ->sum('qty');
+                ->count();
 
-            if ($soldPhase + $qty > $phase->slot_limit) {
+            if ($soldPhase + 1 > $phase->slot_limit) {
                 return back()->withInput()->withErrors([
                     'sale_phase_id' => 'Slot untuk sale phase ini sudah penuh.',
                 ]);
