@@ -21,7 +21,6 @@
                 <div class="flex items-start justify-between mb-3">
                     <div>
                         <h1 class="text-xl font-bold text-gray-900">{{ $event->title }}</h1>
-                        <p class="text-sm text-gray-500">{{ $event->artist_name }}</p>
                     </div>
                     <span class="text-xs px-2.5 py-1 rounded-full font-medium
                         {{ $event->status === 'ongoing' ? 'bg-green-50 text-green-700' : 'bg-indigo-50 text-indigo-700' }}">
@@ -43,16 +42,20 @@
                     </div>
                 </div>
                 @if($totalSlots !== null)
-                <div class="flex items-center justify-between p-3 bg-indigo-50 rounded-xl">
-                    <div>
-                        <p class="text-xs text-indigo-600 font-semibold">Slot Tersedia</p>
-                        <p class="text-lg font-bold text-indigo-700">{{ $availableSlots }}<span class="text-sm text-indigo-600">/{{ $totalSlots }}</span></p>
-                    </div>
-                    <div class="flex flex-col items-center gap-1">
-                        <div class="w-12 h-12 rounded-full {{ $availableSlots > 0 ? 'bg-green-100' : 'bg-red-100' }} flex items-center justify-center">
-                            <span class="text-lg font-bold {{ $availableSlots > 0 ? 'text-green-600' : 'text-red-600' }}">{{ $availableSlots > 0 ? '✓' : '✕' }}</span>
+                <div class="p-4 bg-gradient-to-br from-indigo-50 to-indigo-100/50 border border-indigo-100/80 rounded-2xl flex items-center justify-between">
+                    <div class="space-y-1">
+                        <span class="text-xs font-semibold text-indigo-500 uppercase tracking-wider">Slot Tersedia</span>
+                        <div class="flex items-baseline gap-1.5">
+                            <span class="text-3xl font-extrabold text-indigo-900 tracking-tight">{{ $availableSlots }}</span>
+                            <span class="text-sm font-semibold text-indigo-400">/ {{ $totalSlots }} tiket</span>
                         </div>
-                        <span class="text-xs font-medium {{ $availableSlots > 0 ? 'text-green-600' : 'text-red-600' }}">{{ $availableSlots > 0 ? 'Tersedia' : 'Penuh' }}</span>
+                    </div>
+                    <div class="flex flex-col items-end gap-1.5">
+                        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold
+                            {{ $availableSlots > 0 ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200' }}">
+                            <span class="w-1.5 h-1.5 rounded-full {{ $availableSlots > 0 ? 'bg-emerald-500' : 'bg-rose-500' }} animate-pulse"></span>
+                            {{ $availableSlots > 0 ? 'Tersedia' : 'Penuh' }}
+                        </div>
                     </div>
                 </div>
                 @endif
