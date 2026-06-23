@@ -79,6 +79,9 @@
             <span class="font-bold text-indigo-600">∞ (tak terbatas)</span>
             @endif
         </div>
+            <span class="font-bold text-indigo-600">∞ (tak terbatas)</span>
+            @endif
+        </div>
         @if(request('debug'))
         <div class="mt-2 text-xs text-gray-500 bg-gray-50 p-2 rounded">
             <pre class="whitespace-pre-wrap text-xs">{{ json_encode($event->toArray(), JSON_PRETTY_PRINT) }}</pre>
@@ -86,6 +89,7 @@
         @endif
 
         <a href="{{ route('events.show', $event->slug) }}"
+            onclick="alert('Harap membaca deskripsi event terlebih dahulu karena di dalamnya terdapat Syarat & Ketentuan (Terms and Conditions) sebelum melakukan pemesanan.');"
             class="block w-full text-center bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium py-2 rounded-lg transition-colors">
             View Detail
         </a>

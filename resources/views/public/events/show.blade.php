@@ -42,7 +42,7 @@
                     </div>
                 </div>
                 @if($totalSlots !== null)
-                <div class="p-3 bg-gradient-to-br from-indigo-50 to-indigo-100/40 border border-indigo-100/60 rounded-xl flex items-center justify-between">
+                <div class="mb-4 p-3 bg-gradient-to-br from-indigo-50 to-indigo-100/40 border border-indigo-100/60 rounded-xl flex items-center justify-between">
                     <div>
                         <span class="text-[10px] font-semibold text-indigo-500 uppercase tracking-wider block">Slot Tersedia</span>
                         <div class="flex items-baseline gap-1">
