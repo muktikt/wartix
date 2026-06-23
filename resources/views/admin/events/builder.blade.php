@@ -218,11 +218,11 @@
                                 $currentPaymentMode = $event->ticketCategories->first()->payment_mode;
                             }
                         @endphp
-                        <select name="payment_mode" x-model="paymentMode"
+                        <select name="payment_mode"
                             class="text-xs border border-gray-200 rounded-lg px-2 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                            <option value="service_fee_only">Fee Only</option>
-                            <option value="full_payment">Full Payment</option>
-                            <option value="custom_payment">Custom</option>
+                            <option value="service_fee_only" {{ $currentPaymentMode === 'service_fee_only' ? 'selected' : '' }}>Fee Only</option>
+                            <option value="full_payment" {{ $currentPaymentMode === 'full_payment' ? 'selected' : '' }}>Full Payment</option>
+                            <option value="custom_payment" {{ $currentPaymentMode === 'custom_payment' ? 'selected' : '' }}>Custom</option>
                         </select>
                     </div>
                 </div>
@@ -230,26 +230,13 @@
                     @if($isEdit && $event->ticketCategories->count())
                         @foreach($event->ticketCategories as $i => $cat)
                         <div class="border border-gray-100 rounded-xl p-4">
-                            <div class="grid gap-3 transition-all duration-300"
-                                 :class="paymentMode === 'service_fee_only' ? 'grid-cols-3' : 'grid-cols-4'">
+                            <div class="grid grid-cols-3 gap-3">
                                 <div>
                                     <label class="block text-xs text-gray-600 mb-1">Nama Kategori *</label>
                                     <input type="hidden" name="categories[{{ $i }}][id]" value="{{ $cat->id }}">
                                     <input type="text" name="categories[{{ $i }}][name]" value="{{ $cat->name }}"
                                         class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                         required>
-                                </div>
-                                <div x-show="paymentMode === 'full_payment'">
-                                    <label class="block text-xs text-gray-600 mb-1">Harga Tiket (Rp) *</label>
-                                    <input type="number" name="categories[{{ $i }}][ticket_price]" value="{{ $cat->ticket_price }}"
-                                        class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                                        :required="paymentMode === 'full_payment'">
-                                </div>
-                                <div x-show="paymentMode === 'custom_payment'">
-                                    <label class="block text-xs text-gray-600 mb-1">Jumlah Custom (Rp) *</label>
-                                    <input type="number" name="categories[{{ $i }}][custom_payment_amount]" value="{{ $cat->custom_payment_amount }}"
-                                        class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                                        :required="paymentMode === 'custom_payment'">
                                 </div>
                                 <div>
                                     <label class="block text-xs text-gray-600 mb-1">Fee / Tiket (Rp) *</label>
@@ -267,25 +254,12 @@
                         @endforeach
                     @else
                     <div class="border border-gray-100 rounded-xl p-4">
-                        <div class="grid gap-3 transition-all duration-300"
-                             :class="paymentMode === 'service_fee_only' ? 'grid-cols-3' : 'grid-cols-4'">
+                        <div class="grid grid-cols-3 gap-3">
                             <div>
                                 <label class="block text-xs text-gray-600 mb-1">Nama Kategori *</label>
                                 <input type="text" name="categories[0][name]" placeholder="CAT 1"
                                     class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                     required>
-                            </div>
-                            <div x-show="paymentMode === 'full_payment'">
-                                <label class="block text-xs text-gray-600 mb-1">Harga Tiket (Rp) *</label>
-                                <input type="number" name="categories[0][ticket_price]" placeholder="1500000"
-                                    class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                                    :required="paymentMode === 'full_payment'">
-                            </div>
-                            <div x-show="paymentMode === 'custom_payment'">
-                                <label class="block text-xs text-gray-600 mb-1">Jumlah Custom (Rp) *</label>
-                                <input type="number" name="categories[0][custom_payment_amount]" placeholder="500000"
-                                    class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                                    :required="paymentMode === 'custom_payment'">
                             </div>
                             <div>
                                 <label class="block text-xs text-gray-600 mb-1">Fee / Tiket (Rp) *</label>
@@ -439,7 +413,6 @@
 function eventBuilder() {
     return {
         platform: @json(old('platform_type', $isEdit ? ($event->platform_type ?? 'tiketcom') : 'tiketcom')),
-        paymentMode: @json(old('payment_mode', $currentPaymentMode ?? 'service_fee_only')),
     };
 }
 
@@ -536,24 +509,11 @@ function addCategory() {
             <button type="button" onclick="this.closest('div.border').remove()"
                 class="text-xs text-red-400 hover:text-red-600">Hapus</button>
         </div>
-        <div class="grid gap-3 transition-all duration-300"
-             :class="paymentMode === 'service_fee_only' ? 'grid-cols-3' : 'grid-cols-4'">
+        <div class="grid grid-cols-3 gap-3">
             <div>
                 <label class="block text-xs text-gray-600 mb-1">Nama *</label>
                 <input type="text" name="categories[${categoryIndex}][name]" placeholder="CAT 2"
                     class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
-            </div>
-            <div x-show="paymentMode === 'full_payment'">
-                <label class="block text-xs text-gray-600 mb-1">Harga Tiket (Rp) *</label>
-                <input type="number" name="categories[${categoryIndex}][ticket_price]" placeholder="1500000"
-                    class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                    :required="paymentMode === 'full_payment'">
-            </div>
-            <div x-show="paymentMode === 'custom_payment'">
-                <label class="block text-xs text-gray-600 mb-1">Jumlah Custom (Rp) *</label>
-                <input type="number" name="categories[${categoryIndex}][custom_payment_amount]" placeholder="500000"
-                    class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                    :required="paymentMode === 'custom_payment'">
             </div>
             <div>
                 <label class="block text-xs text-gray-600 mb-1">Fee (Rp) *</label>
