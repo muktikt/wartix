@@ -161,12 +161,14 @@
                             </select>
                         </div>
 
-                        {{-- Membership Code --}}
+                        {{-- Membership Code (only if any phase contains "membership") --}}
+                        @if($event->salePhases->contains(fn($p) => str_contains(strtolower($p->name), 'membership')))
                         <div id="membershipCodeField" class="hidden mb-3">
                             <label class="block text-xs font-medium text-gray-700 mb-1.5">Kode Membership <span class="text-red-500">*</span></label>
                             <input type="text" name="membership_code" id="membershipCodeInput" value="{{ old('membership_code') }}" placeholder="Masukkan kode membership Anda"
                                 class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         </div>
+                        @endif
 
                         {{-- Ticket Category --}}
                         <div class="mb-3">
