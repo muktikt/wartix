@@ -58,7 +58,7 @@ class EventBuilderController extends Controller
         ]);
 
         $this->syncSalePhases($event, $request->phases);
-        $this->syncTicketCategories($event, $request->categories);
+        $this->syncTicketCategories($event, $request->categories, $request->payment_mode);
         $this->syncCustomFields($event, $request->custom_fields ?? []);
 
         if ($event->status === 'ongoing' || $event->status === 'upcoming') {
@@ -131,7 +131,7 @@ class EventBuilderController extends Controller
             ->pluck('name');
 
         $this->syncSalePhases($event, $request->phases);
-        $this->syncTicketCategories($event, $request->categories);
+        $this->syncTicketCategories($event, $request->categories, $request->payment_mode);
         $this->syncCustomFields($event, $request->custom_fields ?? []);
 
         $message = 'Event berhasil diupdate!';
@@ -164,9 +164,9 @@ class EventBuilderController extends Controller
             'categories'          => 'required|array|min:1',
             'categories.*.name'   => 'required|string|max:100',
             'categories.*.fee_per_ticket'        => 'required|integer|min:0',
-            'categories.*.payment_mode'          => 'nullable|in:service_fee_only,full_payment,custom_payment',
-            'categories.*.ticket_price'          => 'required_if:categories.*.payment_mode,full_payment|nullable|integer|min:1',
-            'categories.*.custom_payment_amount' => 'required_if:categories.*.payment_mode,custom_payment|nullable|integer|min:1',
+            'payment_mode'                       => 'required|in:service_fee_only,full_payment,custom_payment',
+            'categories.*.ticket_price'          => 'required_if:payment_mode,full_payment|nullable|integer|min:1',
+            'categories.*.custom_payment_amount' => 'required_if:payment_mode,custom_payment|nullable|integer|min:1',
             'custom_fields'                    => 'nullable|array',
             'custom_fields.*.label'            => 'required_with:custom_fields|string|max:255',
             'custom_fields.*.field_type'       => 'required_with:custom_fields|in:text,password,number,textarea,select',
@@ -209,7 +209,7 @@ class EventBuilderController extends Controller
             ->delete();
     }
 
-    private function syncTicketCategories(Event $event, array $categoriesInput): void
+    private function syncTicketCategories(Event $event, array $categoriesInput, string $paymentMode): void
     {
         $keepIds = [];
 
@@ -219,7 +219,7 @@ class EventBuilderController extends Controller
                 'name'                  => $cat['name'],
                 'fee_per_ticket'        => $cat['fee_per_ticket'],
                 'ticket_price'          => $cat['ticket_price'] ?? 0,
-                'payment_mode'          => $cat['payment_mode'] ?? 'service_fee_only',
+                'payment_mode'          => $paymentMode,
                 'custom_payment_amount' => $cat['custom_payment_amount'] ?? null,
                 'max_qty'               => $cat['max_qty'] ?? 4,
                 'slot_limit'            => $cat['slot_limit'] ?? null,
