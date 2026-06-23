@@ -31,10 +31,6 @@
             class="inline-flex items-center gap-1.5 text-sm border border-gray-200 text-gray-600 px-4 py-2 rounded-xl hover:bg-gray-50">
             Export Orders
         </a>
-        <a href="{{ route('admin.export.guests', request()->only(['event_id', 'order_status'])) }}"
-            class="inline-flex items-center gap-1.5 text-sm border border-gray-200 text-gray-600 px-4 py-2 rounded-xl hover:bg-gray-50">
-            Export Guests
-        </a>
         <a href="{{ route('admin.export.reports', request()->only(['event_id', 'order_status', 'payment_status', 'date_from', 'date_to'])) }}"
             class="inline-flex items-center gap-1.5 text-sm border border-gray-200 text-gray-600 px-4 py-2 rounded-xl hover:bg-gray-50">
             Export Reports

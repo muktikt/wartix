@@ -94,7 +94,14 @@
 
         {{-- Buyer Info --}}
         <div class="bg-white border border-gray-100 rounded-xl p-5">
-            <h3 class="text-sm font-semibold text-gray-900 mb-4">Buyer Information</h3>
+            <div class="flex items-center gap-2 mb-4">
+                <h3 class="text-sm font-semibold text-gray-900">Buyer Information</h3>
+                @if($order->guests->count())
+                    <span class="text-xs px-2 py-0.5 rounded-lg font-medium bg-purple-50 text-purple-700">
+                        Multi Guest ({{ $order->guests->count() }} tiket)
+                    </span>
+                @endif
+            </div>
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <p class="text-xs text-gray-400 mb-0.5">Sapaan</p>
@@ -134,41 +141,31 @@
                     </p>
                 </div>
             </div>
-        </div>
 
-        {{-- Guest Info --}}
-        @if($order->guests->count())
-        <div class="bg-white border border-gray-100 rounded-xl p-5">
-            <h3 class="text-sm font-semibold text-gray-900 mb-4">Guest Information</h3>
-            <div class="space-y-2">
-                @foreach($order->guests as $guest)
-                <div class="flex items-center gap-4 p-3 bg-gray-50 rounded-xl">
-                    <div class="w-7 h-7 bg-indigo-50 rounded-full flex items-center justify-center flex-shrink-0">
-                        <span class="text-xs font-semibold text-indigo-600">{{ $guest->ticket_position }}</span>
-                    </div>
-                    <div class="flex-1">
-                        @if($guest->guest_type === 'main_buyer')
-                            <p class="text-xs font-medium text-gray-900">
-                                Tiket {{ $guest->ticket_position }}: Main Buyer
-                            </p>
-                            <p class="text-xs text-gray-500">{{ $guest->full_name }}</p>
-                        @else
-                            <p class="text-xs font-medium text-gray-900">
-                                Tiket {{ $guest->ticket_position }}: Additional Guest
-                            </p>
-                            <p class="text-xs font-mono text-gray-500">
+            {{-- Guest NIK List (integrated) --}}
+            @if($order->guests->where('guest_type', 'additional_guest')->count())
+            <div class="mt-4 pt-4 border-t border-gray-100">
+                <p class="text-xs text-gray-400 mb-2">NIK Tambahan (Additional Guest)</p>
+                <div class="space-y-2">
+                    @foreach($order->guests as $guest)
+                        @if($guest->guest_type === 'additional_guest')
+                        <div class="flex items-center gap-3 p-2.5 bg-gray-50 rounded-lg">
+                            <div class="w-6 h-6 bg-indigo-50 rounded-full flex items-center justify-center flex-shrink-0">
+                                <span class="text-[10px] font-semibold text-indigo-600">{{ $guest->ticket_position }}</span>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-xs text-gray-500">Tiket {{ $guest->ticket_position }}</p>
+                            </div>
+                            <p class="text-xs font-mono text-gray-700">
                                 NIK: {{ \App\Services\MaskService::nik($guest->identity_number ?? '') }}
                             </p>
+                        </div>
                         @endif
-                    </div>
-                    <span class="text-xs px-2 py-0.5 rounded {{ $guest->guest_type === 'main_buyer' ? 'bg-indigo-50 text-indigo-600' : 'bg-gray-100 text-gray-500' }}">
-                        {{ $guest->guest_type === 'main_buyer' ? 'Main' : 'Guest' }}
-                    </span>
+                    @endforeach
                 </div>
-                @endforeach
             </div>
+            @endif
         </div>
-        @endif
 
         {{-- Custom Field Answers --}}
         @if($order->customFieldAnswers->count())

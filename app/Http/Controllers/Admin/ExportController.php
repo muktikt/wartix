@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
-use App\Models\OrderGuest;
 use App\Services\MaskService;
 use Illuminate\Http\Request;
 
@@ -13,24 +12,49 @@ class ExportController extends Controller
     public function orders(Request $request)
     {
         $orders = $this->buildOrderQuery($request)
+            ->with('guests')
             ->latest()
             ->get();
 
+        // Determine max guest count for dynamic columns
+        $maxGuests = $orders->max(fn (Order $o) => $o->guests->where('guest_type', 'additional_guest')->count());
+        $maxGuests = max($maxGuests, 0);
+
+        // Build headings
+        $headings = ['Order Code', 'Pemesan', 'Email', 'Telepon', 'NIK', 'Event', 'Kategori', 'Qty', 'Order Status', 'Payment Status', 'Multi Guest', 'Tanggal'];
+        for ($i = 1; $i <= $maxGuests; $i++) {
+            $headings[] = "Guest NIK #{$i}";
+        }
+
         return $this->downloadCsv(
             'wartix-orders-' . now()->format('Ymd-His') . '.csv',
-            ['Order Code', 'Pemesan', 'Email', 'Event', 'Kategori', 'Qty', 'Order Status', 'Payment Status', 'Tanggal'],
-            $orders->map(function (Order $order) {
-                return [
+            $headings,
+            $orders->map(function (Order $order) use ($maxGuests) {
+                $additionalGuests = $order->guests->where('guest_type', 'additional_guest')->values();
+                $isMultiGuest = $additionalGuests->count() > 0;
+
+                $row = [
                     $order->order_code,
                     $order->full_name,
                     MaskService::email($order->email),
+                    $order->phone_number,
+                    MaskService::nik($order->identity_number ?? ''),
                     $order->event->title ?? '-',
                     ($order->ticketCategory->name ?? '-') . ' x' . $order->qty,
                     $order->qty,
                     ucfirst($order->order_status),
                     ucfirst($order->payment_status),
+                    $isMultiGuest ? 'Ya (' . $order->guests->count() . ' tiket)' : 'Tidak',
                     $order->created_at?->format('d M Y H:i') ?? '-',
                 ];
+
+                // Append guest NIK columns
+                for ($i = 0; $i < $maxGuests; $i++) {
+                    $guest = $additionalGuests->get($i);
+                    $row[] = $guest ? MaskService::nik($guest->identity_number ?? '') : '';
+                }
+
+                return $row;
             })->all()
         );
     }
@@ -55,31 +79,6 @@ class ExportController extends Controller
                     'Rp ' . number_format((int) $order->grand_total),
                     ucfirst($order->order_status),
                     $order->created_at?->format('d M Y H:i') ?? '-',
-                ];
-            })->all()
-        );
-    }
-
-    public function guests(Request $request)
-    {
-        $guests = OrderGuest::with(['order.event', 'order.salePhase', 'order.ticketCategory'])
-            ->when($request->event_id, fn ($q) => $q->whereHas('order', fn ($o) => $o->where('event_id', $request->event_id)))
-            ->when($request->order_status, fn ($q) => $q->whereHas('order', fn ($o) => $o->where('order_status', $request->order_status)))
-            ->latest()
-            ->get();
-
-        return $this->downloadCsv(
-            'wartix-guests-' . now()->format('Ymd-His') . '.csv',
-            ['Order Code', 'Event', 'Buyer', 'Ticket Position', 'NIK', 'Type', 'Tanggal'],
-            $guests->map(function (OrderGuest $guest) {
-                return [
-                    $guest->order->order_code ?? '-',
-                    $guest->order->event->title ?? '-',
-                    MaskService::email($guest->order->email ?? ''),
-                    $guest->ticket_position,
-                    MaskService::nik($guest->identity_number ?? ''),
-                    $guest->guest_type === 'main_buyer' ? 'Main' : 'Guest',
-                    $guest->created_at?->format('d M Y H:i') ?? '-',
                 ];
             })->all()
         );
