@@ -39,9 +39,9 @@
             {{-- Logo --}}
             <a href="{{ route('home') }}" class="flex items-center gap-2 flex-shrink-0 -ml-5 sm:-ml-8">
                 <img src="{{ asset('images/logo-w.png') }}"
-                    alt="Dashboard"
+                    alt="Wartix"
                     class="h-10 sm:h-11 w-auto max-w-[210px] object-contain">
-                <span class="text-sm font-semibold text-gray-900">Dashboard</span>
+                <span class="hidden sm:inline text-sm font-semibold text-gray-900">Wartix</span>
             </a>
 
             {{-- Nav Links --}}
