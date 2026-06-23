@@ -79,9 +79,6 @@
             <span class="font-bold text-indigo-600">∞ (tak terbatas)</span>
             @endif
         </div>
-            <span class="font-bold text-indigo-600">∞ (tak terbatas)</span>
-            @endif
-        </div>
         @if(request('debug'))
         <div class="mt-2 text-xs text-gray-500 bg-gray-50 p-2 rounded">
             <pre class="whitespace-pre-wrap text-xs">{{ json_encode($event->toArray(), JSON_PRETTY_PRINT) }}</pre>
