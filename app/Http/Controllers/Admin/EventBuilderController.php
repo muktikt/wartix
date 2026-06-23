@@ -77,7 +77,9 @@ class EventBuilderController extends Controller
 
     public function edit(Event $event)
     {
-        $event->load(['salePhases', 'ticketCategories', 'customFields']);
+        $event->load(['salePhases', 'ticketCategories', 'customFields' => function ($q) {
+            $q->where('is_active', true);
+        }]);
         return view('admin.events.builder', compact('event'));
     }
 
@@ -281,6 +283,13 @@ class EventBuilderController extends Controller
             }
         }
 
+        // Deactivate custom fields that have order answers (preserve data)
+        $event->customFields()
+            ->whereNotIn('id', $keepIds)
+            ->whereHas('orderAnswers')
+            ->update(['is_active' => false]);
+
+        // Delete custom fields without any order answers
         $event->customFields()
             ->whereNotIn('id', $keepIds)
             ->whereDoesntHave('orderAnswers')
