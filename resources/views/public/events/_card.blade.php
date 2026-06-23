@@ -86,7 +86,6 @@
         @endif
 
         <a href="{{ route('events.show', $event->slug) }}"
-            onclick="alert('Harap membaca deskripsi event terlebih dahulu karena di dalamnya terdapat Syarat & Ketentuan (Terms and Conditions) sebelum melakukan pemesanan.');"
             class="block w-full text-center bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium py-2 rounded-lg transition-colors">
             View Detail
         </a>
