@@ -354,6 +354,24 @@
     </div>
 </div>
 
+{{-- Terms & Conditions Modal --}}
+<div id="tcModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl transform scale-95 transition-all duration-300">
+        <div class="flex items-center justify-center w-12 h-12 mx-auto mb-4 bg-amber-50 rounded-full text-amber-500">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+        </div>
+        <h3 class="text-center text-sm font-bold text-gray-900 mb-2">Pemberitahuan Penting</h3>
+        <p class="text-center text-xs text-gray-500 leading-relaxed mb-6">
+            Harap membaca deskripsi event terlebih dahulu karena di dalamnya terdapat Syarat & Ketentuan (Terms and Conditions) sebelum melakukan pemesanan.
+        </p>
+        <button id="closeTcModalBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold py-2.5 rounded-xl transition-colors">
+            Oke, Saya Mengerti
+        </button>
+    </div>
+</div>
+
 <script>
 const categorySelect = document.getElementById('categorySelect');
 const qtySelect      = document.getElementById('qtySelect');
@@ -450,5 +468,32 @@ function updateGuestFields() {
 updateEstimate();
 updateGuestFields();
 updateMembershipVisibility();
+
+// Show T&C Modal on load
+window.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('tcModal');
+    if (!modal) return;
+    const modalContent = modal.querySelector('.transform');
+    const btn = document.getElementById('closeTcModalBtn');
+
+    // Show modal with a tiny delay for smooth transition
+    setTimeout(() => {
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        modalContent.classList.remove('scale-95');
+        modalContent.classList.add('scale-100');
+    }, 100);
+
+    // Close function
+    const closeModal = () => {
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        modalContent.classList.remove('scale-100');
+        modalContent.classList.add('scale-95');
+    };
+
+    btn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+});
 </script>
 @endsection
