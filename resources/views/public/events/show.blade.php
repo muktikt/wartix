@@ -355,18 +355,18 @@
 </div>
 
 {{-- Terms & Conditions Modal --}}
-<div id="tcModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300">
-    <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl transform scale-95 transition-all duration-300">
-        <div class="flex items-center justify-center w-12 h-12 mx-auto mb-4 bg-amber-50 rounded-full text-amber-500">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<div id="tcModal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 1rem; background-color: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); opacity: 0; pointer-events: none; transition: opacity 0.3s ease;">
+    <div style="background-color: #ffffff; border-radius: 1rem; max-width: 24rem; width: 100%; padding: 1.5rem; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); transform: scale(0.95); transition: transform 0.3s ease;">
+        <div style="display: flex; align-items: center; justify-content: center; width: 3rem; height: 3rem; margin: 0 auto 1rem auto; background-color: #fef3c7; border-radius: 50%; color: #d97706;">
+            <svg style="width: 1.5rem; height: 1.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
             </svg>
         </div>
-        <h3 class="text-center text-sm font-bold text-gray-900 mb-2">Pemberitahuan Penting</h3>
-        <p class="text-center text-xs text-gray-500 leading-relaxed mb-6">
+        <h3 style="text-align: center; font-size: 0.875rem; font-weight: 700; color: #111827; margin-bottom: 0.5rem; font-family: sans-serif;">Pemberitahuan Penting</h3>
+        <p style="text-align: center; font-size: 0.75rem; color: #6b7280; line-height: 1.5; margin-bottom: 1.5rem; font-family: sans-serif;">
             Harap membaca deskripsi event terlebih dahulu karena di dalamnya terdapat Syarat & Ketentuan (Terms and Conditions) sebelum melakukan pemesanan.
         </p>
-        <button id="closeTcModalBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold py-2.5 rounded-xl transition-colors">
+        <button id="closeTcModalBtn" style="width: 100%; background-color: #4f46e5; border: none; color: #ffffff; font-size: 0.75rem; font-weight: 600; padding: 0.625rem 0; border-radius: 0.75rem; cursor: pointer; transition: background-color 0.2s ease; font-family: sans-serif;">
             Oke, Saya Mengerti
         </button>
     </div>
@@ -473,21 +473,23 @@ updateMembershipVisibility();
 window.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('tcModal');
     if (!modal) return;
-    const modalContent = modal.querySelector('.transform');
+    const modalContent = modal.querySelector('div');
     const btn = document.getElementById('closeTcModalBtn');
 
-    // Show modal with a tiny delay for smooth transition
+    // Show modal and disable body scroll
     setTimeout(() => {
-        modal.classList.remove('opacity-0', 'pointer-events-none');
-        modalContent.classList.remove('scale-95');
-        modalContent.classList.add('scale-100');
+        modal.style.opacity = '1';
+        modal.style.pointerEvents = 'auto';
+        modalContent.style.transform = 'scale(1)';
+        document.body.style.overflow = 'hidden';
     }, 100);
 
     // Close function
     const closeModal = () => {
-        modal.classList.add('opacity-0', 'pointer-events-none');
-        modalContent.classList.remove('scale-100');
-        modalContent.classList.add('scale-95');
+        modal.style.opacity = '0';
+        modal.style.pointerEvents = 'none';
+        modalContent.style.transform = 'scale(0.95)';
+        document.body.style.overflow = '';
     };
 
     btn.addEventListener('click', closeModal);
