@@ -290,15 +290,15 @@
                                 required>
                         </div>
 
-                        {{-- Telegram --}}
+                        {{-- Username Sosial Media --}}
                         <div class="mb-4">
-                            <label class="block text-xs font-medium text-gray-700 mb-1.5">Username Telegram</label>
+                            <label class="block text-xs font-medium text-gray-700 mb-1.5">Username Sosial Media (IG/TikTok/X/Threads)</label>
                             <div class="relative">
                                 <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">@</span>
                                 <input type="text" name="telegram_username" value="{{ old('telegram_username') }}" placeholder="username"
                                     class="w-full text-sm border border-gray-200 rounded-xl pl-7 pr-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
                             </div>
-                            <p class="text-xs text-gray-400 mt-1">Untuk menerima notifikasi sukses dan QRIS</p>
+                            <p class="text-xs text-gray-400 mt-1">Masukkan salah satu username sosial media Anda (Instagram, TikTok, X, Threads, dll)</p>
                         </div>
 
                         {{-- Custom Fields --}}

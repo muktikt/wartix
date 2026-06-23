@@ -128,7 +128,7 @@
                     </p>
                 </div>
                 <div>
-                    <p class="text-xs text-gray-400 mb-0.5">Telegram Username</p>
+                    <p class="text-xs text-gray-400 mb-0.5">Username Sosial Media</p>
                     <p class="text-sm text-gray-700">
                         {{ $order->telegram_username ? '@'.$order->telegram_username : '-' }}
                     </p>
