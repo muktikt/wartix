@@ -24,4 +24,14 @@ class TicketCategory extends Model
     {
         return $this->hasMany(Order::class);
     }
+
+    public function getAvailableSlotsAttribute(): ?int
+    {
+        if ($this->slot_limit === null) {
+            return null;
+        }
+
+        $used = $this->orders()->whereNotIn('order_status', ['failed', 'cancelled'])->sum('qty');
+        return max(0, $this->slot_limit - $used);
+    }
 }

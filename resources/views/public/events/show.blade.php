@@ -42,20 +42,18 @@
                     </div>
                 </div>
                 @if($totalSlots !== null)
-                <div class="p-4 bg-gradient-to-br from-indigo-50 to-indigo-100/50 border border-indigo-100/80 rounded-2xl flex items-center justify-between">
-                    <div class="space-y-1">
-                        <span class="text-xs font-semibold text-indigo-500 uppercase tracking-wider">Slot Tersedia</span>
-                        <div class="flex items-baseline gap-1.5">
-                            <span class="text-3xl font-extrabold text-indigo-900 tracking-tight">{{ $availableSlots }}</span>
-                            <span class="text-sm font-semibold text-indigo-400">/ {{ $totalSlots }} tiket</span>
+                <div class="p-3 bg-gradient-to-br from-indigo-50 to-indigo-100/40 border border-indigo-100/60 rounded-xl flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] font-semibold text-indigo-500 uppercase tracking-wider block">Slot Tersedia</span>
+                        <div class="flex items-baseline gap-1">
+                            <span class="text-lg font-bold text-indigo-900">{{ $availableSlots }}</span>
+                            <span class="text-xs font-medium text-indigo-400">/ {{ $totalSlots }} tiket</span>
                         </div>
                     </div>
-                    <div class="flex flex-col items-end gap-1.5">
-                        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold
-                            {{ $availableSlots > 0 ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200' }}">
-                            <span class="w-1.5 h-1.5 rounded-full {{ $availableSlots > 0 ? 'bg-emerald-500' : 'bg-rose-500' }} animate-pulse"></span>
-                            {{ $availableSlots > 0 ? 'Tersedia' : 'Penuh' }}
-                        </div>
+                    <div class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-semibold
+                        {{ $availableSlots > 0 ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200' }}">
+                        <span class="w-1.5 h-1.5 rounded-full {{ $availableSlots > 0 ? 'bg-emerald-500' : 'bg-rose-500' }} animate-pulse"></span>
+                        {{ $availableSlots > 0 ? 'Tersedia' : 'Penuh' }}
                     </div>
                 </div>
                 @endif
@@ -140,13 +138,34 @@
                         {{-- Sale Phase --}}
                         <div class="mb-3">
                             <label class="block text-xs font-medium text-gray-700 mb-1.5">Sale Phase</label>
-                            <select name="sale_phase_id" required
+                            <select name="sale_phase_id" id="salePhaseSelect" required
                                 class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                 <option value="">Pilih sale phase</option>
                                 @foreach($event->salePhases as $phase)
-                                <option value="{{ $phase->id }}" {{ old('sale_phase_id') == $phase->id ? 'selected' : '' }}>{{ $phase->name }}</option>
+                                    @if($phase->slot_limit !== null)
+                                        @if($phase->available_slots > 0)
+                                            <option value="{{ $phase->id }}" {{ old('sale_phase_id') == $phase->id ? 'selected' : '' }}>
+                                                {{ $phase->name }} (Sisa {{ $phase->available_slots }} slot)
+                                            </option>
+                                        @else
+                                            <option value="{{ $phase->id }}" disabled class="text-gray-400">
+                                                {{ $phase->name }} (Penuh)
+                                            </option>
+                                        @endif
+                                    @else
+                                        <option value="{{ $phase->id }}" {{ old('sale_phase_id') == $phase->id ? 'selected' : '' }}>
+                                            {{ $phase->name }}
+                                        </option>
+                                    @endif
                                 @endforeach
                             </select>
+                        </div>
+
+                        {{-- Membership Code --}}
+                        <div id="membershipCodeField" class="hidden mb-3">
+                            <label class="block text-xs font-medium text-gray-700 mb-1.5">Kode Membership <span class="text-red-500">*</span></label>
+                            <input type="text" name="membership_code" id="membershipCodeInput" value="{{ old('membership_code') }}" placeholder="Masukkan kode membership Anda"
+                                class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         </div>
 
                         {{-- Ticket Category --}}
@@ -156,13 +175,32 @@
                                 class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                 <option value="">Pilih kategori</option>
                                 @foreach($event->ticketCategories as $cat)
-                                <option value="{{ $cat->id }}"
-                                    data-fee="{{ $cat->fee_per_ticket }}"
-                                    data-price="{{ $cat->ticket_price }}"
-                                    data-mode="{{ $cat->payment_mode }}"
-                                    {{ old('ticket_category_id') == $cat->id ? 'selected' : '' }}>
-                                    {{ $cat->name }} — Rp {{ number_format($cat->fee_per_ticket) }}/tiket
-                                </option>
+                                    @if($cat->slot_limit !== null)
+                                        @if($cat->available_slots > 0)
+                                            <option value="{{ $cat->id }}"
+                                                data-fee="{{ $cat->fee_per_ticket }}"
+                                                data-price="{{ $cat->ticket_price }}"
+                                                data-mode="{{ $cat->payment_mode }}"
+                                                {{ old('ticket_category_id') == $cat->id ? 'selected' : '' }}>
+                                                {{ $cat->name }} — Rp {{ number_format($cat->fee_per_ticket) }}/tiket (Sisa {{ $cat->available_slots }} slot)
+                                            </option>
+                                        @else
+                                            <option value="{{ $cat->id }}" disabled class="text-gray-400"
+                                                data-fee="{{ $cat->fee_per_ticket }}"
+                                                data-price="{{ $cat->ticket_price }}"
+                                                data-mode="{{ $cat->payment_mode }}">
+                                                {{ $cat->name }} — Rp {{ number_format($cat->fee_per_ticket) }}/tiket (Penuh)
+                                            </option>
+                                        @endif
+                                    @else
+                                        <option value="{{ $cat->id }}"
+                                            data-fee="{{ $cat->fee_per_ticket }}"
+                                            data-price="{{ $cat->ticket_price }}"
+                                            data-mode="{{ $cat->payment_mode }}"
+                                            {{ old('ticket_category_id') == $cat->id ? 'selected' : '' }}>
+                                            {{ $cat->name }} — Rp {{ number_format($cat->fee_per_ticket) }}/tiket
+                                        </option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
@@ -322,6 +360,9 @@ const feeDisplay     = document.getElementById('feeDisplay');
 const totalDisplay   = document.getElementById('totalDisplay');
 const ticketPriceRow = document.getElementById('ticketPriceRow');
 const ticketPriceDisp= document.getElementById('ticketPriceDisplay');
+const salePhaseSelect = document.getElementById('salePhaseSelect');
+const membershipField = document.getElementById('membershipCodeField');
+const membershipInput = document.getElementById('membershipCodeInput');
 const oldGuestNiks = @json(collect(($event->max_ticket_per_order ?? 0) >= 2 ? range(2, $event->max_ticket_per_order) : [])->mapWithKeys(fn($i) => ["guest_nik_$i" => old("guest_nik_$i")]));
 
 function formatRp(num) {
@@ -355,11 +396,27 @@ function updateEstimate() {
     totalDisplay.textContent = formatRp(grandTotal);
 }
 
+function updateMembershipVisibility() {
+    if (!salePhaseSelect || !membershipField || !membershipInput) return;
+    const selectedText = salePhaseSelect.options[salePhaseSelect.selectedIndex]?.text || '';
+    if (selectedText.toLowerCase().includes('membership')) {
+        membershipField.classList.remove('hidden');
+        membershipInput.required = true;
+    } else {
+        membershipField.classList.add('hidden');
+        membershipInput.required = false;
+        membershipInput.value = '';
+    }
+}
+
 categorySelect.addEventListener('change', updateEstimate);
 qtySelect.addEventListener('change', function() {
     updateEstimate();
     updateGuestFields();
 });
+if (salePhaseSelect) {
+    salePhaseSelect.addEventListener('change', updateMembershipVisibility);
+}
 
 // Guest fields
 function updateGuestFields() {
@@ -390,5 +447,6 @@ function updateGuestFields() {
 // Initialize on page load
 updateEstimate();
 updateGuestFields();
+updateMembershipVisibility();
 </script>
 @endsection

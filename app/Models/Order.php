@@ -13,7 +13,7 @@ class Order extends Model
         'telegram_chat_id', 'telegram_link_token', 'telegram_linked_at',
         'service_fee_total', 'ticket_price_total',
         'admin_fee', 'grand_total', 'payment_mode', 'payment_status',
-        'order_status', 'notes',
+        'order_status', 'notes', 'membership_code',
     ];
 
     protected $casts = [

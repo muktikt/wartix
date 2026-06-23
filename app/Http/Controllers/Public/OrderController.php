@@ -58,6 +58,10 @@ class OrderController extends Controller
             $rules['title'] = 'required|in:Tuan,Nyonya,Nona';
         }
 
+        if (str_contains(strtolower($phase->name), 'membership')) {
+            $rules['membership_code'] = 'required|string|max:255';
+        }
+
         $activeCustomFields = $event->customFields->where('is_active', true);
 
         foreach ($activeCustomFields as $field) {
@@ -129,6 +133,7 @@ class OrderController extends Controller
             'payment_mode'        => $category->payment_mode,
             'payment_status'      => 'unpaid',
             'order_status'        => 'pending_link',
+            'membership_code'     => $request->membership_code,
         ]);
 
         if ($event->guest_enabled && $event->guest_mode === 'multi_guest' && $qty > 1) {
