@@ -88,9 +88,6 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
                 <div class="footer-brand">
                     <div class="flex items-center gap-2 mb-3">
-                        <img src="{{ asset('images/logo-w.png') }}"
-                            alt="Wartix"
-                            class="h-6 w-auto">
                         <span class="text-sm font-semibold text-white">Wartix</span>
                     </div>
                     <p class="text-xs leading-relaxed text-gray-400">
