@@ -22,7 +22,7 @@ class TelegramLinkTokenService
         $maxTry  = 10;
 
         for ($attempt = 0; $attempt < $maxTry; $attempt++) {
-            $token = DB::transaction(function () use ($event, $prefix) {
+            $token = DB::transaction(function () use ($event, $prefix, $attempt) {
                 // Lock baris event ini supaya request lain nunggu giliran
                 // sampai transaksi ini selesai (mencegah baca angka yang sama).
                 Event::where('id', $event->id)->lockForUpdate()->first();
