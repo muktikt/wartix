@@ -12,12 +12,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Wartix — Priority Ticket Assistance')</title>
+    <title>@yield('title', 'Wartix Priority Ticket Assistance')</title>
     <meta name="description" content="@yield('meta-description', 'Wartix membantu kamu mendapatkan tiket konser, festival, dan fanmeeting dengan Priority Access, Realtime Monitoring, dan update via Telegram.')">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     {{-- SEO --}}
     <meta name="robots" content="index, follow">
-    <meta property="og:title" content="@yield('title', 'Wartix — Priority Ticket Assistance')">
+    <meta property="og:title" content="@yield('title', 'Wartix Priority Ticket Assistance')">
     <meta property="og:description" content="@yield('meta-description', 'Platform Ticket Assistance untuk event high-demand.')">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Wartix">

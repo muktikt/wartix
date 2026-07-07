@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', $event->title.' — Wartix')
+@section('title', $event->title.' Wartix')
 
 @section('content')
 <style>

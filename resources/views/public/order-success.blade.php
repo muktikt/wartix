@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Order Berhasil — Wartix')
+@section('title', 'Order Berhasil Wartix')
 
 @section('content')
 <div class="min-h-screen flex items-center justify-center px-4 py-12">

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Realtime Monitor — Wartix')
+@section('title', 'Realtime Monitor Wartix')
 
 @section('content')
 <div class="max-w-4xl mx-auto px-4 py-10">
