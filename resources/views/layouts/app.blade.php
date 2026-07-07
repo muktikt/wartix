@@ -47,20 +47,20 @@
             {{-- Nav Links --}}
             <div class="hidden md:flex items-center gap-1 flex-1">
                 <a href="{{ route('home') }}#active-events"
-                    class="nav-link-underline px-3 py-1.5 text-sm rounded-lg transition-colors text-gray-600 hover:text-gray-900 hover:bg-gray-50">
+                    class="px-3 py-1.5 text-sm rounded-lg transition-colors text-gray-600 hover:text-gray-900 hover:bg-gray-50">
                     Events
                 </a>
                 <a href="{{ route('home') }}#monitor"
-                    class="nav-link-underline px-3 py-1.5 text-sm rounded-lg transition-colors
+                    class="px-3 py-1.5 text-sm rounded-lg transition-colors
                     {{ request()->routeIs('monitor') ? 'text-indigo-600 bg-indigo-50' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50' }}">
                     Realtime Monitor
                 </a>
                 <a href="{{ route('home') }}#cara-order"
-                    class="nav-link-underline px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors">
+                    class="px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors">
                     Cara Order
                 </a>
                 <a href="{{ route('home') }}#faq"
-                    class="nav-link-underline px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors">
+                    class="px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors">
                     FAQ
                 </a>
             </div>
@@ -68,7 +68,7 @@
             {{-- CTA --}}
             <div class="ml-auto flex items-center gap-2">
                 <a href="{{ $telegramLink }}" target="_blank" rel="noopener noreferrer"
-                    class="btn-animate flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-3.5 py-1.5 rounded-lg transition-colors">
+                    class="flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-3.5 py-1.5 rounded-lg transition-colors">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                         <path d="M9.04 15.38 8.9 19.33c.42 0 .6-.18.83-.4l1.98-1.9 4.1 3c.75.42 1.29.2 1.48-.7l2.68-12.63c.24-1.12-.4-1.56-1.14-1.28L3.8 9.56c-1.1.43-1.08 1.05-.2 1.33l4.05 1.26 9.4-5.92c.44-.29.84-.13.51.17z"/>
                     </svg>
@@ -132,7 +132,7 @@
 
 {{-- Floating Telegram Button --}}
 <a href="{{ $telegramLink }}" target="_blank" rel="noopener noreferrer"
-    class="btn-animate fixed bottom-6 right-6 w-12 h-12 bg-[#229ED9] hover:bg-[#1e8dcc] text-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-colors z-50 animate-pulse-soft">
+    class="fixed bottom-6 right-6 w-12 h-12 bg-[#229ED9] hover:bg-[#1e8dcc] text-white rounded-full flex items-center justify-center shadow-lg transition-colors z-50">
     <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <path d="M9.04 15.38 8.9 19.33c.42 0 .6-.18.83-.4l1.98-1.9 4.1 3c.75.42 1.29.2 1.48-.7l2.68-12.63c.24-1.12-.4-1.56-1.14-1.28L3.8 9.56c-1.1.43-1.08 1.05-.2 1.33l4.05 1.26 9.4-5.92c.44-.29.84-.13.51.17z"/>
     </svg>

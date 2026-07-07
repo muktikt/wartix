@@ -25,7 +25,7 @@
         {{-- Left --}}
         <div class="md:col-span-2 space-y-6 md:h-full md:overflow-y-auto md:pr-4 custom-scrollbar">
             {{-- Banner --}}
-            <div class="rounded-2xl overflow-hidden bg-gradient-to-br from-indigo-900 to-purple-900 aspect-video flex items-center justify-center animate-fade-in-up">
+            <div class="rounded-2xl overflow-hidden bg-gradient-to-br from-indigo-900 to-purple-900 aspect-video flex items-center justify-center">
                 @if($event->banner_image)
                     <img src="{{ asset('storage/'.$event->banner_image) }}" class="w-full h-full object-cover" alt="{{ $event->title }}">
                 @else
@@ -34,7 +34,7 @@
             </div>
 
             {{-- Info --}}
-            <div class="bg-white border border-gray-100 rounded-2xl p-5 animate-fade-in-up reveal-delay-1">
+            <div class="bg-white border border-gray-100 rounded-2xl p-5">
                 <div class="flex items-start justify-between mb-3">
                     <div>
                         <h1 class="text-xl font-bold text-gray-900">{{ $event->title }}</h1>
@@ -86,14 +86,14 @@
 
             {{-- Seatplan --}}
             @if($event->seatplan_image)
-            <div class="bg-white border border-gray-100 rounded-2xl p-5" data-reveal>
+            <div class="bg-white border border-gray-100 rounded-2xl p-5">
                 <h3 class="text-sm font-semibold text-gray-900 mb-3">Denah Tempat Duduk</h3>
                 <img src="{{ asset('storage/'.$event->seatplan_image) }}" class="w-full rounded-xl" alt="Seatplan">
             </div>
             @endif
 
             {{-- Phases & Categories --}}
-            <div class="bg-white border border-gray-100 rounded-2xl p-5" data-reveal>
+            <div class="bg-white border border-gray-100 rounded-2xl p-5">
                 <h3 class="text-sm font-semibold text-gray-900 mb-4">Sale Phase & Kategori</h3>
 
                 {{-- Phase names --}}
@@ -123,7 +123,7 @@
 
         {{-- Right — Order Form --}}
         <div class="md:col-span-1 md:h-full md:overflow-y-auto md:pr-2 custom-scrollbar">
-            <div class="animate-slide-in-right reveal-delay-2">
+            <div>
                 <div class="bg-white border border-gray-100 rounded-2xl p-5">
                     <h3 class="text-sm font-semibold text-gray-900 mb-4">Form Order</h3>
 
@@ -156,7 +156,7 @@
                         <div class="mb-3">
                             <label class="block text-xs font-medium text-gray-700 mb-1.5">Sale Phase</label>
                             <select name="sale_phase_id" id="salePhaseSelect" required
-                                class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200">
+                                class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                 <option value="">Pilih sale phase</option>
                                 @foreach($event->salePhases as $phase)
                                     @if($phase->slot_limit !== null)
@@ -183,7 +183,7 @@
                         <div id="membershipCodeField" class="hidden mb-3">
                             <label class="block text-xs font-medium text-gray-700 mb-1.5">Kode Membership <span class="text-red-500">*</span></label>
                             <input type="text" name="membership_code" id="membershipCodeInput" value="{{ old('membership_code') }}" placeholder="Masukkan kode membership Anda"
-                                class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200">
+                                class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         </div>
                         @endif
 
@@ -191,7 +191,7 @@
                         <div class="mb-3">
                             <label class="block text-xs font-medium text-gray-700 mb-1.5">Kategori Tiket</label>
                             <select name="ticket_category_id" id="categorySelect" required
-                                class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200">
+                                class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                 <option value="">Pilih kategori</option>
                                 @foreach($event->ticketCategories as $cat)
                                     @if($cat->slot_limit !== null)
@@ -228,7 +228,7 @@
                         <div class="mb-4">
                             <label class="block text-xs font-medium text-gray-700 mb-1.5">Jumlah Tiket</label>
                             <select name="qty" id="qtySelect" required
-                                class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200">
+                                class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                 @for($i = 1; $i <= $event->max_ticket_per_order; $i++)
                                 <option value="{{ $i }}" {{ old('qty', 1) == $i ? 'selected' : '' }}>{{ $i }} Tiket</option>
                                 @endfor
@@ -278,7 +278,7 @@
                         <div class="mb-3">
                             <label class="block text-xs font-medium text-gray-700 mb-1.5">Nama Lengkap</label>
                             <input type="text" name="full_name" value="{{ old('full_name') }}" placeholder="Sesuai KTP"
-                                class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200"
+                                class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 required>
                         </div>
 
@@ -286,7 +286,7 @@
                         <div class="mb-3">
                             <label class="block text-xs font-medium text-gray-700 mb-1.5">Nomor Ponsel</label>
                             <input type="tel" name="phone_number" value="{{ old('phone_number') }}" placeholder="08xxxxxxxxxx"
-                                class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200"
+                                class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 required>
                         </div>
 
@@ -294,7 +294,7 @@
                         <div class="mb-3">
                             <label class="block text-xs font-medium text-gray-700 mb-1.5">Email</label>
                             <input type="email" name="email" value="{{ old('email') }}" placeholder="email@example.com"
-                                class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200"
+                                class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 required>
                         </div>
 
@@ -303,7 +303,7 @@
                             <label class="block text-xs font-medium text-gray-700 mb-1.5">Nomor KTP / NIK</label>
                             <input type="text" name="identity_number" value="{{ old('identity_number') }}" placeholder="16 digit NIK"
                                 maxlength="16" minlength="16"
-                                class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200"
+                                class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 required>
                         </div>
 
@@ -313,7 +313,7 @@
                             <div class="relative">
                                 <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">@</span>
                                 <input type="text" name="telegram_username" value="{{ old('telegram_username') }}" placeholder="username"
-                                    class="w-full text-sm border border-gray-200 rounded-xl pl-7 pr-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200">
+                                    class="w-full text-sm border border-gray-200 rounded-xl pl-7 pr-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
                             </div>
                             <p class="text-xs text-gray-400 mt-1">Masukkan salah satu username sosial media Anda (Instagram, TikTok, X, Threads, dll)</p>
                         </div>
@@ -329,7 +329,7 @@
                             </label>
                             @if($field->field_type === 'select')
                                 <select name="custom_fields[{{ $field->id }}]" {{ $field->is_required ? 'required' : '' }}
-                                    class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200">
+                                    class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                     <option value="">Pilih {{ $field->label }}</option>
                                     @foreach(($field->options ?? []) as $opt)
                                     <option value="{{ $opt }}" {{ old("custom_fields.{$field->id}") === $opt ? 'selected' : '' }}>{{ $opt }}</option>
@@ -337,11 +337,11 @@
                                 </select>
                             @elseif($field->field_type === 'textarea')
                                 <textarea name="custom_fields[{{ $field->id }}]" rows="3" {{ $field->is_required ? 'required' : '' }}
-                                    class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200">{{ old("custom_fields.{$field->id}") }}</textarea>
+                                    class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">{{ old("custom_fields.{$field->id}") }}</textarea>
                             @else
                                 <input type="{{ $field->field_type === 'password' ? 'password' : ($field->field_type === 'number' ? 'number' : 'text') }}"
                                     name="custom_fields[{{ $field->id }}]" value="{{ old("custom_fields.{$field->id}") }}" {{ $field->is_required ? 'required' : '' }}
-                                    class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200">
+                                    class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
                             @endif
                         </div>
                         @endforeach
@@ -357,7 +357,7 @@
                         @endif
 
                         <button type="submit"
-                            class="btn-animate w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold py-3 rounded-xl transition-colors">
+                            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold py-3 rounded-xl transition-colors">
                             Submit Order
                         </button>
 
@@ -383,7 +383,7 @@
         <p class="text-center text-xs text-gray-500 leading-relaxed mb-6">
             Harap membaca deskripsi event terlebih dahulu karena di dalamnya terdapat Syarat & Ketentuan (Terms and Conditions) sebelum melakukan pemesanan.
         </p>
-        <button id="closeTcModalBtn" class="btn-animate w-full bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold py-2.5 rounded-xl transition-colors">
+        <button id="closeTcModalBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold py-2.5 rounded-xl transition-colors">
             Oke, Saya Mengerti
         </button>
     </div>
@@ -472,7 +472,7 @@ function updateGuestFields() {
             <div>
                 <label class="block text-xs text-gray-600 mb-1">Tiket ${i} — Nomor KTP / NIK</label>
                 <input type="text" name="guest_nik_${i}" value="${oldVal}" placeholder="16 digit NIK" maxlength="16" minlength="16"
-                    class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200"
+                    class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     required>
             </div>`;
         }
