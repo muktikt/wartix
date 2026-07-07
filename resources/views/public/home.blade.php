@@ -9,8 +9,8 @@
     <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
 
         {{-- Left --}}
-        <div>
-            <div class="flex flex-wrap gap-2 mb-5">
+        <div class="animate-fade-in-up">
+            <div class="flex flex-wrap gap-2 mb-5 animate-fade-in-up">
                 <span class="inline-flex items-center gap-1.5 text-xs font-medium bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full">
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
@@ -31,25 +31,25 @@
                 </span>
             </div>
 
-            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-4">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-4 animate-fade-in-up reveal-delay-1">
                 Priority Ticket Assistance<br>
                 <span class="text-indigo-600">for High-Demand Events</span>
             </h1>
 
-            <p class="text-gray-500 text-base leading-relaxed mb-8 max-w-md">
+            <p class="text-gray-500 text-base leading-relaxed mb-8 max-w-md animate-fade-in-up reveal-delay-2">
                 Wartix membantu kamu mendapatkan tiket konser, festival, dan fanmeeting impian dengan layanan Ticket Assistance, Realtime Monitoring, dan notifikasi langsung via Telegram.
             </p>
 
-            <div class="flex flex-wrap gap-3">
+            <div class="flex flex-wrap gap-3 animate-fade-in-up reveal-delay-3">
                 <a href="#active-events"
-                    class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm px-5 py-2.5 rounded-xl transition-colors hover-lift">
+                    class="btn-animate inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm px-5 py-2.5 rounded-xl transition-colors hover-lift">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                     </svg>
                     View Active Events
                 </a>
                 <a href="https://t.me/wartixdotcom" target="_blank" rel="noopener noreferrer"
-                    class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 font-medium text-sm px-5 py-2.5 rounded-xl transition-colors hover-lift">
+                    class="btn-animate inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 font-medium text-sm px-5 py-2.5 rounded-xl transition-colors hover-lift">
                     <svg class="w-4 h-4 text-[#229ED9]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                         <path d="M9.04 15.38 8.9 19.33c.42 0 .6-.18.83-.4l1.98-1.9 4.1 3c.75.42 1.29.2 1.48-.7l2.68-12.63c.24-1.12-.4-1.56-1.14-1.28L3.8 9.56c-1.1.43-1.08 1.05-.2 1.33l4.05 1.26 9.4-5.92c.44-.29.84-.13.51.17z"/>
                     </svg>
@@ -59,8 +59,8 @@
         </div>
 
         {{-- Right --}}
-        <div class="flex justify-center md:justify-end">
-            <div class="bg-white border border-gray-100 rounded-2xl p-5 w-full max-w-sm shadow-sm">
+        <div class="flex justify-center md:justify-end animate-slide-in-right reveal-delay-2">
+            <div class="bg-white border border-gray-100 rounded-2xl p-5 w-full max-w-sm shadow-sm hover-lift">
                 <div class="flex items-center justify-between mb-4">
                     <div class="flex items-center gap-2">
                         <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -135,7 +135,7 @@
             ];
             @endphp
             @foreach($statsDisplay as $stat)
-            <div class="py-8 px-6 text-center">
+            <div class="py-8 px-6 text-center reveal-delay-{{ min($loop->iteration, 6) }}" data-reveal>
                 <div class="text-3xl font-bold text-indigo-600 mb-1">{{ $stat['value'] }}</div>
                 <div class="text-sm font-medium text-gray-900">{{ $stat['label'] }}</div>
                 <div class="text-xs text-gray-400 mt-0.5">{{ $stat['sub'] }}</div>
@@ -148,12 +148,12 @@
 {{-- ACTIVE EVENTS --}}
 <section class="py-14 px-4" id="active-events">
     <div class="max-w-7xl mx-auto">
-        <div class="flex items-end justify-between mb-8">
+        <div class="flex items-end justify-between mb-8" data-reveal>
             <div>
                 <h2 class="text-2xl font-bold text-gray-900">Active Events</h2>
                 <p class="text-sm text-gray-500 mt-1">Event yang sedang tersedia untuk order</p>
             </div>
-            <a href="{{ route('events.index') }}" class="text-sm text-indigo-600 hover:text-indigo-700 font-medium flex items-center gap-1">
+            <a href="{{ route('events.index') }}" class="nav-link-underline text-sm text-indigo-600 hover:text-indigo-700 font-medium flex items-center gap-1">
                 Lihat semua
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -162,13 +162,15 @@
         </div>
 
         @if($activeEvents->isEmpty())
-            <div class="text-center py-16 bg-gray-50 rounded-2xl">
+            <div class="text-center py-16 bg-gray-50 rounded-2xl" data-reveal>
                 <p class="text-gray-400">Belum ada event aktif saat ini.</p>
             </div>
         @else
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             @foreach($activeEvents as $event)
-            @include('public.events._card', ['event' => $event])
+            <div data-reveal class="reveal-delay-{{ min($loop->iteration, 6) }}">
+                @include('public.events._card', ['event' => $event])
+            </div>
             @endforeach
         </div>
         @endif
@@ -177,7 +179,7 @@
 
 {{-- REALTIME MONITOR --}}
 <section class="bg-gray-900 py-12 px-4" id="monitor">
-    <div class="max-w-7xl mx-auto">
+    <div class="max-w-7xl mx-auto" data-reveal>
         <div class="flex items-center gap-3 mb-6">
             <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
             <h2 class="text-lg font-semibold text-white">Realtime Success Monitor</h2>
@@ -192,7 +194,7 @@
                 $category = $log->ticketCategory->name ?? '-';
                 $qty      = $log->qty;
             @endphp
-            <div class="flex items-center gap-3 bg-gray-800 rounded-xl px-4 py-2.5 text-sm overflow-x-auto">
+            <div class="flex items-center gap-3 bg-gray-800 rounded-xl px-4 py-2.5 text-sm overflow-x-auto transition-colors hover:bg-gray-800/70">
                 <span class="bg-green-500/20 text-green-400 text-xs font-semibold px-2 py-0.5 rounded flex-shrink-0">SUCCESS</span>
                 <span class="text-white font-medium flex-shrink-0">{{ $email }}</span>
                 <span class="text-gray-600">|</span>
@@ -221,13 +223,13 @@
 {{-- CARA ORDER --}}
 <section class="py-14 px-4 bg-white" id="cara-order">
     <div class="max-w-7xl mx-auto">
-        <div class="flex items-center gap-3 mb-6">
+        <div class="flex items-center gap-3 mb-6" data-reveal>
             <div class="w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></div>
             <h2 class="text-lg font-semibold text-gray-900">Cara Order</h2>
             <span class="text-xs text-gray-500 ml-auto">Langkah order dari awal sampai selesai</span>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-6">
+        <div class="grid md:grid-cols-2 gap-6 reveal-delay-1" data-reveal>
             @php
                 $orderSteps = [
                     ['num' => '1', 'title' => 'Pilih event', 'desc' => 'Buka daftar event yang tersedia, lalu pilih event yang mau kamu amankan.'],
@@ -237,7 +239,7 @@
                 ];
             @endphp
 
-            <div class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
+            <div class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover-lift">
                 <div class="flex items-center justify-between mb-4">
                     <div class="flex items-center gap-2">
                         <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -265,7 +267,7 @@
                 </div>
             </div>
 
-            <div class="bg-gradient-to-br from-indigo-50 via-white to-purple-50 border border-gray-100 rounded-2xl p-5 shadow-sm">
+            <div class="bg-gradient-to-br from-indigo-50 via-white to-purple-50 border border-gray-100 rounded-2xl p-5 shadow-sm hover-lift">
                 <div class="flex items-center gap-2 mb-4">
                     <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
@@ -294,8 +296,10 @@
 {{-- FAQ --}}
 <section class="py-14 px-4 bg-white" id="faq">
     <div class="max-w-2xl mx-auto">
-        <h2 class="text-2xl font-bold text-gray-900 text-center mb-2">FAQ</h2>
-        <p class="text-gray-500 text-sm text-center mb-8">Pertanyaan yang sering ditanyakan</p>
+        <div data-reveal>
+            <h2 class="text-2xl font-bold text-gray-900 text-center mb-2">FAQ</h2>
+            <p class="text-gray-500 text-sm text-center mb-8">Pertanyaan yang sering ditanyakan</p>
+        </div>
 
         @php
         $faqs = [
@@ -307,15 +311,15 @@
         ];
         @endphp
 
-        <div class="space-y-3" x-data="{ open: null }">
+        <div class="space-y-3 reveal-delay-1" x-data="{ open: null }" data-reveal>
             @foreach($faqs as $i => $faq)
-            <div class="border border-gray-100 rounded-xl overflow-hidden">
+            <div class="border border-gray-100 rounded-xl overflow-hidden transition-shadow" :class="open === {{ $i }} ? 'shadow-sm border-indigo-100' : ''">
                 <button
                     class="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-gray-50 transition-colors"
                     @click="open = open === {{ $i }} ? null : {{ $i }}">
                     <span class="text-sm font-medium text-gray-900">{{ $faq['q'] }}</span>
-                    <svg class="w-4 h-4 text-gray-400 transition-transform flex-shrink-0"
-                        :class="open === {{ $i }} ? 'rotate-180' : ''"
+                    <svg class="w-4 h-4 text-gray-400 transition-transform duration-300 flex-shrink-0"
+                        :class="open === {{ $i }} ? 'rotate-180 text-indigo-500' : ''"
                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                     </svg>
