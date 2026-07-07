@@ -4,13 +4,13 @@
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
-    <div class="mb-8 animate-fade-in-up">
+    <div class="mb-8">
         <h1 class="text-2xl font-bold text-gray-900 mb-2">Active Events</h1>
         <p class="text-sm text-gray-500">Temukan event konser, festival, dan fanmeeting yang tersedia</p>
     </div>
 
     {{-- Search --}}
-    <form method="GET" class="mb-6 animate-fade-in-up reveal-delay-1">
+    <form method="GET" class="mb-6">
         <div class="flex gap-3 mb-3">
             <div class="flex-1 relative">
                 <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
@@ -23,7 +23,7 @@
                     class="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
             </div>
             <button type="submit"
-                class="btn-animate bg-indigo-600 text-white text-sm px-5 py-2.5 rounded-xl hover:bg-indigo-700">
+                class="bg-indigo-600 text-white text-sm px-5 py-2.5 rounded-xl hover:bg-indigo-700">
                 Cari
             </button>
             @if(request()->hasAny(['q','city','type','platform','status','month']))
@@ -74,7 +74,7 @@
 
     {{-- Results --}}
     @if($events->isEmpty())
-    <div class="text-center py-16 bg-white border border-gray-100 rounded-2xl animate-fade-in">
+    <div class="text-center py-16 bg-white border border-gray-100 rounded-2xl">
         <svg class="w-12 h-12 text-gray-200 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
@@ -87,9 +87,7 @@
     @else
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
         @foreach($events as $event)
-            <div data-reveal class="reveal-delay-{{ min($loop->iteration, 6) }}">
-                @include('public.events._card', ['event' => $event])
-            </div>
+            @include('public.events._card', ['event' => $event])
         @endforeach
     </div>
 

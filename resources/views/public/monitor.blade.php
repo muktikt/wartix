@@ -9,13 +9,13 @@
         <span class="ml-auto text-xs text-gray-400">Data tersensor untuk privasi</span>
     </div>
 
-    <div class="bg-gray-900 rounded-2xl overflow-hidden animate-fade-in-up">
+    <div class="bg-gray-900 rounded-2xl overflow-hidden">
         <div class="px-5 py-3 border-b border-gray-800 flex items-center gap-2">
             <span class="text-xs text-gray-500 font-mono">STATUS</span>
             <span class="text-xs text-gray-500 font-mono ml-4">EMAIL</span>
             <span class="text-xs text-gray-500 font-mono ml-auto">EVENT | PHASE | CAT | QTY</span>
         </div>
-        <div class="divide-y divide-gray-800" id="monitorList">
+        <div class="divide-y divide-gray-800">
             @forelse($logs as $log)
             <div class="flex items-center gap-3 px-5 py-3 text-sm hover:bg-gray-800/50 transition-colors">
                 <span class="bg-green-500/20 text-green-400 text-xs font-mono font-semibold px-2 py-0.5 rounded flex-shrink-0">SUCCESS</span>
@@ -46,7 +46,7 @@ window.Echo.channel('success-monitor-public')
     .listen('.success.log.created', (data) => {
         const container = document.getElementById('monitorList');
         const row = document.createElement('div');
-        row.className = 'flex items-center gap-3 px-5 py-3 text-sm hover:bg-gray-800/50 transition-colors animate-fade-in-up';
+        row.className = 'flex items-center gap-3 px-5 py-3 text-sm bg-gray-800 border-b border-gray-700 animate-pulse';
         row.innerHTML = `
             <span class="bg-green-500/20 text-green-400 text-xs font-mono font-semibold px-2 py-0.5 rounded flex-shrink-0">SUCCESS</span>
             <span class="text-white font-mono text-xs">${data.publicData.email}</span>
@@ -61,8 +61,7 @@ window.Echo.channel('success-monitor-public')
             <span class="text-gray-600 text-xs ml-auto">just now</span>
         `;
         container.prepend(row);
-        // Soft highlight flash so the new row is noticeable without being jarring
-        if (window.flashNewRow) window.flashNewRow(row);
+        setTimeout(() => row.classList.remove('animate-pulse'), 2000);
     });
 </script>
 @endpush
