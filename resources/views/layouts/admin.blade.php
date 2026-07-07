@@ -174,7 +174,7 @@
         </header>
 
         {{-- Page Content --}}
-        <main class="flex-1 overflow-y-auto p-5">
+        <main class="flex-1 overflow-y-auto p-5 animate-fade-in">
             @if(session('success'))
                 <div class="mb-4 bg-green-50 border border-green-200 text-green-700 text-sm px-4 py-3 rounded-lg">
                     {{ session('success') }}
