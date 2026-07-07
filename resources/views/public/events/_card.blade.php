@@ -1,4 +1,4 @@
-<div class="bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-md transition-shadow">
+<div class="bg-white border border-gray-100 rounded-2xl overflow-hidden hover-lift hover:shadow-md transition-shadow">
     {{-- Banner --}}
     <div class="relative h-40 bg-gradient-to-br from-indigo-900 to-purple-900 overflow-hidden">
         @if($event->banner_image)

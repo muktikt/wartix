@@ -28,7 +28,7 @@
 <body class="bg-white font-sans antialiased">
 
 @php
-    $telegramLink = 'https://t.me/mhtixcom';
+    $telegramLink = 'https://t.me/wartixdotcom';
 @endphp
 
 {{-- NAVBAR --}}
