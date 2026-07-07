@@ -2,11 +2,28 @@
 @section('title', $event->title.' — Wartix')
 
 @section('content')
+<style>
+    @media (min-width: 768px) {
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: rgba(156, 163, 175, 0.3);
+            border-radius: 20px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(156, 163, 175, 0.5);
+        }
+    }
+</style>
 <div class="max-w-5xl mx-auto px-4 py-8">
-    <div class="grid md:grid-cols-3 gap-8">
+    <div class="grid md:grid-cols-3 gap-8 md:h-[calc(100vh-8rem)] md:items-stretch">
 
         {{-- Left --}}
-        <div class="md:col-span-2 space-y-6">
+        <div class="md:col-span-2 space-y-6 md:h-full md:overflow-y-auto md:pr-4 custom-scrollbar">
             {{-- Banner --}}
             <div class="rounded-2xl overflow-hidden bg-gradient-to-br from-indigo-900 to-purple-900 aspect-video flex items-center justify-center">
                 @if($event->banner_image)
@@ -105,8 +122,8 @@
         </div>
 
         {{-- Right — Order Form --}}
-        <div class="md:col-span-1">
-            <div class="sticky top-20">
+        <div class="md:col-span-1 md:h-full md:overflow-y-auto md:pr-2 custom-scrollbar">
+            <div>
                 <div class="bg-white border border-gray-100 rounded-2xl p-5">
                     <h3 class="text-sm font-semibold text-gray-900 mb-4">Form Order</h3>
 
@@ -497,5 +514,84 @@ window.addEventListener('DOMContentLoaded', () => {
         if (e.target === modal) closeModal();
     });
 });
+
+// Form submit validation alert
+const orderForm = document.getElementById('orderForm');
+if (orderForm) {
+    orderForm.addEventListener('submit', function(e) {
+        let missingFields = [];
+        const requiredFields = orderForm.querySelectorAll('[required]');
+        
+        requiredFields.forEach(field => {
+            // Skip hidden elements (e.g. elements inside hidden parent divs)
+            if (field.offsetWidth === 0 && field.offsetHeight === 0) {
+                return;
+            }
+
+            let isInvalid = false;
+            if (field.type === 'radio') {
+                const name = field.name;
+                const checked = orderForm.querySelector(`input[name="${name}"]:checked`);
+                if (!checked) {
+                    isInvalid = true;
+                }
+            } else if (field.value.trim() === '') {
+                isInvalid = true;
+            } else if (field.minLength && field.value.length < field.minLength) {
+                isInvalid = true;
+            }
+
+            if (isInvalid) {
+                let labelText = '';
+                // Try to find the label
+                let label = field.closest('label');
+                if (label) {
+                    labelText = label.innerText.trim();
+                } else {
+                    const parentDiv = field.closest('div');
+                    if (parentDiv) {
+                        const siblingLabel = parentDiv.querySelector('label');
+                        if (siblingLabel) {
+                            labelText = siblingLabel.innerText.trim();
+                        }
+                    }
+                }
+
+                // Clean label text
+                if (labelText) {
+                    labelText = labelText.replace(/[*:]/g, '').trim();
+                } else {
+                    labelText = field.placeholder || field.name || 'Kolom';
+                }
+
+                if (!missingFields.includes(labelText)) {
+                    missingFields.push(labelText);
+                }
+            }
+        });
+
+        if (missingFields.length > 0) {
+            e.preventDefault();
+            alert("Maaf, mohon lengkapi bagian berikut yang belum diisi:\n- " + missingFields.join("\n- "));
+            
+            // Focus the first invalid field
+            for (let field of requiredFields) {
+                if (field.offsetWidth > 0 && field.offsetHeight > 0) {
+                    if (field.type === 'radio') {
+                        const name = field.name;
+                        const checked = orderForm.querySelector(`input[name="${name}"]:checked`);
+                        if (!checked) {
+                            field.focus();
+                            break;
+                        }
+                    } else if (field.value.trim() === '' || (field.minLength && field.value.length < field.minLength)) {
+                        field.focus();
+                        break;
+                    }
+                }
+            }
+        }
+    });
+}
 </script>
 @endsection
