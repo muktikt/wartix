@@ -15,9 +15,11 @@
             <span class="text-xs text-gray-500 font-mono ml-4">EMAIL</span>
             <span class="text-xs text-gray-500 font-mono ml-auto">EVENT | PHASE | CAT | QTY</span>
         </div>
-        <div class="divide-y divide-gray-800">
+        <div class="divide-y divide-gray-800" id="monitorList">
             @forelse($logs as $log)
-            <div class="flex items-center gap-3 px-5 py-3 text-sm hover:bg-gray-800/50 transition-colors">
+            <div class="flex items-center gap-3 px-5 py-3 text-sm hover:bg-gray-800/50 transition-colors reveal"
+                x-data x-intersect.once="$el.classList.add('reveal-visible')"
+                style="transition-delay: {{ min($loop->index, 8) * 40 }}ms">
                 <span class="bg-green-500/20 text-green-400 text-xs font-mono font-semibold px-2 py-0.5 rounded flex-shrink-0">SUCCESS</span>
                 <span class="text-white font-mono text-xs flex-shrink-0 w-36 truncate">{{ $log['email'] }}</span>
                 <span class="text-gray-600 text-xs">|</span>
@@ -46,7 +48,7 @@ window.Echo.channel('success-monitor-public')
     .listen('.success.log.created', (data) => {
         const container = document.getElementById('monitorList');
         const row = document.createElement('div');
-        row.className = 'flex items-center gap-3 px-5 py-3 text-sm bg-gray-800 border-b border-gray-700 animate-pulse';
+        row.className = 'flex items-center gap-3 px-5 py-3 text-sm border-b border-gray-800 animate-slide-in-right animate-highlight';
         row.innerHTML = `
             <span class="bg-green-500/20 text-green-400 text-xs font-mono font-semibold px-2 py-0.5 rounded flex-shrink-0">SUCCESS</span>
             <span class="text-white font-mono text-xs">${data.publicData.email}</span>
@@ -60,8 +62,9 @@ window.Echo.channel('success-monitor-public')
             <span class="text-gray-400 text-xs">x${data.publicData.qty}</span>
             <span class="text-gray-600 text-xs ml-auto">just now</span>
         `;
-        container.prepend(row);
-        setTimeout(() => row.classList.remove('animate-pulse'), 2000);
+        if (container) {
+            container.prepend(row);
+        }
     });
 </script>
 @endpush

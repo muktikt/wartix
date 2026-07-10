@@ -17,7 +17,7 @@
                 autofocus>
         </div>
         <button type="submit"
-            class="bg-indigo-600 text-white text-sm px-5 py-2.5 rounded-xl hover:bg-indigo-700">
+            class="bg-indigo-600 text-white text-sm px-5 py-2.5 rounded-xl hover:bg-indigo-700 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0">
             Cari
         </button>
     </div>
@@ -26,7 +26,7 @@
 @if($q && strlen($q) >= 2)
 
 {{-- Tabs --}}
-<div class="flex gap-1 mb-4 border-b border-gray-100">
+<div class="flex gap-1 mb-4 border-b border-gray-100 animate-fade-in-up">
     @php
     $tabs = [
         'all'     => 'Semua',
@@ -47,7 +47,7 @@
 
 {{-- Orders Results --}}
 @if(in_array($tab, ['all', 'orders']) && !empty($results['orders']))
-<div class="bg-white border border-gray-100 rounded-xl overflow-hidden mb-4">
+<div class="bg-white border border-gray-100 rounded-xl overflow-hidden mb-4 animate-fade-in-up">
     <div class="px-4 py-3 bg-gray-50 border-b border-gray-100">
         <span class="text-xs font-semibold text-gray-700">Orders</span>
     </div>
@@ -63,7 +63,7 @@
         </thead>
         <tbody class="divide-y divide-gray-50">
             @foreach($results['orders'] as $order)
-            <tr class="hover:bg-gray-50">
+            <tr class="hover:bg-gray-50 transition-colors">
                 <td class="px-4 py-2.5 text-xs font-mono font-medium text-indigo-600">
                     {{ $order->order_code }}
                 </td>
@@ -104,13 +104,13 @@
 
 {{-- Events Results --}}
 @if(in_array($tab, ['all', 'events']) && !empty($results['events']))
-<div class="bg-white border border-gray-100 rounded-xl overflow-hidden mb-4">
+<div class="bg-white border border-gray-100 rounded-xl overflow-hidden mb-4 animate-fade-in-up" style="animation-delay: 60ms; opacity: 0;">
     <div class="px-4 py-3 bg-gray-50 border-b border-gray-100">
         <span class="text-xs font-semibold text-gray-700">Events</span>
     </div>
     <div class="divide-y divide-gray-50">
         @foreach($results['events'] as $event)
-        <div class="flex items-center justify-between px-4 py-3 hover:bg-gray-50">
+        <div class="flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors">
             <div>
                 <p class="text-sm font-medium text-gray-900">{{ $event->title }}</p>
                 <p class="text-xs text-gray-400">{{ $event->artist_name }} — {{ $event->city }}</p>
@@ -127,8 +127,8 @@
 
 {{-- No Results --}}
 @if(empty($results['orders']) && empty($results['events']) && empty($results['payments']) && empty($results['logs']))
-<div class="text-center py-16 bg-white border border-gray-100 rounded-xl">
-    <svg class="w-10 h-10 text-gray-200 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<div class="text-center py-16 bg-white border border-gray-100 rounded-xl animate-fade-in-up">
+    <svg class="w-10 h-10 text-gray-200 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="animation: successPop 0.5s cubic-bezier(0.16, 1, 0.3, 1);">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
     </svg>

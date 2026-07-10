@@ -27,17 +27,17 @@
         <option value="failed" {{ request('status') === 'failed' ? 'selected' : '' }}>Failed</option>
     </select>
     <button type="submit"
-        class="bg-indigo-600 text-white text-sm px-4 py-2 rounded-xl hover:bg-indigo-700">
+        class="bg-indigo-600 text-white text-sm px-4 py-2 rounded-xl hover:bg-indigo-700 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0">
         Filter
     </button>
     <a href="{{ route('admin.monitor.index') }}"
-        class="text-sm text-gray-500 px-4 py-2 border border-gray-200 rounded-xl hover:bg-gray-50">
+        class="text-sm text-gray-500 px-4 py-2 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">
         Reset
     </a>
 </form>
 
 {{-- Live Feed --}}
-<div class="bg-white border border-gray-100 rounded-xl overflow-hidden mb-5">
+<div class="bg-white border border-gray-100 rounded-xl overflow-hidden mb-5 reveal" x-data x-intersect.once="$el.classList.add('reveal-visible')">
     <div class="px-4 py-3 bg-gray-50 border-b border-gray-100 flex items-center gap-2">
         <span class="text-xs font-medium text-gray-700">Live Feed</span>
         <span class="text-xs text-gray-400">(update otomatis)</span>
@@ -50,7 +50,7 @@
 </div>
 
 {{-- History Table --}}
-<div class="bg-white border border-gray-100 rounded-xl overflow-hidden">
+<div class="bg-white border border-gray-100 rounded-xl overflow-hidden reveal" x-data x-intersect.once="$el.classList.add('reveal-visible')" style="transition-delay: 80ms">
     <div class="px-4 py-3 bg-gray-50 border-b border-gray-100">
         <span class="text-xs font-medium text-gray-700">History Log</span>
     </div>
@@ -117,7 +117,7 @@ window.Echo.channel('success-monitor-admin')
 
         // Add to live feed
         const feedRow = document.createElement('div');
-        feedRow.className = 'flex items-center gap-3 px-4 py-2.5 bg-green-50 border-l-2 border-green-500 animate-pulse';
+        feedRow.className = 'flex items-center gap-3 px-4 py-2.5 border-l-2 border-green-500 animate-slide-in-right animate-highlight';
         feedRow.innerHTML = `
             <span class="text-xs bg-green-500 text-white px-2 py-0.5 rounded font-semibold">SUCCESS</span>
             <span class="text-xs font-medium text-gray-900">${d.order_code}</span>
@@ -125,11 +125,11 @@ window.Echo.channel('success-monitor-admin')
             <span class="text-xs text-gray-400 ml-auto">${d.event} | ${d.phase} | ${d.category} x${d.qty}</span>
         `;
         feed.prepend(feedRow);
-        setTimeout(() => feedRow.classList.remove('animate-pulse', 'bg-green-50', 'border-green-500'), 3000);
+        setTimeout(() => feedRow.classList.remove('border-green-500'), 2000);
 
         // Add to table
         const tableRow = document.createElement('tr');
-        tableRow.className = 'hover:bg-gray-50 bg-green-50 transition-colors';
+        tableRow.className = 'hover:bg-gray-50 transition-colors animate-highlight';
         tableRow.innerHTML = `
             <td class="px-4 py-3 text-xs font-mono text-gray-700">${d.order_code}</td>
             <td class="px-4 py-3 text-xs text-gray-600">${d.email}</td>
@@ -143,7 +143,6 @@ window.Echo.channel('success-monitor-admin')
             <td class="px-4 py-3 text-xs text-gray-400">just now</td>
         `;
         table.prepend(tableRow);
-        setTimeout(() => tableRow.classList.remove('bg-green-50'), 3000);
     });
 </script>
 @endsection

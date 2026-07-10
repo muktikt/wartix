@@ -5,8 +5,8 @@
 @section('content')
 <div class="mb-4">
     <a href="{{ route('admin.orders.index') }}"
-        class="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        class="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 transition-all duration-200 hover:-translate-x-0.5 group">
+        <svg class="w-4 h-4 transition-transform group-hover:-translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
         </svg>
         Kembali ke Orders
@@ -19,7 +19,7 @@
     <div class="col-span-2 space-y-4">
 
         {{-- Order Info --}}
-        <div class="bg-white border border-gray-100 rounded-xl p-5">
+        <div class="bg-white border border-gray-100 rounded-xl p-5 reveal" x-data x-intersect.once="$el.classList.add('reveal-visible')">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-sm font-semibold text-gray-900">Order Information</h3>
                 <div class="flex items-center gap-2">
@@ -87,13 +87,13 @@
                 <form action="{{ route('admin.orders.destroy', $order) }}" method="POST" onsubmit="return confirm('Yakin hapus order ini?');">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="bg-red-600 hover:bg-red-700 text-white text-sm font-semibold px-4 py-2 rounded-xl">Hapus Order</button>
+                    <button type="submit" class="bg-red-600 hover:bg-red-700 text-white text-sm font-semibold px-4 py-2 rounded-xl transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0">Hapus Order</button>
                 </form>
             </div>
         </div>
 
         {{-- Buyer Info --}}
-        <div class="bg-white border border-gray-100 rounded-xl p-5">
+        <div class="bg-white border border-gray-100 rounded-xl p-5 reveal" x-data x-intersect.once="$el.classList.add('reveal-visible')" style="transition-delay: 60ms">
             <div class="flex items-center gap-2 mb-4">
                 <h3 class="text-sm font-semibold text-gray-900">Buyer Information</h3>
                 @if($order->guests->count())
@@ -224,7 +224,7 @@
     <div class="space-y-4">
 
         {{-- Payment Info --}}
-        <div class="bg-white border border-gray-100 rounded-xl p-5">
+        <div class="bg-white border border-gray-100 rounded-xl p-5 reveal" x-data x-intersect.once="$el.classList.add('reveal-visible')">
             <h3 class="text-sm font-semibold text-gray-900 mb-4">Payment Information</h3>
             <div class="space-y-2">
                 @if($order->ticket_price_total > 0)
@@ -278,7 +278,7 @@
         </div>
 
         {{-- Telegram Info --}}
-        <div class="bg-white border border-gray-100 rounded-xl p-5">
+        <div class="bg-white border border-gray-100 rounded-xl p-5 reveal" x-data x-intersect.once="$el.classList.add('reveal-visible')" style="transition-delay: 60ms">
             <h3 class="text-sm font-semibold text-gray-900 mb-4">Telegram Information</h3>
             <div class="space-y-2">
                 <div class="flex justify-between text-xs">
@@ -299,7 +299,7 @@
         </div>
 
         {{-- Update Status --}}
-        <div class="bg-white border border-gray-100 rounded-xl p-5">
+        <div class="bg-white border border-gray-100 rounded-xl p-5 reveal" x-data x-intersect.once="$el.classList.add('reveal-visible')" style="transition-delay: 120ms">
             <h3 class="text-sm font-semibold text-gray-900 mb-4">Update Status</h3>
             <form action="{{ route('admin.orders.status', $order) }}" method="POST">
                 @csrf
@@ -313,14 +313,14 @@
                     @endforeach
                 </select>
                 <button type="submit"
-                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2.5 rounded-xl transition-colors">
+                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2.5 rounded-xl transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0">
                     Update Status
                 </button>
             </form>
         </div>
 
         {{-- Admin Notes --}}
-        <div class="bg-white border border-gray-100 rounded-xl p-5">
+        <div class="bg-white border border-gray-100 rounded-xl p-5 reveal" x-data x-intersect.once="$el.classList.add('reveal-visible')" style="transition-delay: 180ms">
             <h3 class="text-sm font-semibold text-gray-900 mb-3">Admin Notes</h3>
             <p class="text-sm text-gray-500 italic">{{ $order->notes ?? 'Tidak ada catatan.' }}</p>
         </div>
@@ -332,13 +332,13 @@
 function toggleNik() {
     const masked = document.getElementById('nikDisplay');
     const full   = document.getElementById('nikFull');
-    if (masked.classList.contains('hidden')) {
-        masked.classList.remove('hidden');
-        full.classList.add('hidden');
-    } else {
-        masked.classList.add('hidden');
-        full.classList.remove('hidden');
-    }
+    const showing = masked.classList.contains('hidden');
+    (showing ? masked : full).classList.remove('hidden');
+    (showing ? full : masked).classList.add('hidden');
+    const revealed = showing ? masked : full;
+    revealed.classList.remove('animate-fade-in');
+    void revealed.offsetWidth;
+    revealed.classList.add('animate-fade-in');
 }
 </script>
 
@@ -356,8 +356,11 @@ window.Echo.channel('orders-admin')
             failed:  'bg-red-50 text-red-700',
         };
 
-        badge.className = 'text-xs px-2.5 py-1 rounded-lg font-medium ' + (colorMap[data.payment_status] || 'bg-gray-100 text-gray-500');
+        badge.className = 'text-xs px-2.5 py-1 rounded-lg font-medium inline-block ' + (colorMap[data.payment_status] || 'bg-gray-100 text-gray-500');
         badge.textContent = 'Payment: ' + data.payment_status.charAt(0).toUpperCase() + data.payment_status.slice(1);
+        badge.style.animation = 'none';
+        void badge.offsetWidth;
+        badge.style.animation = 'successPop 0.35s cubic-bezier(0.16, 1, 0.3, 1)';
     });
 </script>
 @endsection

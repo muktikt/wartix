@@ -37,7 +37,7 @@
         <div class="flex items-center h-14 gap-6">
 
             {{-- Logo --}}
-            <a href="{{ route('home') }}" class="flex items-center gap-2 flex-shrink-0 -ml-5 sm:-ml-8">
+            <a href="{{ route('home') }}" class="flex items-center gap-2 flex-shrink-0 -ml-5 sm:-ml-8 transition-transform duration-300 ease-out hover:scale-[1.03]">
                 <img src="{{ asset('images/logo-w.png') }}"
                     alt="Wartix"
                     class="h-10 sm:h-11 w-auto max-w-[210px] object-contain">
@@ -47,28 +47,32 @@
             {{-- Nav Links --}}
             <div class="hidden md:flex items-center gap-1 flex-1">
                 <a href="{{ route('home') }}#active-events"
-                    class="px-3 py-1.5 text-sm rounded-lg transition-colors text-gray-600 hover:text-gray-900 hover:bg-gray-50">
+                    class="relative px-3 py-1.5 text-sm rounded-lg transition-colors text-gray-600 hover:text-gray-900 hover:bg-gray-50 group">
                     Events
+                    <span class="absolute left-3 right-3 -bottom-0 h-0.5 bg-indigo-500 rounded-full scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300 ease-out"></span>
                 </a>
                 <a href="{{ route('home') }}#monitor"
-                    class="px-3 py-1.5 text-sm rounded-lg transition-colors
+                    class="relative px-3 py-1.5 text-sm rounded-lg transition-colors group
                     {{ request()->routeIs('monitor') ? 'text-indigo-600 bg-indigo-50' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50' }}">
                     Realtime Monitor
+                    <span class="absolute left-3 right-3 -bottom-0 h-0.5 bg-indigo-500 rounded-full scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300 ease-out"></span>
                 </a>
                 <a href="{{ route('home') }}#cara-order"
-                    class="px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors">
+                    class="relative px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors group">
                     Cara Order
+                    <span class="absolute left-3 right-3 -bottom-0 h-0.5 bg-indigo-500 rounded-full scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300 ease-out"></span>
                 </a>
                 <a href="{{ route('home') }}#faq"
-                    class="px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors">
+                    class="relative px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors group">
                     FAQ
+                    <span class="absolute left-3 right-3 -bottom-0 h-0.5 bg-indigo-500 rounded-full scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300 ease-out"></span>
                 </a>
             </div>
 
             {{-- CTA --}}
             <div class="ml-auto flex items-center gap-2">
                 <a href="{{ $telegramLink }}" target="_blank" rel="noopener noreferrer"
-                    class="flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-3.5 py-1.5 rounded-lg transition-colors">
+                    class="flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-3.5 py-1.5 rounded-lg transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                         <path d="M9.04 15.38 8.9 19.33c.42 0 .6-.18.83-.4l1.98-1.9 4.1 3c.75.42 1.29.2 1.48-.7l2.68-12.63c.24-1.12-.4-1.56-1.14-1.28L3.8 9.56c-1.1.43-1.08 1.05-.2 1.33l4.05 1.26 9.4-5.92c.44-.29.84-.13.51.17z"/>
                     </svg>
@@ -80,7 +84,7 @@
 </nav>
 
 {{-- PAGE CONTENT --}}
-<div class="animate-fade-in">
+<div class="animate-fade-in-up">
     @yield('content')
 </div>
 
@@ -132,7 +136,7 @@
 
 {{-- Floating Telegram Button --}}
 <a href="{{ $telegramLink }}" target="_blank" rel="noopener noreferrer"
-    class="fixed bottom-6 right-6 w-12 h-12 bg-[#229ED9] hover:bg-[#1e8dcc] text-white rounded-full flex items-center justify-center shadow-lg transition-colors z-50">
+    class="fixed bottom-6 right-6 w-12 h-12 bg-[#229ED9] hover:bg-[#1e8dcc] text-white rounded-full flex items-center justify-center shadow-lg transition-all duration-200 hover:scale-110 hover:shadow-xl active:scale-95 animate-pulse-soft z-50">
     <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <path d="M9.04 15.38 8.9 19.33c.42 0 .6-.18.83-.4l1.98-1.9 4.1 3c.75.42 1.29.2 1.48-.7l2.68-12.63c.24-1.12-.4-1.56-1.14-1.28L3.8 9.56c-1.1.43-1.08 1.05-.2 1.33l4.05 1.26 9.4-5.92c.44-.29.84-.13.51.17z"/>
     </svg>

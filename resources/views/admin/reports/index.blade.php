@@ -7,22 +7,24 @@
 <div class="grid grid-cols-4 gap-4 mb-5">
     @php
     $reportCards = [
-        ['label' => 'Total Orders',   'value' => number_format($stats['total_orders']),   'color' => 'indigo'],
-        ['label' => 'Success Orders', 'value' => number_format($stats['success_orders']), 'color' => 'green'],
-        ['label' => 'Failed Orders',  'value' => number_format($stats['failed_orders']),  'color' => 'red'],
-        ['label' => 'Total Revenue',  'value' => 'Rp '.number_format($stats['total_revenue']), 'color' => 'purple'],
+        ['label' => 'Total Orders',   'value' => $stats['total_orders'],   'prefix' => ''],
+        ['label' => 'Success Orders', 'value' => $stats['success_orders'], 'prefix' => ''],
+        ['label' => 'Failed Orders',  'value' => $stats['failed_orders'],  'prefix' => ''],
+        ['label' => 'Total Revenue',  'value' => $stats['total_revenue'],  'prefix' => 'Rp '],
     ];
     @endphp
-    @foreach($reportCards as $card)
-    <div class="bg-white border border-gray-100 rounded-xl p-4">
+    @foreach($reportCards as $i => $card)
+    <div class="bg-white border border-gray-100 rounded-xl p-4 reveal hover-lift"
+        x-data="counter({{ $card['value'] }})" x-intersect.once="$el.classList.add('reveal-visible'); start()"
+        style="transition-delay: {{ $i * 60 }}ms">
         <p class="text-xs text-gray-500 mb-1">{{ $card['label'] }}</p>
-        <p class="text-xl font-semibold text-gray-900">{{ $card['value'] }}</p>
+        <p class="text-xl font-semibold text-gray-900">{{ $card['prefix'] }}<span x-text="display.toLocaleString('id-ID')"></span></p>
     </div>
     @endforeach
 </div>
 
 {{-- Filter --}}
-<form method="GET" class="bg-white border border-gray-100 rounded-xl p-4 mb-5">
+<form method="GET" class="bg-white border border-gray-100 rounded-xl p-4 mb-5 reveal" x-data x-intersect.once="$el.classList.add('reveal-visible')">
     <div class="grid grid-cols-4 gap-3 mb-3">
         <div>
             <label class="block text-xs text-gray-500 mb-1">Event</label>
@@ -59,18 +61,18 @@
     </div>
     <div class="flex gap-2">
         <button type="submit"
-            class="bg-indigo-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-indigo-700">
+            class="bg-indigo-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0">
             Filter
         </button>
         <a href="{{ route('admin.reports.index') }}"
-            class="text-sm text-gray-500 px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50">
+            class="text-sm text-gray-500 px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
             Reset
         </a>
     </div>
 </form>
 
 {{-- Table --}}
-<div class="bg-white border border-gray-100 rounded-xl overflow-hidden">
+<div class="bg-white border border-gray-100 rounded-xl overflow-hidden reveal" x-data x-intersect.once="$el.classList.add('reveal-visible')" style="transition-delay: 100ms">
     <table class="w-full">
         <thead class="bg-gray-50 border-b border-gray-100">
             <tr>

@@ -23,12 +23,12 @@
                     class="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
             </div>
             <button type="submit"
-                class="bg-indigo-600 text-white text-sm px-5 py-2.5 rounded-xl hover:bg-indigo-700">
+                class="bg-indigo-600 text-white text-sm px-5 py-2.5 rounded-xl hover:bg-indigo-700 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0">
                 Cari
             </button>
             @if(request()->hasAny(['q','city','type','platform','status','month']))
             <a href="{{ route('events.index') }}"
-                class="text-sm text-gray-500 px-4 py-2.5 border border-gray-200 rounded-xl hover:bg-gray-50">
+                class="text-sm text-gray-500 px-4 py-2.5 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">
                 Reset
             </a>
             @endif
@@ -87,7 +87,9 @@
     @else
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
         @foreach($events as $event)
-            @include('public.events._card', ['event' => $event])
+            <div class="reveal" x-data x-intersect.once="$el.classList.add('reveal-visible')" style="transition-delay: {{ min($loop->index, 8) * 60 }}ms">
+                @include('public.events._card', ['event' => $event])
+            </div>
         @endforeach
     </div>
 
