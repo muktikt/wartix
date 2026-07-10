@@ -139,7 +139,7 @@
                 <div class="text-3xl font-bold text-indigo-600 mb-1"
                     x-data="counter({{ $stat['value'] }})"
                     x-intersect.once="start()">
-                    <span x-text="display.toLocaleString('id-ID')"></span>{{ $stat['suffix'] }}
+                    <span x-text="display.toLocaleString('id-ID')">{{ number_format($stat['value']) }}</span>{{ $stat['suffix'] }}
                 </div>
                 <div class="text-sm font-medium text-gray-900">{{ $stat['label'] }}</div>
                 <div class="text-xs text-gray-400 mt-0.5">{{ $stat['sub'] }}</div>

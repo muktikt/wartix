@@ -15,6 +15,24 @@
     <title>@yield('title', 'Wartix Priority Ticket Assistance')</title>
     <meta name="description" content="@yield('meta-description', 'Wartix membantu kamu mendapatkan tiket konser, festival, dan fanmeeting dengan Priority Access, Realtime Monitoring, dan update via Telegram.')">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    {{-- Fail-safe for scroll-reveal: if Alpine/app.js fails to load, errors,
+         or the built assets are missing on the server, this makes sure
+         content isn't left permanently invisible. --}}
+    <script>
+        (function () {
+            function forceReveal() {
+                document.querySelectorAll('.reveal').forEach(function (el) {
+                    el.classList.add('reveal-visible');
+                });
+            }
+            window.addEventListener('load', function () { setTimeout(forceReveal, 2500); });
+            window.addEventListener('error', forceReveal);
+        })();
+    </script>
+    <noscript>
+        <style>.reveal { opacity: 1 !important; transform: none !important; }</style>
+    </noscript>
     {{-- SEO --}}
     <meta name="robots" content="index, follow">
     <meta property="og:title" content="@yield('title', 'Wartix Priority Ticket Assistance')">

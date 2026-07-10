@@ -21,7 +21,7 @@
         x-data="counter({{ $card['value'] }})" x-intersect.once="$el.classList.add('reveal-visible'); start()"
         style="transition-delay: {{ $loop->index * 60 }}ms">
         <p class="text-xs text-gray-500 mb-1">{{ $card['label'] }}</p>
-        <p class="text-2xl font-semibold text-gray-900" x-text="display.toLocaleString('id-ID')"></p>
+        <p class="text-2xl font-semibold text-gray-900" x-text="display.toLocaleString('id-ID')">{{ number_format($card['value']) }}</p>
     </div>
     @endforeach
 </div>
@@ -32,7 +32,7 @@
         x-data="counter({{ $stats['total_revenue'] }})" x-intersect.once="$el.classList.add('reveal-visible'); start()">
         <p class="text-xs text-gray-500 mb-1">Total Revenue</p>
         <p class="text-2xl font-semibold text-gray-900">
-            Rp <span x-text="display.toLocaleString('id-ID')"></span>
+            Rp <span x-text="display.toLocaleString('id-ID')">{{ number_format($stats['total_revenue']) }}</span>
         </p>
     </div>
     <div class="bg-white border border-gray-100 rounded-xl p-4 reveal hover-lift"
@@ -40,7 +40,7 @@
         style="transition-delay: 60ms">
         <p class="text-xs text-gray-500 mb-1">Success Rate</p>
         <p class="text-2xl font-semibold text-gray-900">
-            <span x-text="display.toLocaleString('id-ID')"></span>%
+            <span x-text="display.toLocaleString('id-ID')">{{ $stats['success_rate'] }}</span>%
         </p>
     </div>
 </div>

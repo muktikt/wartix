@@ -1,8 +1,6 @@
-import './bootstrap';
 import Alpine from 'alpinejs';
 import collapse from '@alpinejs/collapse';
 import intersect from '@alpinejs/intersect';
-import './echo';
 
 Alpine.plugin(collapse);
 Alpine.plugin(intersect);
@@ -51,3 +49,9 @@ Alpine.data('counter', (target = 0, duration = 900) => ({
 
 window.Alpine = Alpine;
 Alpine.start();
+
+// Bootstrap (axios defaults) and realtime (Echo/Reverb) are loaded *after*
+// Alpine has already started, and wrapped so that if either fails — e.g. a
+// missing VITE_REVERB_APP_KEY in production — it can never take down Alpine,
+// animations, or any other UI interactivity on the page.
+import('./bootstrap').catch((e) => console.warn('bootstrap.js failed to load:', e));

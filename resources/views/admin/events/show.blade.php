@@ -113,7 +113,7 @@
         x-data="counter({{ $card['value'] }})" x-intersect.once="$el.classList.add('reveal-visible'); start()"
         style="transition-delay: {{ $i * 60 }}ms">
         <p class="text-xs text-gray-400 mb-1">{{ $card['label'] }}</p>
-        <p class="text-xl font-semibold text-gray-900">{{ $card['prefix'] }}<span x-text="display.toLocaleString('id-ID')"></span></p>
+        <p class="text-xl font-semibold text-gray-900">{{ $card['prefix'] }}<span x-text="display.toLocaleString('id-ID')">{{ number_format($card['value']) }}</span></p>
     </div>
     @endforeach
 </div>
