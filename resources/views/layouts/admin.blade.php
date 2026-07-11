@@ -83,15 +83,7 @@
                     </svg>
                     Reports
                 </a>
-                <a href="{{ route('admin.search.index') }}"
-                    class="sidebar-link flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm
-                    {{ request()->routeIs('admin.search.*') ? 'bg-indigo-50 text-indigo-600 font-medium' : 'text-gray-600 hover:bg-gray-50' }}">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                    </svg>
-                    Global Search
-                </a>
+
             </div>
 
             <div class="px-3 mt-3 mb-1">
