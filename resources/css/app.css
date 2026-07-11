@@ -179,43 +179,43 @@
    ============================================================ */
 
 .animate-fade-in-up {
-    animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
 }
 
 .animate-fade-in {
-    animation: fadeIn 0.5s ease-out both;
+    animation: fadeIn 0.5s ease-out forwards !important;
 }
 
 .animate-fade-in-down {
-    animation: fadeInDown 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: fadeInDown 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
 }
 
 .animate-slide-in-left {
-    animation: slideInLeft 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: slideInLeft 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
 }
 
 .animate-slide-in-right {
-    animation: slideInRight 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: slideInRight 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
 }
 
 .animate-scale-in {
-    animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
 }
 
 .animate-pulse-soft {
-    animation: pulseSoft 3s ease-in-out infinite;
+    animation: pulseSoft 3s ease-in-out infinite !important;
 }
 
 .animate-float {
-    animation: float 3s ease-in-out infinite;
+    animation: float 3s ease-in-out infinite !important;
 }
 
 .animate-slide-row {
-    animation: slideRow 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: slideRow 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
 }
 
 .animate-count-up {
-    animation: countUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: countUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
 }
 
 /* ============================================================
@@ -341,10 +341,8 @@
    ============================================================ */
 
 .scroll-animate {
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 1 !important;
+    transform: none !important;
 }
 
 .scroll-animate.scroll-animate-left {
