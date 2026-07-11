@@ -134,8 +134,8 @@
                 ['value' => $stats['active_events'],     'label' => 'Active Events',   'sub' => 'Event berlangsung'],
             ];
             @endphp
-            @foreach($statsDisplay as $stat)
-            <div class="py-8 px-6 text-center transition-all duration-300 hover:bg-gray-50">
+            @foreach($statsDisplay as $i => $stat)
+            <div class="py-8 px-6 text-center transition-all duration-300 hover:bg-gray-50 reveal-on-scroll" data-delay="{{ $i * 100 }}">
                 <div class="text-3xl font-bold text-indigo-600 mb-1">{{ $stat['value'] }}</div>
                 <div class="text-sm font-medium text-gray-900">{{ $stat['label'] }}</div>
                 <div class="text-xs text-gray-400 mt-0.5">{{ $stat['sub'] }}</div>
@@ -148,7 +148,7 @@
 {{-- ACTIVE EVENTS --}}
 <section class="py-14 px-4" id="active-events">
     <div class="max-w-7xl mx-auto">
-        <div class="flex items-end justify-between mb-8">
+        <div class="flex items-end justify-between mb-8 reveal-on-scroll">
             <div>
                 <h2 class="text-2xl font-bold text-gray-900">Active Events</h2>
                 <p class="text-sm text-gray-500 mt-1">Event yang sedang tersedia untuk order</p>
@@ -167,8 +167,8 @@
             </div>
         @else
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            @foreach($activeEvents as $event)
-            <div>
+            @foreach($activeEvents as $i => $event)
+            <div class="reveal-on-scroll" data-delay="{{ $i * 100 }}">
                 @include('public.events._card', ['event' => $event])
             </div>
             @endforeach
@@ -180,13 +180,13 @@
 {{-- REALTIME MONITOR --}}
 <section class="bg-gray-900 py-12 px-4" id="monitor">
     <div class="max-w-7xl mx-auto">
-        <div class="flex items-center gap-3 mb-6">
+        <div class="flex items-center gap-3 mb-6 reveal-on-scroll">
             <div class="w-2 h-2 bg-green-400 rounded-full live-indicator"></div>
             <h2 class="text-lg font-semibold text-white">Realtime Success Monitor</h2>
             <span class="text-xs text-gray-500 ml-auto">Data tersensor untuk privasi pengguna</span>
         </div>
         <div class="space-y-2">
-            @forelse($recentSuccess as $log)
+            @forelse($recentSuccess as $i => $log)
             @php
                 $email    = \App\Services\MaskService::email($log->email ?? 'us***@example.com');
                 $event    = $log->event->title ?? '-';
@@ -194,7 +194,7 @@
                 $category = $log->ticketCategory->name ?? '-';
                 $qty      = $log->qty;
             @endphp
-            <div class="flex items-center gap-3 bg-gray-800 rounded-xl px-4 py-2.5 text-sm overflow-x-auto hover:bg-gray-750 transition-colors duration-200">
+            <div class="flex items-center gap-3 bg-gray-800 rounded-xl px-4 py-2.5 text-sm overflow-x-auto hover:bg-gray-750 transition-colors duration-200 reveal-on-scroll" data-delay="{{ $i * 80 }}">
                 <span class="bg-green-500/20 text-green-400 text-xs font-semibold px-2 py-0.5 rounded flex-shrink-0">SUCCESS</span>
                 <span class="text-white font-medium flex-shrink-0">{{ $email }}</span>
                 <span class="text-gray-600">|</span>
@@ -226,7 +226,7 @@
 {{-- CARA ORDER --}}
 <section class="py-14 px-4 bg-white" id="cara-order">
     <div class="max-w-7xl mx-auto">
-        <div class="flex items-center gap-3 mb-6">
+        <div class="flex items-center gap-3 mb-6 reveal-on-scroll">
             <div class="w-2 h-2 bg-indigo-500 rounded-full live-indicator"></div>
             <h2 class="text-lg font-semibold text-gray-900">Cara Order</h2>
             <span class="text-xs text-gray-500 ml-auto">Langkah order dari awal sampai selesai</span>
@@ -242,7 +242,7 @@
                 ];
             @endphp
 
-            <div class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover-glow transition-all duration-300">
+            <div class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover-glow transition-all duration-300 reveal-on-scroll" data-delay="100">
                 <div class="flex items-center justify-between mb-4">
                     <div class="flex items-center gap-2">
                         <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -270,7 +270,7 @@
                 </div>
             </div>
 
-            <div class="bg-gradient-to-br from-indigo-50 via-white to-purple-50 border border-gray-100 rounded-2xl p-5 shadow-sm hover-glow transition-all duration-300">
+            <div class="bg-gradient-to-br from-indigo-50 via-white to-purple-50 border border-gray-100 rounded-2xl p-5 shadow-sm hover-glow transition-all duration-300 reveal-on-scroll" data-delay="200">
                 <div class="flex items-center gap-2 mb-4">
                     <svg class="w-4 h-4 text-indigo-600 animate-float" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
@@ -299,8 +299,8 @@
 {{-- FAQ --}}
 <section class="py-14 px-4 bg-white" id="faq">
     <div class="max-w-2xl mx-auto">
-        <h2 class="text-2xl font-bold text-gray-900 text-center mb-2">FAQ</h2>
-        <p class="text-gray-500 text-sm text-center mb-8">Pertanyaan yang sering ditanyakan</p>
+        <h2 class="text-2xl font-bold text-gray-900 text-center mb-2 reveal-on-scroll">FAQ</h2>
+        <p class="text-gray-500 text-sm text-center mb-8 reveal-on-scroll" data-delay="100">Pertanyaan yang sering ditanyakan</p>
 
         @php
         $faqs = [
@@ -314,7 +314,7 @@
 
         <div class="space-y-3" x-data="{ open: null }">
             @foreach($faqs as $i => $faq)
-            <div class="border border-gray-100 rounded-xl overflow-hidden hover-glow transition-all duration-300">
+            <div class="border border-gray-100 rounded-xl overflow-hidden hover-glow transition-all duration-300 reveal-on-scroll" data-delay="{{ $i * 80 }}">
                 <button
                     class="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-gray-50 transition-all duration-200"
                     @click="open = open === {{ $i }} ? null : {{ $i }}">

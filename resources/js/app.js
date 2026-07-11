@@ -9,14 +9,16 @@ Alpine.start();
 
 /**
  * Scroll-triggered animations via Intersection Observer.
- * Elements with the class `.scroll-animate` will fade/slide into view
+ * Elements with the class `.reveal-on-scroll` will fade/slide into view
  * once they enter the viewport. Stagger delays can be added with
- * `data-delay="<ms>"` or the `.anim-delay-*` utility classes.
+ * `data-delay="<ms>"`.
  */
-const initScrollAnimations = () => {
-    // If browser doesn't support IntersectionObserver, show all elements immediately
+const initScrollReveal = () => {
+    // Add js-loaded class to body to enable scroll animation styles safely
+    document.body.classList.add('js-loaded');
+
     if (!('IntersectionObserver' in window)) {
-        document.querySelectorAll('.scroll-animate').forEach((el) => {
+        document.querySelectorAll('.reveal-on-scroll').forEach((el) => {
             el.classList.add('is-visible');
         });
         return;
@@ -34,16 +36,16 @@ const initScrollAnimations = () => {
                 }
             });
         },
-        { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+        { threshold: 0.05, rootMargin: '0px 0px -30px 0px' }
     );
 
-    document.querySelectorAll('.scroll-animate').forEach((el) => {
+    document.querySelectorAll('.reveal-on-scroll').forEach((el) => {
         observer.observe(el);
     });
 };
 
 if (document.readyState === 'interactive' || document.readyState === 'complete') {
-    initScrollAnimations();
+    initScrollReveal();
 } else {
-    document.addEventListener('DOMContentLoaded', initScrollAnimations);
+    document.addEventListener('DOMContentLoaded', initScrollReveal);
 }
