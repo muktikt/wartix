@@ -43,10 +43,12 @@ class AdminNotification extends Model
      */
     public static function notifyNewOrder(Order $order): self
     {
+        $eventName = $order->event->title ?? 'event';
+
         return static::create([
             'type'     => 'order_created',
             'title'    => 'Order Baru Masuk',
-            'message'  => "{$order->full_name} order {$order->qty} tiket untuk {$order->event->title ?? 'event'}",
+            'message'  => "{$order->full_name} order {$order->qty} tiket untuk {$eventName}",
             'icon'     => 'cart',
             'color'    => 'indigo',
             'link'     => route('admin.orders.show', $order->id),
