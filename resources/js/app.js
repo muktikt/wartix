@@ -13,7 +13,15 @@ Alpine.start();
  * once they enter the viewport. Stagger delays can be added with
  * `data-delay="<ms>"` or the `.anim-delay-*` utility classes.
  */
-document.addEventListener('DOMContentLoaded', () => {
+const initScrollAnimations = () => {
+    // If browser doesn't support IntersectionObserver, show all elements immediately
+    if (!('IntersectionObserver' in window)) {
+        document.querySelectorAll('.scroll-animate').forEach((el) => {
+            el.classList.add('is-visible');
+        });
+        return;
+    }
+
     const observer = new IntersectionObserver(
         (entries) => {
             entries.forEach((entry) => {
@@ -32,4 +40,10 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.scroll-animate').forEach((el) => {
         observer.observe(el);
     });
-});
+};
+
+if (document.readyState === 'interactive' || document.readyState === 'complete') {
+    initScrollAnimations();
+} else {
+    document.addEventListener('DOMContentLoaded', initScrollAnimations);
+}
