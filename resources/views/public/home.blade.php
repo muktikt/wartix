@@ -11,19 +11,19 @@
         {{-- Left --}}
         <div>
             <div class="flex flex-wrap gap-2 mb-5">
-                <span class="inline-flex items-center gap-1.5 text-xs font-medium bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full animate-fade-in-up" style="animation-delay: 0ms; opacity: 0;">
+                <span class="inline-flex items-center gap-1.5 text-xs font-medium bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full">
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                     </svg>
                     Priority Access
                 </span>
-                <span class="inline-flex items-center gap-1.5 text-xs font-medium bg-purple-50 text-purple-700 px-3 py-1 rounded-full animate-fade-in-up" style="animation-delay: 80ms; opacity: 0;">
+                <span class="inline-flex items-center gap-1.5 text-xs font-medium bg-purple-50 text-purple-700 px-3 py-1 rounded-full">
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
                     </svg>
                     Ticket Assistance
                 </span>
-                <span class="inline-flex items-center gap-1.5 text-xs font-medium bg-green-50 text-green-700 px-3 py-1 rounded-full animate-fade-in-up" style="animation-delay: 160ms; opacity: 0;">
+                <span class="inline-flex items-center gap-1.5 text-xs font-medium bg-green-50 text-green-700 px-3 py-1 rounded-full">
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
                     </svg>
@@ -31,16 +31,16 @@
                 </span>
             </div>
 
-            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-4 animate-fade-in-up" style="animation-delay: 220ms; opacity: 0;">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-4">
                 Priority Ticket Assistance<br>
                 <span class="text-indigo-600">for High-Demand Events</span>
             </h1>
 
-            <p class="text-gray-500 text-base leading-relaxed mb-8 max-w-md animate-fade-in-up" style="animation-delay: 300ms; opacity: 0;">
+            <p class="text-gray-500 text-base leading-relaxed mb-8 max-w-md">
                 Wartix membantu kamu mendapatkan tiket konser, festival, dan fanmeeting impian dengan layanan Ticket Assistance, Realtime Monitoring, dan notifikasi langsung via Telegram.
             </p>
 
-            <div class="flex flex-wrap gap-3 animate-fade-in-up" style="animation-delay: 380ms; opacity: 0;">
+            <div class="flex flex-wrap gap-3">
                 <a href="#active-events"
                     class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm px-5 py-2.5 rounded-xl transition-colors hover-lift">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -60,7 +60,7 @@
 
         {{-- Right --}}
         <div class="flex justify-center md:justify-end">
-            <div class="bg-white border border-gray-100 rounded-2xl p-5 w-full max-w-sm shadow-sm hover-lift animate-slide-in-right" style="animation-delay: 200ms; opacity: 0;">
+            <div class="bg-white border border-gray-100 rounded-2xl p-5 w-full max-w-sm shadow-sm">
                 <div class="flex items-center justify-between mb-4">
                     <div class="flex items-center gap-2">
                         <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -128,19 +128,15 @@
         <div class="grid grid-cols-2 md:grid-cols-4 divide-x divide-gray-100">
             @php
             $statsDisplay = [
-                ['value' => $stats['success_rate'], 'suffix' => '%', 'label' => 'Success Rate',     'sub' => 'Akun sukses'],
-                ['value' => $stats['total_accounts'], 'suffix' => '', 'label' => 'Total Accounts', 'sub' => 'Akun yang pernah order'],
-                ['value' => $stats['success_accounts'], 'suffix' => '', 'label' => 'Success Accounts', 'sub' => 'Akun yang berhasil'],
-                ['value' => $stats['active_events'], 'suffix' => '',   'label' => 'Active Events',   'sub' => 'Event berlangsung'],
+                ['value' => $stats['success_rate'].'%', 'label' => 'Success Rate',     'sub' => 'Akun sukses'],
+                ['value' => number_format($stats['total_accounts']), 'label' => 'Total Accounts', 'sub' => 'Akun yang pernah order'],
+                ['value' => number_format($stats['success_accounts']), 'label' => 'Success Accounts', 'sub' => 'Akun yang berhasil'],
+                ['value' => $stats['active_events'],     'label' => 'Active Events',   'sub' => 'Event berlangsung'],
             ];
             @endphp
             @foreach($statsDisplay as $stat)
             <div class="py-8 px-6 text-center">
-                <div class="text-3xl font-bold text-indigo-600 mb-1"
-                    x-data="counter({{ $stat['value'] }})"
-                    x-intersect.once="start()">
-                    <span x-text="display.toLocaleString('id-ID')">{{ number_format($stat['value']) }}</span>{{ $stat['suffix'] }}
-                </div>
+                <div class="text-3xl font-bold text-indigo-600 mb-1">{{ $stat['value'] }}</div>
                 <div class="text-sm font-medium text-gray-900">{{ $stat['label'] }}</div>
                 <div class="text-xs text-gray-400 mt-0.5">{{ $stat['sub'] }}</div>
             </div>
@@ -172,9 +168,7 @@
         @else
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             @foreach($activeEvents as $event)
-            <div class="reveal" x-data x-intersect.once="$el.classList.add('reveal-visible')" style="transition-delay: {{ min($loop->index, 5) * 70 }}ms">
-                @include('public.events._card', ['event' => $event])
-            </div>
+            @include('public.events._card', ['event' => $event])
             @endforeach
         </div>
         @endif
@@ -198,9 +192,7 @@
                 $category = $log->ticketCategory->name ?? '-';
                 $qty      = $log->qty;
             @endphp
-            <div class="flex items-center gap-3 bg-gray-800 rounded-xl px-4 py-2.5 text-sm overflow-x-auto reveal hover:bg-gray-700/60 transition-colors"
-                x-data x-intersect.once="$el.classList.add('reveal-visible')"
-                style="transition-delay: {{ min($loop->index, 6) * 50 }}ms">
+            <div class="flex items-center gap-3 bg-gray-800 rounded-xl px-4 py-2.5 text-sm overflow-x-auto">
                 <span class="bg-green-500/20 text-green-400 text-xs font-semibold px-2 py-0.5 rounded flex-shrink-0">SUCCESS</span>
                 <span class="text-white font-medium flex-shrink-0">{{ $email }}</span>
                 <span class="text-gray-600">|</span>
@@ -245,7 +237,7 @@
                 ];
             @endphp
 
-            <div class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm reveal hover-lift" x-data x-intersect.once="$el.classList.add('reveal-visible')">
+            <div class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
                 <div class="flex items-center justify-between mb-4">
                     <div class="flex items-center gap-2">
                         <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -273,7 +265,7 @@
                 </div>
             </div>
 
-            <div class="bg-gradient-to-br from-indigo-50 via-white to-purple-50 border border-gray-100 rounded-2xl p-5 shadow-sm reveal hover-lift" x-data x-intersect.once="$el.classList.add('reveal-visible')" style="transition-delay: 100ms">
+            <div class="bg-gradient-to-br from-indigo-50 via-white to-purple-50 border border-gray-100 rounded-2xl p-5 shadow-sm">
                 <div class="flex items-center gap-2 mb-4">
                     <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
@@ -317,15 +309,13 @@
 
         <div class="space-y-3" x-data="{ open: null }">
             @foreach($faqs as $i => $faq)
-            <div class="border border-gray-100 rounded-xl overflow-hidden reveal transition-shadow hover:shadow-sm"
-                x-intersect.once="$el.classList.add('reveal-visible')"
-                style="transition-delay: {{ $i * 60 }}ms">
+            <div class="border border-gray-100 rounded-xl overflow-hidden">
                 <button
                     class="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-gray-50 transition-colors"
                     @click="open = open === {{ $i }} ? null : {{ $i }}">
                     <span class="text-sm font-medium text-gray-900">{{ $faq['q'] }}</span>
-                    <svg class="w-4 h-4 text-gray-400 transition-transform duration-300 flex-shrink-0"
-                        :class="open === {{ $i }} ? 'rotate-180 text-indigo-500' : ''"
+                    <svg class="w-4 h-4 text-gray-400 transition-transform flex-shrink-0"
+                        :class="open === {{ $i }} ? 'rotate-180' : ''"
                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                     </svg>

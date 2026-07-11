@@ -5,18 +5,9 @@
 @tailwind utilities;
 
 @layer base {
-    html {
-        scroll-behavior: smooth;
-    }
-
     body {
         font-family: 'Plus Jakarta Sans', sans-serif;
     }
-}
-
-/* Subtle table-row hover feedback, applied site-wide (public + admin tables) */
-table tbody tr {
-    transition: background-color 0.15s ease-in-out;
 }
 
 /* Custom CSS Animations (Placed outside Tailwind layers to prevent purge and ensure compile) */
@@ -85,66 +76,4 @@ table tbody tr {
 .hover-lift:hover {
     transform: translateY(-4px) !important;
     box-shadow: 0 12px 20px -8px rgba(99, 102, 241, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.05) !important;
-}
-
-/* Scroll-reveal: element starts hidden/offset, then Alpine's x-intersect toggles
-   `.reveal-visible` once it enters the viewport. Kept as a plain transition
-   (rather than a keyframe) so it feels calm and elegant, not bouncy. */
-.reveal {
-    opacity: 0;
-    transform: translateY(14px);
-    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.reveal-visible {
-    opacity: 1 !important;
-    transform: translateY(0) !important;
-}
-
-/* Gentle highlight used to draw the eye to a freshly-inserted realtime row */
-@keyframes highlightFade {
-    0% {
-        background-color: rgba(99, 102, 241, 0.18);
-    }
-    100% {
-        background-color: transparent;
-    }
-}
-
-.animate-highlight {
-    animation: highlightFade 1.8s ease-out forwards !important;
-}
-
-/* Gentle "pop" used for success confirmations and live-updated badges */
-@keyframes successPop {
-    0% { transform: scale(0.4); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
-}
-
-/* Respect users who prefer little to no motion */
-@media (prefers-reduced-motion: reduce) {
-    html {
-        scroll-behavior: auto;
-    }
-
-    .animate-fade-in-up,
-    .animate-fade-in,
-    .animate-slide-in-right,
-    .animate-pulse-soft,
-    .animate-highlight,
-    .reveal {
-        animation: none !important;
-        transition: none !important;
-        opacity: 1 !important;
-        transform: none !important;
-    }
-
-    .hover-lift:hover {
-        transform: none !important;
-    }
-
-    [style*="animation"] {
-        animation: none !important;
-        opacity: 1 !important;
-    }
 }

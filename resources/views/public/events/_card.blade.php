@@ -1,10 +1,10 @@
-<div class="bg-white border border-gray-100 rounded-2xl overflow-hidden hover-lift hover:shadow-md transition-shadow group">
+<div class="bg-white border border-gray-100 rounded-2xl overflow-hidden hover-lift hover:shadow-md transition-shadow">
     {{-- Banner --}}
     <div class="relative h-40 bg-gradient-to-br from-indigo-900 to-purple-900 overflow-hidden">
         @if($event->banner_image)
             <img src="{{ asset('storage/'.$event->banner_image) }}"
                 alt="{{ $event->title }}"
-                class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105">
+                class="w-full h-full object-cover">
         @else
             <div class="absolute inset-0 flex items-center justify-center">
                 <span class="text-white/60 text-sm font-medium text-center px-4">{{ $event->title }}</span>
@@ -86,7 +86,7 @@
         @endif
 
         <a href="{{ route('events.show', $event->slug) }}"
-            class="block w-full text-center bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium py-2 rounded-lg transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0">
+            class="block w-full text-center bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium py-2 rounded-lg transition-colors">
             View Detail
         </a>
     </div>

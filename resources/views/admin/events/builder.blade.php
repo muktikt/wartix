@@ -26,7 +26,7 @@
         <div class="col-span-2 space-y-4">
 
             {{-- Step 1: Platform --}}
-            <div class="bg-white border border-gray-100 rounded-xl p-5 reveal" x-data x-intersect.once="$el.classList.add('reveal-visible')">
+            <div class="bg-white border border-gray-100 rounded-xl p-5">
                 <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
                     <span class="w-5 h-5 bg-indigo-600 text-white rounded-full text-xs flex items-center justify-center">1</span>
                     Ticketing Platform
@@ -38,7 +38,7 @@
                             x-model="platform"
                             {{ ($isEdit ? $event->platform_type : old('platform_type', 'tiketcom')) === $val ? 'checked' : '' }}
                             class="sr-only peer">
-                        <div class="border-2 rounded-xl p-3 text-center transition-all duration-200 peer-checked:border-indigo-600 peer-checked:bg-indigo-50 border-gray-200 hover:border-gray-300 hover:-translate-y-0.5">
+                        <div class="border-2 rounded-xl p-3 text-center transition-all peer-checked:border-indigo-600 peer-checked:bg-indigo-50 border-gray-200 hover:border-gray-300">
                             <div class="text-sm font-medium text-gray-700 peer-checked:text-indigo-700">{{ $label }}</div>
                         </div>
                     </label>
@@ -47,7 +47,7 @@
             </div>
 
             {{-- Step 2: Event Info --}}
-            <div class="bg-white border border-gray-100 rounded-xl p-5 reveal" x-data x-intersect.once="$el.classList.add('reveal-visible')" style="transition-delay: 40ms">
+            <div class="bg-white border border-gray-100 rounded-xl p-5">
                 <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
                     <span class="w-5 h-5 bg-indigo-600 text-white rounded-full text-xs flex items-center justify-center">2</span>
                     Event Information
@@ -126,7 +126,7 @@
             </div>
 
             {{-- Step 3: Sale Phases --}}
-            <div class="bg-white border border-gray-100 rounded-xl p-5 reveal" x-data x-intersect.once="$el.classList.add('reveal-visible')" style="transition-delay: 80ms">
+            <div class="bg-white border border-gray-100 rounded-xl p-5">
                 <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
                     <span class="w-5 h-5 bg-indigo-600 text-white rounded-full text-xs flex items-center justify-center">3</span>
                     Sale Phases
@@ -197,13 +197,13 @@
                     @endif
                 </div>
                 <button type="button" onclick="addPhase()"
-                    class="mt-3 w-full border border-dashed border-indigo-300 text-indigo-600 text-xs py-2 rounded-xl hover:bg-indigo-50 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0">
+                    class="mt-3 w-full border border-dashed border-indigo-300 text-indigo-600 text-xs py-2 rounded-xl hover:bg-indigo-50 transition-colors">
                     + Tambah Sale Phase
                 </button>
             </div>
 
             {{-- Step 4: Categories & Fee --}}
-            <div class="bg-white border border-gray-100 rounded-xl p-5 reveal" x-data x-intersect.once="$el.classList.add('reveal-visible')" style="transition-delay: 120ms">
+            <div class="bg-white border border-gray-100 rounded-xl p-5">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-sm font-semibold text-gray-900 flex items-center gap-2">
                         <span class="w-5 h-5 bg-indigo-600 text-white rounded-full text-xs flex items-center justify-center">4</span>
@@ -277,12 +277,12 @@
                     @endif
                 </div>
                 <button type="button" onclick="addCategory()"
-                    class="mt-3 w-full border border-dashed border-indigo-300 text-indigo-600 text-xs py-2 rounded-xl hover:bg-indigo-50 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0">
+                    class="mt-3 w-full border border-dashed border-indigo-300 text-indigo-600 text-xs py-2 rounded-xl hover:bg-indigo-50 transition-colors">
                     + Tambah Kategori
                 </button>
             </div>
             {{-- Step 6: Custom Fields --}}
-            <div class="bg-white border border-gray-100 rounded-xl p-5 reveal" x-data x-intersect.once="$el.classList.add('reveal-visible')" style="transition-delay: 160ms">
+            <div class="bg-white border border-gray-100 rounded-xl p-5">
                 <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
                     <span class="w-5 h-5 bg-indigo-600 text-white rounded-full text-xs flex items-center justify-center">6</span>
                     Custom Fields
@@ -319,7 +319,7 @@
                                             class="w-4 h-4 text-indigo-600 border-gray-300 rounded">
                                         Wajib
                                     </label>
-                                    <button type="button" onclick="removeFieldRow(this.closest('.custom-field-item'))"
+                                    <button type="button" onclick="this.closest('.custom-field-item').remove()"
                                         class="text-xs text-red-400 hover:text-red-600 ml-auto">Hapus</button>
                                 </div>
                             </div>
@@ -328,7 +328,7 @@
                     @endif
                 </div>
                 <button type="button" onclick="addCustomField()"
-                    class="mt-3 w-full border border-dashed border-indigo-300 text-indigo-600 text-xs py-2 rounded-xl hover:bg-indigo-50 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0">
+                    class="mt-3 w-full border border-dashed border-indigo-300 text-indigo-600 text-xs py-2 rounded-xl hover:bg-indigo-50 transition-colors">
                     + Tambah Custom Field
                 </button>
             </div>
@@ -338,7 +338,7 @@
         <div class="space-y-4">
 
             {{-- Step 5: Guest Settings --}}
-            <div class="bg-white border border-gray-100 rounded-xl p-5 reveal" x-data x-intersect.once="$el.classList.add('reveal-visible')">
+            <div class="bg-white border border-gray-100 rounded-xl p-5">
                 <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
                     <span class="w-5 h-5 bg-indigo-600 text-white rounded-full text-xs flex items-center justify-center">5</span>
                     Form & Guest
@@ -384,7 +384,7 @@
             </div>
 
             {{-- Telegram --}}
-            <div class="bg-white border border-gray-100 rounded-xl p-5 reveal" x-data x-intersect.once="$el.classList.add('reveal-visible')" style="transition-delay: 60ms">
+            <div class="bg-white border border-gray-100 rounded-xl p-5">
                 <h3 class="text-sm font-semibold text-gray-900 mb-3">Telegram Group</h3>
                 <input type="url" name="telegram_group_link"
                     value="{{ old('telegram_group_link', $event->telegram_group_link ?? '') }}"
@@ -393,9 +393,9 @@
             </div>
 
             {{-- Submit --}}
-            <div class="bg-white border border-gray-100 rounded-xl p-5 reveal" x-data x-intersect.once="$el.classList.add('reveal-visible')" style="transition-delay: 120ms">
+            <div class="bg-white border border-gray-100 rounded-xl p-5">
                 <button type="submit"
-                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold py-3 rounded-xl transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0">
+                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold py-3 rounded-xl transition-colors">
                     {{ $isEdit ? 'Update Event' : 'Publish Event' }}
                 </button>
                 @if($isEdit)
@@ -420,27 +420,10 @@ let phaseIndex   = {{ $isEdit ? $event->salePhases->count() : 1 }};
 let categoryIndex= {{ $isEdit ? $event->ticketCategories->count() : 1 }};
 let customFieldIndex = {{ $isEdit ? $event->customFields->count() : 0 }};
 
-// Smoothly fades/collapses a row before removing it from the DOM, instead of an abrupt disappearance.
-function removeFieldRow(el) {
-    if (!el) return;
-    el.style.overflow = 'hidden';
-    el.style.transition = 'opacity 0.2s ease, max-height 0.25s ease, margin 0.25s ease, padding 0.25s ease';
-    el.style.maxHeight = el.scrollHeight + 'px';
-    requestAnimationFrame(() => {
-        el.style.opacity = '0';
-        el.style.maxHeight = '0px';
-        el.style.marginTop = '0px';
-        el.style.marginBottom = '0px';
-        el.style.paddingTop = '0px';
-        el.style.paddingBottom = '0px';
-    });
-    setTimeout(() => el.remove(), 260);
-}
-
 function addCustomField() {
     const container = document.getElementById('customFieldsContainer');
     const div = document.createElement('div');
-    div.className = 'border border-gray-100 rounded-xl p-4 custom-field-item animate-fade-in-up';
+    div.className = 'border border-gray-100 rounded-xl p-4 custom-field-item';
     div.innerHTML = `
         <div class="grid grid-cols-4 gap-3">
             <div>
@@ -470,7 +453,7 @@ function addCustomField() {
                         class="w-4 h-4 text-indigo-600 border-gray-300 rounded">
                     Wajib
                 </label>
-                <button type="button" onclick="removeFieldRow(this.closest('.custom-field-item'))"
+                <button type="button" onclick="this.closest('.custom-field-item').remove()"
                     class="text-xs text-red-400 hover:text-red-600 ml-auto">Hapus</button>
             </div>
         </div>`;
@@ -481,11 +464,11 @@ function addCustomField() {
 function addPhase() {
     const container = document.getElementById('phasesContainer');
     const div = document.createElement('div');
-    div.className = 'border border-gray-100 rounded-xl p-4 phase-item animate-fade-in-up';
+    div.className = 'border border-gray-100 rounded-xl p-4 phase-item';
     div.innerHTML = `
         <div class="flex justify-between items-center mb-2">
             <span class="text-xs text-gray-500">Phase ${phaseIndex + 1}</span>
-            <button type="button" onclick="removeFieldRow(this.closest('.phase-item'))"
+            <button type="button" onclick="this.closest('.phase-item').remove()"
                 class="text-xs text-red-400 hover:text-red-600">Hapus</button>
         </div>
         <div class="grid grid-cols-4 gap-3">
@@ -519,11 +502,11 @@ function addPhase() {
 function addCategory() {
     const container = document.getElementById('categoriesContainer');
     const div = document.createElement('div');
-    div.className = 'border border-gray-100 rounded-xl p-4 category-item animate-fade-in-up';
+    div.className = 'border border-gray-100 rounded-xl p-4';
     div.innerHTML = `
         <div class="flex justify-between items-center mb-2">
             <span class="text-xs text-gray-500">Kategori ${categoryIndex + 1}</span>
-            <button type="button" onclick="removeFieldRow(this.closest('.category-item'))"
+            <button type="button" onclick="this.closest('div.border').remove()"
                 class="text-xs text-red-400 hover:text-red-600">Hapus</button>
         </div>
         <div class="grid grid-cols-3 gap-3">

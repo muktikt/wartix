@@ -25,7 +25,7 @@
         {{-- Left --}}
         <div class="md:col-span-2 space-y-6 md:h-full md:overflow-y-auto md:pr-4 custom-scrollbar">
             {{-- Banner --}}
-            <div class="rounded-2xl overflow-hidden bg-gradient-to-br from-indigo-900 to-purple-900 aspect-video flex items-center justify-center reveal" x-data x-intersect.once="$el.classList.add('reveal-visible')">
+            <div class="rounded-2xl overflow-hidden bg-gradient-to-br from-indigo-900 to-purple-900 aspect-video flex items-center justify-center">
                 @if($event->banner_image)
                     <img src="{{ asset('storage/'.$event->banner_image) }}" class="w-full h-full object-cover" alt="{{ $event->title }}">
                 @else
@@ -34,7 +34,7 @@
             </div>
 
             {{-- Info --}}
-            <div class="bg-white border border-gray-100 rounded-2xl p-5 reveal" x-data x-intersect.once="$el.classList.add('reveal-visible')" style="transition-delay: 60ms">
+            <div class="bg-white border border-gray-100 rounded-2xl p-5">
                 <div class="flex items-start justify-between mb-3">
                     <div>
                         <h1 class="text-xl font-bold text-gray-900">{{ $event->title }}</h1>
@@ -86,21 +86,21 @@
 
             {{-- Seatplan --}}
             @if($event->seatplan_image)
-            <div class="bg-white border border-gray-100 rounded-2xl p-5 reveal" x-data x-intersect.once="$el.classList.add('reveal-visible')">
+            <div class="bg-white border border-gray-100 rounded-2xl p-5">
                 <h3 class="text-sm font-semibold text-gray-900 mb-3">Denah Tempat Duduk</h3>
                 <img src="{{ asset('storage/'.$event->seatplan_image) }}" class="w-full rounded-xl" alt="Seatplan">
             </div>
             @endif
 
             {{-- Phases & Categories --}}
-            <div class="bg-white border border-gray-100 rounded-2xl p-5 reveal" x-data x-intersect.once="$el.classList.add('reveal-visible')">
+            <div class="bg-white border border-gray-100 rounded-2xl p-5">
                 <h3 class="text-sm font-semibold text-gray-900 mb-4">Sale Phase & Kategori</h3>
 
                 {{-- Phase names --}}
                 @if($event->salePhases->count())
                 <div class="flex flex-wrap gap-2 mb-4">
                     @foreach($event->salePhases as $phase)
-                    <span class="text-xs bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full font-medium transition-transform hover:scale-105">
+                    <span class="text-xs bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full font-medium">
                         {{ $phase->name }}
                     </span>
                     @endforeach
@@ -110,7 +110,7 @@
                 {{-- Categories & fee --}}
                 <div class="space-y-2">
                     @foreach($event->ticketCategories as $cat)
-                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl transition-colors hover:bg-indigo-50/60">
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
                         <span class="text-sm font-medium text-gray-900">{{ $cat->name }}</span>
                         <span class="text-sm font-semibold text-indigo-600">
                             Rp {{ number_format($cat->fee_per_ticket) }}/tiket
@@ -123,8 +123,8 @@
 
         {{-- Right — Order Form --}}
         <div class="md:col-span-1 md:h-full md:overflow-y-auto md:pr-2 custom-scrollbar">
-            <div class="reveal" x-data x-intersect.once="$el.classList.add('reveal-visible')" style="transition-delay: 120ms">
-                <div class="bg-white border border-gray-100 rounded-2xl p-5 hover-lift">
+            <div>
+                <div class="bg-white border border-gray-100 rounded-2xl p-5">
                     <h3 class="text-sm font-semibold text-gray-900 mb-4">Form Order</h3>
 
                     <form action="{{ route('orders.store') }}" method="POST" id="orderForm">
@@ -133,7 +133,7 @@
 
                         {{-- Validation Errors --}}
                         @if ($errors->any())
-                        <div class="mb-4 p-4 bg-red-50 border-l-4 border-red-500 rounded-xl animate-fade-in-up">
+                        <div class="mb-4 p-4 bg-red-50 border-l-4 border-red-500 rounded-xl">
                             <div class="flex">
                                 <div class="flex-shrink-0">
                                     <svg class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
@@ -356,13 +356,9 @@
                         </div>
                         @endif
 
-                        <button type="submit" id="submitOrderBtn"
-                            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold py-3 rounded-xl transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-70 disabled:cursor-not-allowed disabled:translate-y-0 flex items-center justify-center gap-2">
-                            <svg id="submitOrderSpinner" class="hidden w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
-                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-                            </svg>
-                            <span id="submitOrderLabel">Submit Order</span>
+                        <button type="submit"
+                            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold py-3 rounded-xl transition-colors">
+                            Submit Order
                         </button>
 
                         <p class="text-xs text-gray-400 text-center mt-3">
@@ -410,16 +406,6 @@ function formatRp(num) {
     return 'Rp ' + num.toLocaleString('id-ID');
 }
 
-// Shows a hidden box with a fresh fade-in each time (forces reflow so the
-// CSS animation restarts even if the class was already applied before).
-function revealBox(el) {
-    if (!el) return;
-    el.classList.remove('hidden');
-    el.classList.remove('animate-fade-in-up');
-    void el.offsetWidth;
-    el.classList.add('animate-fade-in-up');
-}
-
 function updateEstimate() {
     const opt  = categorySelect.options[categorySelect.selectedIndex];
     const qty  = parseInt(qtySelect.value) || 1;
@@ -429,7 +415,7 @@ function updateEstimate() {
 
     if (!fee && !price) { feeEstimate.classList.add('hidden'); return; }
 
-    revealBox(feeEstimate);
+    feeEstimate.classList.remove('hidden');
     const totalFee   = fee * qty;
     const totalPrice = price * qty;
     let grandTotal   = totalFee;
@@ -437,7 +423,7 @@ function updateEstimate() {
     feeDisplay.textContent = formatRp(totalFee);
 
     if (mode === 'full_payment' && price > 0) {
-        revealBox(ticketPriceRow);
+        ticketPriceRow.classList.remove('hidden');
         ticketPriceDisp.textContent = formatRp(totalPrice);
         grandTotal = totalFee + totalPrice;
     } else {
@@ -451,7 +437,7 @@ function updateMembershipVisibility() {
     if (!salePhaseSelect || !membershipField || !membershipInput) return;
     const selectedText = salePhaseSelect.options[salePhaseSelect.selectedIndex]?.text || '';
     if (selectedText.toLowerCase().includes('membership')) {
-        revealBox(membershipField);
+        membershipField.classList.remove('hidden');
         membershipInput.required = true;
     } else {
         membershipField.classList.add('hidden');
@@ -479,11 +465,11 @@ function updateGuestFields() {
     container.innerHTML = '';
 
     if (qty > 1) {
-        revealBox(guestDiv);
+        guestDiv.classList.remove('hidden');
         for (let i = 2; i <= qty; i++) {
             const oldVal = oldGuestNiks[`guest_nik_${i}`] || '';
             container.innerHTML += `
-            <div class="animate-fade-in-up" style="animation-delay: ${(i - 2) * 60}ms; opacity: 0;">
+            <div>
                 <label class="block text-xs text-gray-600 mb-1">Tiket ${i} — Nomor KTP / NIK</label>
                 <input type="text" name="guest_nik_${i}" value="${oldVal}" placeholder="16 digit NIK" maxlength="16" minlength="16"
                     class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -603,16 +589,6 @@ if (orderForm) {
                         break;
                     }
                 }
-            }
-        } else {
-            // Validation passed — give clear visual feedback while the request is in flight.
-            const submitBtn = document.getElementById('submitOrderBtn');
-            const spinner   = document.getElementById('submitOrderSpinner');
-            const label     = document.getElementById('submitOrderLabel');
-            if (submitBtn) {
-                submitBtn.disabled = true;
-                spinner?.classList.remove('hidden');
-                if (label) label.textContent = 'Memproses...';
             }
         }
     });

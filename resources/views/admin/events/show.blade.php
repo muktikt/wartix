@@ -5,7 +5,7 @@
 @section('content')
 <div class="mb-4 flex items-center justify-between">
     <a href="{{ route('admin.events.index') }}"
-        class="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 transition-all duration-200 hover:-translate-x-0.5">
+        class="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
         </svg>
@@ -13,7 +13,7 @@
     </a>
     <div class="flex items-center gap-2">
         <a href="{{ route('admin.events.builder.edit', $event) }}"
-            class="inline-flex items-center gap-1.5 text-sm border border-gray-200 text-gray-600 px-3 py-1.5 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:-translate-y-0.5">
+            class="inline-flex items-center gap-1.5 text-sm border border-gray-200 text-gray-600 px-3 py-1.5 rounded-lg hover:bg-gray-50">
             Edit Event
         </a>
         <form action="{{ route('admin.events.destroy', $event) }}" method="POST" class="inline"
@@ -21,7 +21,7 @@
             @csrf
             @method('DELETE')
             <button type="submit"
-                class="inline-flex items-center gap-1.5 text-sm border border-red-200 text-red-600 px-3 py-1.5 rounded-lg hover:bg-red-50 transition-all duration-200 hover:-translate-y-0.5">
+                class="inline-flex items-center gap-1.5 text-sm border border-red-200 text-red-600 px-3 py-1.5 rounded-lg hover:bg-red-50">
                 Hapus Event
             </button>
         </form>
@@ -40,7 +40,7 @@
 </div>
 
 {{-- Event Header --}}
-<div class="bg-white border border-gray-100 rounded-xl p-5 mb-5 reveal" x-data x-intersect.once="$el.classList.add('reveal-visible')">
+<div class="bg-white border border-gray-100 rounded-xl p-5 mb-5">
     <div class="flex gap-5">
         @if($event->banner_image)
         <img src="{{ asset('storage/'.$event->banner_image) }}"
@@ -102,18 +102,16 @@
 <div class="grid grid-cols-4 gap-4 mb-5">
     @php
     $cards = [
-        ['label' => 'Total Orders',   'value' => $stats['total_orders'],   'prefix' => ''],
-        ['label' => 'Success Orders', 'value' => $stats['success_orders'], 'prefix' => ''],
-        ['label' => 'Pending Orders', 'value' => $stats['pending_orders'], 'prefix' => ''],
-        ['label' => 'Total Revenue',  'value' => $stats['total_revenue'],  'prefix' => 'Rp '],
+        ['label' => 'Total Orders',   'value' => $stats['total_orders']],
+        ['label' => 'Success Orders', 'value' => $stats['success_orders']],
+        ['label' => 'Pending Orders', 'value' => $stats['pending_orders']],
+        ['label' => 'Total Revenue',  'value' => 'Rp '.number_format($stats['total_revenue'])],
     ];
     @endphp
-    @foreach($cards as $i => $card)
-    <div class="bg-white border border-gray-100 rounded-xl p-4 reveal hover-lift"
-        x-data="counter({{ $card['value'] }})" x-intersect.once="$el.classList.add('reveal-visible'); start()"
-        style="transition-delay: {{ $i * 60 }}ms">
+    @foreach($cards as $card)
+    <div class="bg-white border border-gray-100 rounded-xl p-4">
         <p class="text-xs text-gray-400 mb-1">{{ $card['label'] }}</p>
-        <p class="text-xl font-semibold text-gray-900">{{ $card['prefix'] }}<span x-text="display.toLocaleString('id-ID')">{{ number_format($card['value']) }}</span></p>
+        <p class="text-xl font-semibold text-gray-900">{{ $card['value'] }}</p>
     </div>
     @endforeach
 </div>
@@ -131,7 +129,7 @@
     </div>
 
     {{-- Tab: Sale Phases --}}
-    <div x-show="tab === 'phases'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-1" x-transition:enter-end="opacity-100 translate-y-0">
+    <div x-show="tab === 'phases'">
         <div class="bg-white border border-gray-100 rounded-xl overflow-hidden">
             <table class="w-full">
                 <thead class="bg-gray-50 border-b border-gray-100">
@@ -170,7 +168,7 @@
     </div>
 
     {{-- Tab: Categories --}}
-    <div x-show="tab === 'categories'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-1" x-transition:enter-end="opacity-100 translate-y-0">
+    <div x-show="tab === 'categories'">
         <div class="bg-white border border-gray-100 rounded-xl overflow-hidden">
             <table class="w-full">
                 <thead class="bg-gray-50 border-b border-gray-100">
@@ -213,7 +211,7 @@
     </div>
 
     {{-- Tab: Orders --}}
-    <div x-show="tab === 'orders'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-1" x-transition:enter-end="opacity-100 translate-y-0">
+    <div x-show="tab === 'orders'">
         <div class="bg-white border border-gray-100 rounded-xl overflow-hidden">
             <table class="w-full">
                 <thead class="bg-gray-50 border-b border-gray-100">
@@ -282,7 +280,7 @@
     </div>
 
     {{-- Tab: Guest Data --}}
-    <div x-show="tab === 'guests'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-1" x-transition:enter-end="opacity-100 translate-y-0">
+    <div x-show="tab === 'guests'">
         <div class="bg-white border border-gray-100 rounded-xl overflow-hidden">
             <table class="w-full">
                 <thead class="bg-gray-50 border-b border-gray-100">
@@ -332,7 +330,7 @@
     </div>
 
     {{-- Tab: Success Logs --}}
-    <div x-show="tab === 'logs'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-1" x-transition:enter-end="opacity-100 translate-y-0">
+    <div x-show="tab === 'logs'">
         <div class="bg-white border border-gray-100 rounded-xl overflow-hidden">
             <table class="w-full">
                 <thead class="bg-gray-50 border-b border-gray-100">

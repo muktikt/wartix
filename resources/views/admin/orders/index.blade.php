@@ -22,23 +22,23 @@
             <option value="{{ $s }}" {{ request('payment_status') === $s ? 'selected' : '' }}>{{ ucfirst($s) }}</option>
             @endforeach
         </select>
-        <button type="submit" class="bg-indigo-600 text-white text-sm px-4 py-2 rounded-xl hover:bg-indigo-700 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0">Filter</button>
-        <a href="{{ route('admin.orders.index') }}" class="text-sm text-gray-500 px-4 py-2 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">Reset</a>
+        <button type="submit" class="bg-indigo-600 text-white text-sm px-4 py-2 rounded-xl hover:bg-indigo-700">Filter</button>
+        <a href="{{ route('admin.orders.index') }}" class="text-sm text-gray-500 px-4 py-2 border border-gray-200 rounded-xl hover:bg-gray-50">Reset</a>
     </form>
 
     <div class="flex flex-wrap items-center gap-2">
         <a href="{{ route('admin.export.orders', request()->only(['q', 'order_status', 'payment_status', 'event_id'])) }}"
-            class="inline-flex items-center gap-1.5 text-sm border border-gray-200 text-gray-600 px-4 py-2 rounded-xl hover:bg-gray-50 transition-colors">
+            class="inline-flex items-center gap-1.5 text-sm border border-gray-200 text-gray-600 px-4 py-2 rounded-xl hover:bg-gray-50">
             Export Orders
         </a>
         <a href="{{ route('admin.export.reports', request()->only(['event_id', 'order_status', 'payment_status', 'date_from', 'date_to'])) }}"
-            class="inline-flex items-center gap-1.5 text-sm border border-gray-200 text-gray-600 px-4 py-2 rounded-xl hover:bg-gray-50 transition-colors">
+            class="inline-flex items-center gap-1.5 text-sm border border-gray-200 text-gray-600 px-4 py-2 rounded-xl hover:bg-gray-50">
             Export Reports
         </a>
     </div>
 </div>
 
-<div class="bg-white border border-gray-100 rounded-xl overflow-hidden reveal" x-data x-intersect.once="$el.classList.add('reveal-visible')">
+<div class="bg-white border border-gray-100 rounded-xl overflow-hidden">
     <table class="w-full">
         <thead class="bg-gray-50 border-b border-gray-100">
             <tr>
@@ -53,7 +53,7 @@
         </thead>
         <tbody class="divide-y divide-gray-50">
             @forelse($orders as $order)
-            <tr class="hover:bg-gray-50 transition-colors" id="order-row-{{ $order->id }}">
+            <tr class="hover:bg-gray-50" id="order-row-{{ $order->id }}">
                 <td class="px-4 py-3">
                     <div class="text-xs font-mono font-medium text-gray-900">{{ $order->order_code }}</div>
                     <div class="text-xs text-gray-400">{{ $order->created_at->format('d M Y H:i') }}</div>
@@ -129,18 +129,14 @@ window.Echo.channel('orders-admin')
         };
 
         // Reset semua class warna lama, pasang yang baru
-        badge.className = 'text-xs px-2 py-0.5 rounded font-medium inline-block ' + (colorMap[data.payment_status] || 'bg-gray-100 text-gray-500');
+        badge.className = 'text-xs px-2 py-0.5 rounded font-medium ' + (colorMap[data.payment_status] || 'bg-gray-100 text-gray-500');
         badge.textContent = data.payment_status.charAt(0).toUpperCase() + data.payment_status.slice(1);
-        badge.style.animation = 'none';
-        void badge.offsetWidth;
-        badge.style.animation = 'successPop 0.35s cubic-bezier(0.16, 1, 0.3, 1)';
 
         // Highlight sebentar biar admin notice ada perubahan
         const row = document.getElementById('order-row-' + data.order_id);
         if (row) {
-            row.classList.remove('animate-highlight');
-            void row.offsetWidth; // reflow so the animation restarts if it fires again
-            row.classList.add('animate-highlight');
+            row.classList.add('bg-green-50');
+            setTimeout(() => row.classList.remove('bg-green-50'), 3000);
         }
     });
 </script>

@@ -17,36 +17,31 @@
     @endphp
 
     @foreach($cards as $card)
-    <div class="bg-white border border-gray-100 rounded-xl p-4 reveal hover-lift"
-        x-data="counter({{ $card['value'] }})" x-intersect.once="$el.classList.add('reveal-visible'); start()"
-        style="transition-delay: {{ $loop->index * 60 }}ms">
+    <div class="bg-white border border-gray-100 rounded-xl p-4">
         <p class="text-xs text-gray-500 mb-1">{{ $card['label'] }}</p>
-        <p class="text-2xl font-semibold text-gray-900" x-text="display.toLocaleString('id-ID')">{{ number_format($card['value']) }}</p>
+        <p class="text-2xl font-semibold text-gray-900">{{ number_format($card['value']) }}</p>
     </div>
     @endforeach
 </div>
 
 {{-- Revenue + Success Rate --}}
 <div class="grid grid-cols-2 gap-4 mb-6">
-    <div class="bg-white border border-gray-100 rounded-xl p-4 reveal hover-lift"
-        x-data="counter({{ $stats['total_revenue'] }})" x-intersect.once="$el.classList.add('reveal-visible'); start()">
+    <div class="bg-white border border-gray-100 rounded-xl p-4">
         <p class="text-xs text-gray-500 mb-1">Total Revenue</p>
         <p class="text-2xl font-semibold text-gray-900">
-            Rp <span x-text="display.toLocaleString('id-ID')">{{ number_format($stats['total_revenue']) }}</span>
+            Rp {{ number_format($stats['total_revenue']) }}
         </p>
     </div>
-    <div class="bg-white border border-gray-100 rounded-xl p-4 reveal hover-lift"
-        x-data="counter({{ $stats['success_rate'] }})" x-intersect.once="$el.classList.add('reveal-visible'); start()"
-        style="transition-delay: 60ms">
+    <div class="bg-white border border-gray-100 rounded-xl p-4">
         <p class="text-xs text-gray-500 mb-1">Success Rate</p>
         <p class="text-2xl font-semibold text-gray-900">
-            <span x-text="display.toLocaleString('id-ID')">{{ $stats['success_rate'] }}</span>%
+            {{ $stats['success_rate'] }}%
         </p>
     </div>
 </div>
 
 {{-- Recent Orders --}}
-<div class="bg-white border border-gray-100 rounded-xl p-4 mb-4 reveal" x-data x-intersect.once="$el.classList.add('reveal-visible')">
+<div class="bg-white border border-gray-100 rounded-xl p-4 mb-4">
     <div class="flex items-center justify-between mb-4">
         <h2 class="text-sm font-semibold text-gray-900">Recent Orders</h2>
         <a href="#" class="text-xs text-indigo-600 hover:underline">Lihat semua</a>
@@ -99,23 +94,23 @@
 </div>
 
 {{-- Quick Actions --}}
-<div class="bg-white border border-gray-100 rounded-xl p-4 reveal" x-data x-intersect.once="$el.classList.add('reveal-visible')">
+<div class="bg-white border border-gray-100 rounded-xl p-4">
     <h2 class="text-sm font-semibold text-gray-900 mb-3">Quick Actions</h2>
     <div class="grid grid-cols-3 gap-3">
-        <a href="{{ route('admin.events.builder.create') }}" class="flex items-center gap-2 p-3 border border-gray-100 rounded-xl hover:bg-gray-50 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sm">
+        <a href="{{ route('admin.events.builder.create') }}" class="flex items-center gap-2 p-3 border border-gray-100 rounded-xl hover:bg-gray-50 transition-colors">
             <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
             </svg>
             <span class="text-xs font-medium text-gray-700">Add Event</span>
         </a>
-        <a href="{{ route('admin.reports.index') }}" class="flex items-center gap-2 p-3 border border-gray-100 rounded-xl hover:bg-gray-50 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sm">
+        <a href="{{ route('admin.reports.index') }}" class="flex items-center gap-2 p-3 border border-gray-100 rounded-xl hover:bg-gray-50 transition-colors">
             <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
             </svg>
             <span class="text-xs font-medium text-gray-700">Reports</span>
         </a>
-        <a href="{{ route('admin.integrations.index') }}" class="flex items-center gap-2 p-3 border border-gray-100 rounded-xl hover:bg-gray-50 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sm">
+        <a href="{{ route('admin.integrations.index') }}" class="flex items-center gap-2 p-3 border border-gray-100 rounded-xl hover:bg-gray-50 transition-colors">
             <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>

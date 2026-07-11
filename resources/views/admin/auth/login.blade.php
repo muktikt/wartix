@@ -13,7 +13,7 @@
 <div class="w-full max-w-sm px-4">
 
     {{-- Logo --}}
-    <div class="text-center mb-8 animate-fade-in-up">
+    <div class="text-center mb-8">
         <div class="flex items-center justify-center mb-3">
             <img src="{{ asset('images/logo-w.png') }}"
                 alt="Wartix"
@@ -24,16 +24,16 @@
     </div>
 
     {{-- Card --}}
-    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 animate-fade-in-up" style="animation-delay: 100ms; opacity: 0;">
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
 
         @if(session('error'))
-            <div class="mb-4 bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl" style="animation: shake 0.4s ease-in-out;">
+            <div class="mb-4 bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl">
                 {{ session('error') }}
             </div>
         @endif
 
         @if(session('success'))
-            <div class="mb-4 bg-green-50 border border-green-200 text-green-600 text-sm px-4 py-3 rounded-xl animate-fade-in">
+            <div class="mb-4 bg-green-50 border border-green-200 text-green-600 text-sm px-4 py-3 rounded-xl">
                 {{ session('success') }}
             </div>
         @endif
@@ -81,29 +81,16 @@
 
             {{-- Submit --}}
             <button type="submit"
-                class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2.5 rounded-xl transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0">
+                class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2.5 rounded-xl transition-colors duration-200">
                 Masuk ke Dashboard
             </button>
         </form>
     </div>
 
-    <p class="text-center text-xs text-gray-400 mt-5 animate-fade-in-up" style="animation-delay: 200ms; opacity: 0;">
+    <p class="text-center text-xs text-gray-400 mt-5">
         &copy; {{ date('Y') }} Wartix. All rights reserved.
     </p>
 </div>
-
-<style>
-    @keyframes shake {
-        0%, 100% { transform: translateX(0); }
-        20% { transform: translateX(-6px); }
-        40% { transform: translateX(6px); }
-        60% { transform: translateX(-4px); }
-        80% { transform: translateX(4px); }
-    }
-    @media (prefers-reduced-motion: reduce) {
-        [style*="animation"] { animation: none !important; opacity: 1 !important; }
-    }
-</style>
 
 </body>
 </html>

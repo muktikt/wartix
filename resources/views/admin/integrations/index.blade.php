@@ -8,7 +8,7 @@
     <div class="grid grid-cols-2 gap-5">
 
         {{-- Telegram --}}
-        <div class="bg-white border border-gray-100 rounded-xl p-5 reveal hover-lift" x-data x-intersect.once="$el.classList.add('reveal-visible')">
+        <div class="bg-white border border-gray-100 rounded-xl p-5">
             <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
                 <svg class="w-4 h-4 text-blue-500" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.412 14.02l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.834.566z"/>
@@ -66,7 +66,7 @@
         </div>
 
         {{-- n8n --}}
-        <div class="bg-white border border-gray-100 rounded-xl p-5 reveal hover-lift" x-data x-intersect.once="$el.classList.add('reveal-visible')" style="transition-delay: 60ms">
+        <div class="bg-white border border-gray-100 rounded-xl p-5">
             <h3 class="text-sm font-semibold text-gray-900 mb-4">n8n Webhook</h3>
             <div class="space-y-3">
                 <div>
@@ -92,7 +92,7 @@
         </div>
 
         {{-- DompetX --}}
-        <div class="bg-white border border-gray-100 rounded-xl p-5 reveal hover-lift" x-data x-intersect.once="$el.classList.add('reveal-visible')" style="transition-delay: 120ms">
+        <div class="bg-white border border-gray-100 rounded-xl p-5">
             <h3 class="text-sm font-semibold text-gray-900 mb-4">DompetX Payment</h3>
             <div class="space-y-3">
                 <div>
@@ -116,8 +116,8 @@
                             readonly
                             class="flex-1 text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 text-gray-500 cursor-not-allowed">
                         <button type="button"
-                            onclick="const b=this; navigator.clipboard.writeText('{{ url('/webhooks/dompetx/callback') }}'); const t=b.textContent; b.textContent='Copied!'; b.classList.add('text-green-600','border-green-200'); setTimeout(() => { b.textContent=t; b.classList.remove('text-green-600','border-green-200'); }, 1500);"
-                            class="text-xs border border-gray-200 px-3 py-2.5 rounded-xl hover:bg-gray-50 text-gray-600 transition-all duration-200">
+                            onclick="navigator.clipboard.writeText('{{ url('/webhooks/dompetx/callback') }}')"
+                            class="text-xs border border-gray-200 px-3 py-2.5 rounded-xl hover:bg-gray-50 text-gray-600">
                             Copy
                         </button>
                     </div>
@@ -135,7 +135,7 @@
         </div>
 
         {{-- Threads --}}
-        <div class="bg-white border border-gray-100 rounded-xl p-5 reveal hover-lift" x-data x-intersect.once="$el.classList.add('reveal-visible')" style="transition-delay: 180ms">
+        <div class="bg-white border border-gray-100 rounded-xl p-5">
             <h3 class="text-sm font-semibold text-gray-900 mb-4">Threads Auto Post</h3>
             <div class="space-y-3">
                 <div>
@@ -158,7 +158,7 @@
         </div>
         
         {{-- Events --}}
-        <div class="bg-white border border-gray-100 rounded-xl p-5 reveal hover-lift" x-data x-intersect.once="$el.classList.add('reveal-visible')" style="transition-delay: 240ms">
+        <div class="bg-white border border-gray-100 rounded-xl p-5">
             <h3 class="text-sm font-semibold text-gray-900 mb-4">Event Defaults</h3>
             <div class="space-y-3">
                 <div>
@@ -175,7 +175,7 @@
 
     <div class="mt-5 flex justify-end">
         <button type="submit"
-            class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-6 py-2.5 rounded-xl transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0">
+            class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-6 py-2.5 rounded-xl transition-colors">
             Simpan Settings
         </button>
     </div>
