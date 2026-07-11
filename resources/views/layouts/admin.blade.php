@@ -147,7 +147,10 @@
 
             {{-- Notif --}}
             @php
-                $unreadNotifCount = \App\Models\AdminNotification::unread()->count();
+                $unreadNotifCount = 0;
+                if (\Illuminate\Support\Facades\Schema::hasTable('admin_notifications')) {
+                    $unreadNotifCount = \App\Models\AdminNotification::unread()->count();
+                }
             @endphp
             <a href="{{ route('admin.notifications.index') }}"
                 title="{{ $unreadNotifCount }} notifikasi belum dibaca"
