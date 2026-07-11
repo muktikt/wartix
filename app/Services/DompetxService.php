@@ -194,6 +194,9 @@ class DompetxService
             'order_code'  => $order->order_code,
             'amount'      => $order->grand_total,
         ]));
+
+        // Notify admin about fee payment success
+        \App\Models\AdminNotification::notifyPaymentPaid($order);
     }
 
     private function handleExpired(Order $order): void

@@ -3,6 +3,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\EventBuilderController;
+use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\RealtimeMonitorController;
 use App\Http\Controllers\Admin\ReportController;
@@ -57,6 +58,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('export/orders', [ExportController::class, 'orders'])->name('export.orders');
         Route::get('export/guests', [ExportController::class, 'guests'])->name('export.guests');
         Route::get('export/reports', [ExportController::class, 'reports'])->name('export.reports');
+
+        // Notifications
+        Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
+        Route::get('notifications/{notification}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+        Route::post('notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.readAll');
+        Route::delete('notifications/{notification}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
 
         // Statistics
         Route::get('statistics', [StatisticsController::class, 'index'])->name('statistics.index');

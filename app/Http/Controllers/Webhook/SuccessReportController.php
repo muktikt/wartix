@@ -82,6 +82,9 @@ class SuccessReportController extends Controller
         // Buat payment DompetX (QRIS sesuai kategori order)
         dispatch(new CreateDompetxPayment($order->id));
 
+        // Notify admin about successful ticket booking
+        \App\Models\AdminNotification::notifySuccessReport($order);
+
         Log::info("SuccessReport processed for email: {$email}, order: {$order->order_code}");
 
         return response()->json([

@@ -176,6 +176,9 @@ class OrderController extends Controller
         Cache::forget('active_events');
         Cache::forget('home_stats');
 
+        // Notify admin about new order
+        \App\Models\AdminNotification::notifyNewOrder($order->load('event'));
+
         return redirect()->route('order.success', $order->order_code);
     }
 
