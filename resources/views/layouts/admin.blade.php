@@ -36,7 +36,7 @@
             <div class="px-3 mb-1">
                 <p class="text-xs text-gray-400 uppercase tracking-wider px-2 mb-1">Main</p>
                 <a href="{{ route('admin.dashboard') }}"
-                    class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm
+                    class="sidebar-link flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm
                     {{ request()->routeIs('admin.dashboard') ? 'bg-indigo-50 text-indigo-600 font-medium' : 'text-gray-600 hover:bg-gray-50' }}">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -45,7 +45,7 @@
                     Dashboard
                 </a>
                 <a href="{{ route('admin.events.index') }}"
-                    class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm
+                    class="sidebar-link flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm
                     {{ request()->routeIs('admin.events.*') ? 'bg-indigo-50 text-indigo-600 font-medium' : 'text-gray-600 hover:bg-gray-50' }}">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -54,7 +54,7 @@
                     Events
                 </a>
                 <a href="{{ route('admin.orders.index') }}"
-                    class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm
+                    class="sidebar-link flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm
                     {{ request()->routeIs('admin.orders.*') ? 'bg-indigo-50 text-indigo-600 font-medium' : 'text-gray-600 hover:bg-gray-50' }}">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -67,7 +67,7 @@
             <div class="px-3 mt-3 mb-1">
                 <p class="text-xs text-gray-400 uppercase tracking-wider px-2 mb-1">Monitor</p>
                 <a href="{{ route('admin.monitor.index') }}"
-                    class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm
+                    class="sidebar-link flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm
                     {{ request()->routeIs('admin.monitor.*') ? 'bg-indigo-50 text-indigo-600 font-medium' : 'text-gray-600 hover:bg-gray-50' }}">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -76,7 +76,7 @@
                     Realtime Monitor
                 </a>
                 <a href="{{ route('admin.reports.index') }}"
-                    class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm
+                    class="sidebar-link flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm
                     {{ request()->routeIs('admin.reports.*') ? 'bg-indigo-50 text-indigo-600 font-medium' : 'text-gray-600 hover:bg-gray-50' }}">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -85,7 +85,7 @@
                     Reports
                 </a>
                 <a href="{{ route('admin.search.index') }}"
-                    class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm
+                    class="sidebar-link flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm
                     {{ request()->routeIs('admin.search.*') ? 'bg-indigo-50 text-indigo-600 font-medium' : 'text-gray-600 hover:bg-gray-50' }}">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -98,7 +98,7 @@
             <div class="px-3 mt-3 mb-1">
                 <p class="text-xs text-gray-400 uppercase tracking-wider px-2 mb-1">Settings</p>
                 <a href="{{ route('admin.integrations.index') }}"
-                    class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm
+                    class="sidebar-link flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm
                     {{ request()->routeIs('admin.integrations.*') ? 'bg-indigo-50 text-indigo-600 font-medium' : 'text-gray-600 hover:bg-gray-50' }}">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -107,7 +107,7 @@
                     Integration
                 </a>
                 <a href="{{ route('admin.statistics.index') }}"
-                    class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm
+                    class="sidebar-link flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm
                     {{ request()->routeIs('admin.statistics.*') ? 'bg-indigo-50 text-indigo-600 font-medium' : 'text-gray-600 hover:bg-gray-50' }}">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -169,12 +169,12 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
                 </svg>
-                <span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                <span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-red-500 rounded-full notif-dot"></span>
             </button>
         </header>
 
         {{-- Page Content --}}
-        <main class="flex-1 overflow-y-auto p-5 animate-fade-in">
+        <main class="flex-1 overflow-y-auto p-5 animate-fade-in-up">
             @if(session('success'))
                 <div class="mb-4 bg-green-50 border border-green-200 text-green-700 text-sm px-4 py-3 rounded-lg">
                     {{ session('success') }}

@@ -37,11 +37,11 @@
         <div class="flex items-center h-14 gap-6">
 
             {{-- Logo --}}
-            <a href="{{ route('home') }}" class="flex items-center gap-2 flex-shrink-0 -ml-5 sm:-ml-8">
+            <a href="{{ route('home') }}" class="flex items-center gap-2 flex-shrink-0 -ml-5 sm:-ml-8 group">
                 <img src="{{ asset('images/logo-w.png') }}"
                     alt="Wartix"
-                    class="h-10 sm:h-11 w-auto max-w-[210px] object-contain">
-                <span class="hidden sm:inline text-sm font-semibold text-gray-900">Wartix</span>
+                    class="h-10 sm:h-11 w-auto max-w-[210px] object-contain transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
+                <span class="hidden sm:inline text-sm font-semibold text-gray-900 transition-colors duration-200 group-hover:text-indigo-600">Wartix</span>
             </a>
 
             {{-- Nav Links --}}
@@ -80,12 +80,12 @@
 </nav>
 
 {{-- PAGE CONTENT --}}
-<div class="animate-fade-in">
+<div class="animate-fade-in-up">
     @yield('content')
 </div>
 
     {{-- FOOTER --}}
-    <footer class="bg-gray-900 text-gray-400 py-12 px-4">
+    <footer class="bg-gray-900 text-gray-400 py-12 px-4 scroll-animate" data-delay="100">
         <div class="max-w-7xl mx-auto">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
                 <div class="footer-brand">
@@ -100,26 +100,26 @@
                 <div>
                     <h4 class="text-xs font-semibold text-white uppercase tracking-wider mb-3">Product</h4>
                     <ul class="space-y-2 text-xs">
-                        <li><a href="{{ route('events.index') }}" class="hover:text-white transition-colors">Events</a></li>
-                        <li><a href="{{ route('home') }}#monitor" class="hover:text-white transition-colors">Realtime Monitor</a></li>
-                        <li><a href="{{ route('home') }}#cara-order" class="hover:text-white transition-colors">Cara Order</a></li>
-                        <li><a href="{{ route('home') }}#faq" class="hover:text-white transition-colors">FAQ</a></li>
+                        <li><a href="{{ route('events.index') }}" class="hover:text-white transition-colors duration-200">Events</a></li>
+                        <li><a href="{{ route('home') }}#monitor" class="hover:text-white transition-colors duration-200">Realtime Monitor</a></li>
+                        <li><a href="{{ route('home') }}#cara-order" class="hover:text-white transition-colors duration-200">Cara Order</a></li>
+                        <li><a href="{{ route('home') }}#faq" class="hover:text-white transition-colors duration-200">FAQ</a></li>
                     </ul>
                 </div>
                 <div>
                     <h4 class="text-xs font-semibold text-white uppercase tracking-wider mb-3">Community</h4>
                     <ul class="space-y-2 text-xs">
-                        <li><a href="{{ $telegramLink }}" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">Telegram Channel</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Testimoni</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Event Recap</a></li>
+                        <li><a href="{{ $telegramLink }}" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors duration-200">Telegram Channel</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors duration-200">Testimoni</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors duration-200">Event Recap</a></li>
                     </ul>
                 </div>
                 <div>
                     <h4 class="text-xs font-semibold text-white uppercase tracking-wider mb-3">Legal</h4>
                     <ul class="space-y-2 text-xs">
-                        <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Refund Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors duration-200">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors duration-200">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors duration-200">Refund Policy</a></li>
                     </ul>
                 </div>
             </div>
@@ -132,7 +132,7 @@
 
 {{-- Floating Telegram Button --}}
 <a href="{{ $telegramLink }}" target="_blank" rel="noopener noreferrer"
-    class="fixed bottom-6 right-6 w-12 h-12 bg-[#229ED9] hover:bg-[#1e8dcc] text-white rounded-full flex items-center justify-center shadow-lg transition-colors z-50">
+    class="fixed bottom-6 right-6 w-12 h-12 bg-[#229ED9] hover:bg-[#1e8dcc] text-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 z-50 float-btn-glow hover:scale-110">
     <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <path d="M9.04 15.38 8.9 19.33c.42 0 .6-.18.83-.4l1.98-1.9 4.1 3c.75.42 1.29.2 1.48-.7l2.68-12.63c.24-1.12-.4-1.56-1.14-1.28L3.8 9.56c-1.1.43-1.08 1.05-.2 1.33l4.05 1.26 9.4-5.92c.44-.29.84-.13.51.17z"/>
     </svg>

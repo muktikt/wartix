@@ -1,10 +1,10 @@
-<div class="bg-white border border-gray-100 rounded-2xl overflow-hidden hover-lift hover:shadow-md transition-shadow">
+<div class="bg-white border border-gray-100 rounded-2xl overflow-hidden hover-lift hover-glow hover:shadow-lg transition-all duration-300 group">
     {{-- Banner --}}
     <div class="relative h-40 bg-gradient-to-br from-indigo-900 to-purple-900 overflow-hidden">
         @if($event->banner_image)
             <img src="{{ asset('storage/'.$event->banner_image) }}"
                 alt="{{ $event->title }}"
-                class="w-full h-full object-cover">
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
         @else
             <div class="absolute inset-0 flex items-center justify-center">
                 <span class="text-white/60 text-sm font-medium text-center px-4">{{ $event->title }}</span>
@@ -12,7 +12,7 @@
         @endif
         <div class="absolute top-3 left-3">
             @if($event->status === 'ongoing')
-                <span class="bg-green-500 text-white text-xs font-semibold px-2.5 py-1 rounded-full">On Sale</span>
+                <span class="bg-green-500 text-white text-xs font-semibold px-2.5 py-1 rounded-full animate-pulse-soft">On Sale</span>
             @else
                 <span class="bg-indigo-500 text-white text-xs font-semibold px-2.5 py-1 rounded-full">Upcoming</span>
             @endif
@@ -86,7 +86,7 @@
         @endif
 
         <a href="{{ route('events.show', $event->slug) }}"
-            class="block w-full text-center bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium py-2 rounded-lg transition-colors">
+            class="block w-full text-center bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium py-2 rounded-lg transition-all duration-300 hover:shadow-md hover:shadow-indigo-500/20">
             View Detail
         </a>
     </div>

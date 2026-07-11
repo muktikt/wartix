@@ -10,11 +10,14 @@
     }
 }
 
-/* Custom CSS Animations (Placed outside Tailwind layers to prevent purge and ensure compile) */
+/* ============================================================
+   KEYFRAME DEFINITIONS
+   ============================================================ */
+
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(16px);
+        transform: translateY(20px);
     }
     to {
         opacity: 1;
@@ -31,14 +34,47 @@
     }
 }
 
-@keyframes slideInRight {
+@keyframes fadeInDown {
     from {
         opacity: 0;
-        transform: translateX(20px);
+        transform: translateY(-16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-24px);
     }
     to {
         opacity: 1;
         transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(24px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.92);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
     }
 }
 
@@ -53,27 +89,368 @@
     }
 }
 
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-6px);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+@keyframes livePulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(1.6);
+    }
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(1);
+        opacity: 0.4;
+    }
+    100% {
+        transform: scale(2.4);
+        opacity: 0;
+    }
+}
+
+@keyframes slideRow {
+    from {
+        opacity: 0;
+        transform: translateX(-12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes countUp {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes borderGlow {
+    0%, 100% {
+        border-color: rgba(99, 102, 241, 0.15);
+        box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+    }
+    50% {
+        border-color: rgba(99, 102, 241, 0.3);
+        box-shadow: 0 0 12px 0 rgba(99, 102, 241, 0.08);
+    }
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* ============================================================
+   ANIMATION UTILITY CLASSES
+   ============================================================ */
+
 .animate-fade-in-up {
-    animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+    animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .animate-fade-in {
-    animation: fadeIn 0.4s ease-out forwards !important;
+    animation: fadeIn 0.5s ease-out both;
+}
+
+.animate-fade-in-down {
+    animation: fadeInDown 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-slide-in-left {
+    animation: slideInLeft 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .animate-slide-in-right {
-    animation: slideInRight 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+    animation: slideInRight 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-scale-in {
+    animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .animate-pulse-soft {
-    animation: pulseSoft 3s ease-in-out infinite !important;
+    animation: pulseSoft 3s ease-in-out infinite;
 }
 
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+.animate-slide-row {
+    animation: slideRow 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-count-up {
+    animation: countUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ============================================================
+   ANIMATION DELAY UTILITIES (for staggered entry effects)
+   ============================================================ */
+
+.anim-delay-75  { animation-delay: 75ms; }
+.anim-delay-100 { animation-delay: 100ms; }
+.anim-delay-150 { animation-delay: 150ms; }
+.anim-delay-200 { animation-delay: 200ms; }
+.anim-delay-250 { animation-delay: 250ms; }
+.anim-delay-300 { animation-delay: 300ms; }
+.anim-delay-400 { animation-delay: 400ms; }
+.anim-delay-500 { animation-delay: 500ms; }
+.anim-delay-600 { animation-delay: 600ms; }
+.anim-delay-700 { animation-delay: 700ms; }
+.anim-delay-800 { animation-delay: 800ms; }
+
+/* ============================================================
+   HOVER EFFECT UTILITIES
+   ============================================================ */
+
 .hover-lift {
-    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .hover-lift:hover {
-    transform: translateY(-4px) !important;
-    box-shadow: 0 12px 20px -8px rgba(99, 102, 241, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.05) !important;
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px -8px rgba(99, 102, 241, 0.18), 0 6px 12px -4px rgba(0, 0, 0, 0.06);
+}
+
+.hover-scale {
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hover-scale:hover {
+    transform: scale(1.03);
+}
+
+.hover-glow {
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.hover-glow:hover {
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.12), 0 4px 16px rgba(99, 102, 241, 0.08);
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+/* ============================================================
+   LIVE PULSE INDICATOR (green dot with ripple)
+   ============================================================ */
+
+.live-indicator {
+    position: relative;
+    display: inline-block;
+}
+
+.live-indicator::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background: inherit;
+    animation: ripple 1.8s ease-out infinite;
+}
+
+/* ============================================================
+   FLOATING BUTTON WITH RIPPLE GLOW
+   ============================================================ */
+
+.float-btn-glow {
+    position: relative;
+    animation: float 3s ease-in-out infinite;
+}
+
+.float-btn-glow::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 9999px;
+    background: inherit;
+    opacity: 0.3;
+    animation: ripple 2.2s ease-out infinite;
+    z-index: -1;
+}
+
+/* ============================================================
+   SHIMMER GRADIENT (for premium highlights)
+   ============================================================ */
+
+.shimmer-bg {
+    background: linear-gradient(
+        90deg,
+        rgba(99, 102, 241, 0.04) 25%,
+        rgba(99, 102, 241, 0.1) 50%,
+        rgba(99, 102, 241, 0.04) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 3s linear infinite;
+}
+
+/* ============================================================
+   ANIMATED GRADIENT BACKGROUND
+   ============================================================ */
+
+.animated-gradient {
+    background: linear-gradient(-45deg, #eef2ff, #e0e7ff, #f5f3ff, #ede9fe);
+    background-size: 400% 400%;
+    animation: gradientShift 8s ease infinite;
+}
+
+/* ============================================================
+   BORDER GLOW ANIMATION
+   ============================================================ */
+
+.border-glow {
+    animation: borderGlow 3s ease-in-out infinite;
+}
+
+/* ============================================================
+   SCROLL-TRIGGERED ANIMATIONS (via Intersection Observer)
+   Elements start invisible and animate in when they enter the viewport.
+   ============================================================ */
+
+.scroll-animate {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-animate.scroll-animate-left {
+    transform: translateX(-24px);
+}
+
+.scroll-animate.scroll-animate-right {
+    transform: translateX(24px);
+}
+
+.scroll-animate.scroll-animate-scale {
+    transform: scale(0.92);
+}
+
+.scroll-animate.is-visible {
+    opacity: 1;
+    transform: translateY(0) translateX(0) scale(1);
+}
+
+/* ============================================================
+   ADMIN SIDEBAR ANIMATION
+   ============================================================ */
+
+.sidebar-link {
+    position: relative;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.sidebar-link:hover {
+    transform: translateX(3px);
+}
+
+.sidebar-link::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%) scaleY(0);
+    width: 3px;
+    height: 60%;
+    border-radius: 0 3px 3px 0;
+    background: #4F46E5;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sidebar-link:hover::before {
+    transform: translateY(-50%) scaleY(1);
+}
+
+/* ============================================================
+   ADMIN STAT CARD HOVER
+   ============================================================ */
+
+.stat-card {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px -8px rgba(99, 102, 241, 0.15);
+    border-color: rgba(99, 102, 241, 0.2);
+}
+
+/* ============================================================
+   NOTIFICATION DOT PULSE
+   ============================================================ */
+
+.notif-dot {
+    position: relative;
+}
+
+.notif-dot::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background: #ef4444;
+    animation: livePulse 2s ease-in-out infinite;
+}
+
+/* ============================================================
+   TABLE ROW HOVER
+   ============================================================ */
+
+.table-row-hover {
+    transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.table-row-hover:hover {
+    transform: translateX(2px);
+}
+
+/* ============================================================
+   REDUCED MOTION: respect user preferences
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    .scroll-animate {
+        opacity: 1;
+        transform: none;
+    }
 }
