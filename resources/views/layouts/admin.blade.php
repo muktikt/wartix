@@ -25,7 +25,6 @@
                 alt="Wartix"
                 class="h-7 w-auto"
                 style="filter: brightness(0) saturate(100%) invert(29%) sepia(89%) saturate(1234%) hue-rotate(220deg) brightness(97%) contrast(97%);">
-            <span class="text-sm font-semibold text-gray-900">Wartix</span>
             <span class="ml-auto text-xs bg-indigo-50 text-indigo-600 px-1.5 py-0.5 rounded font-medium">
                 Admin
             </span>

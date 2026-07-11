@@ -37,14 +37,16 @@ return new class extends Migration
             $table->integer('slot_availability')->nullable();
             $table->timestamps();
 
-            $table->fullText([
-                    'title',
-                    'artist_name',
-                    'description',
-                    'venue',
-                    'city',
-                    'event_type'
-                ], 'events_search_fulltext');
+            if (config('database.default') !== 'sqlite') {
+                $table->fullText([
+                        'title',
+                        'artist_name',
+                        'description',
+                        'venue',
+                        'city',
+                        'event_type'
+                    ], 'events_search_fulltext');
+            }
             });
         }
 

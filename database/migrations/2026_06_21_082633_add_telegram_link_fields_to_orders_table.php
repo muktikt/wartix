@@ -14,7 +14,9 @@ return new class extends Migration
         });
 
         // Tambah 'pending_link' ke enum order_status
-        DB::statement("ALTER TABLE orders MODIFY order_status ENUM('pending_link', 'waiting', 'processing', 'success', 'failed', 'cancelled') DEFAULT 'pending_link'");
+        if (config('database.default') !== 'sqlite') {
+            \Illuminate\Support\Facades\DB::statement("ALTER TABLE orders MODIFY order_status ENUM('pending_link', 'waiting', 'processing', 'success', 'failed', 'cancelled') DEFAULT 'pending_link'");
+        }
     }
 
     public function down(): void
@@ -23,6 +25,8 @@ return new class extends Migration
             $table->dropColumn(['telegram_link_token', 'telegram_linked_at']);
         });
 
-        DB::statement("ALTER TABLE orders MODIFY order_status ENUM('waiting', 'processing', 'success', 'failed', 'cancelled') DEFAULT 'waiting'");
+        if (config('database.default') !== 'sqlite') {
+            \Illuminate\Support\Facades\DB::statement("ALTER TABLE orders MODIFY order_status ENUM('waiting', 'processing', 'success', 'failed', 'cancelled') DEFAULT 'waiting'");
+        }
     }
 };
