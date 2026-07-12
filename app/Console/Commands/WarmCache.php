@@ -38,7 +38,7 @@ class WarmCache extends Command
         });
 
         Cache::remember('active_events', 60, function () {
-            return Event::whereIn('status', ['upcoming', 'ongoing'])
+            return Event::whereIn('status', ['upcoming', 'ongoing', 'finished'])
                 ->with(['salePhases', 'ticketCategories'])
                 ->latest()
                 ->limit(6)
