@@ -33,22 +33,22 @@
     <aside class="fixed inset-y-0 left-0 z-40 w-56 bg-white border-r border-gray-100 flex flex-col flex-shrink-0 transition-transform duration-300 ease-in-out transform md:static"
            :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'">
 
-        {{-- Absolute Close Button for Mobile --}}
-        <button @click="sidebarOpen = false" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 focus:outline-none md:hidden p-2 z-50" title="Tutup Menu">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-            </svg>
-        </button>
-
         {{-- Logo --}}
-        <div class="h-14 flex items-center gap-2.5 px-4 border-b border-gray-100">
-            <img src="{{ asset('images/logo-w.png') }}"
-                alt="Wartix"
-                class="h-7 w-auto"
-                style="filter: brightness(0) saturate(100%) invert(29%) sepia(89%) saturate(1234%) hue-rotate(220deg) brightness(97%) contrast(97%);">
-            <span class="ml-auto text-xs bg-indigo-50 text-indigo-600 px-1.5 py-0.5 rounded font-medium">
-                Admin
-            </span>
+        <div class="h-14 flex items-center gap-2.5 px-4 border-b border-gray-100 justify-between">
+            <div class="flex items-center gap-2.5">
+                <img src="{{ asset('images/logo-w.png') }}"
+                    alt="Wartix"
+                    class="h-7 w-auto"
+                    style="filter: brightness(0) saturate(100%) invert(29%) sepia(89%) saturate(1234%) hue-rotate(220deg) brightness(97%) contrast(97%);">
+                <span class="text-xs bg-indigo-50 text-indigo-600 px-1.5 py-0.5 rounded font-medium">
+                    Admin
+                </span>
+            </div>
+            <button @click="sidebarOpen = false" class="text-gray-400 hover:text-gray-600 focus:outline-none md:hidden" title="Tutup Menu">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
         </div>
 
         {{-- Nav --}}
