@@ -69,6 +69,7 @@
         </div>
         @endif
 
+        @if($event->status !== 'finished')
         <div class="flex items-center justify-between gap-2 text-xs mb-3 p-2 bg-indigo-50 rounded-lg">
             <span class="text-indigo-700">Slot Tersedia</span>
             @if($event->total_slots !== null)
@@ -79,6 +80,7 @@
             <span class="font-bold text-indigo-600">∞ (tak terbatas)</span>
             @endif
         </div>
+        @endif
         @if(request('debug'))
         <div class="mt-2 text-xs text-gray-500 bg-gray-50 p-2 rounded">
             <pre class="whitespace-pre-wrap text-xs">{{ json_encode($event->toArray(), JSON_PRETTY_PRINT) }}</pre>
