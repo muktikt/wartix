@@ -5,8 +5,8 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
     <div class="mb-8">
-        <h1 class="text-2xl font-bold text-gray-900 mb-2">Active Events</h1>
-        <p class="text-sm text-gray-500">Temukan event konser, festival, dan fanmeeting yang tersedia</p>
+        <h1 class="text-2xl font-bold text-gray-900 mb-2">Explore Events</h1>
+        <p class="text-sm text-gray-500">Temukan event konser, festival, dan fanmeeting</p>
     </div>
 
     {{-- Search --}}
@@ -64,6 +64,7 @@
                 <option value="">Semua Status</option>
                 <option value="upcoming" {{ request('status') === 'upcoming' ? 'selected' : '' }}>Upcoming</option>
                 <option value="ongoing" {{ request('status') === 'ongoing' ? 'selected' : '' }}>Ongoing</option>
+                <option value="finished" {{ request('status') === 'finished' ? 'selected' : '' }}>Finished</option>
             </select>
             <button type="submit"
                 class="text-xs bg-gray-100 text-gray-600 px-3 py-1.5 rounded-lg hover:bg-gray-200">

@@ -27,7 +27,7 @@ class HomeController extends Controller
         });
 
         $activeEvents = Cache::remember('active_events', 15, function () {
-            return Event::whereIn('status', ['upcoming', 'ongoing'])
+            return Event::whereIn('status', ['upcoming', 'ongoing', 'finished'])
                 ->with(['salePhases', 'ticketCategories'])
                 ->latest()
                 ->limit(6)
