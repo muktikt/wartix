@@ -47,11 +47,11 @@
 
 {{-- Orders Results --}}
 @if(in_array($tab, ['all', 'orders']) && !empty($results['orders']))
-<div class="bg-white border border-gray-100 rounded-xl overflow-hidden mb-4">
-    <div class="px-4 py-3 bg-gray-50 border-b border-gray-100">
+<div class="bg-white border border-gray-100 rounded-xl overflow-x-auto mb-4">
+    <div class="px-4 py-3 bg-gray-50 border-b border-gray-100 min-w-[650px]">
         <span class="text-xs font-semibold text-gray-700">Orders</span>
     </div>
-    <table class="w-full">
+    <table class="w-full min-w-[650px]">
         <thead>
             <tr class="border-b border-gray-50">
                 <th class="text-left text-xs font-medium text-gray-400 px-4 py-2">Order Code</th>

@@ -50,11 +50,11 @@
 </div>
 
 {{-- History Table --}}
-<div class="bg-white border border-gray-100 rounded-xl overflow-hidden">
-    <div class="px-4 py-3 bg-gray-50 border-b border-gray-100">
+<div class="bg-white border border-gray-100 rounded-xl overflow-x-auto">
+    <div class="px-4 py-3 bg-gray-50 border-b border-gray-100 min-w-[700px]">
         <span class="text-xs font-medium text-gray-700">History Log</span>
     </div>
-    <table class="w-full">
+    <table class="w-full min-w-[700px]">
         <thead>
             <tr class="border-b border-gray-50">
                 <th class="text-left text-xs font-medium text-gray-400 px-4 py-3">Order</th>

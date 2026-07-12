@@ -16,8 +16,8 @@
     </a>
 </div>
 
-<div class="bg-white border border-gray-100 rounded-xl overflow-hidden">
-    <table class="w-full">
+<div class="bg-white border border-gray-100 rounded-xl overflow-x-auto">
+    <table class="w-full min-w-[600px]">
         <thead class="bg-gray-50 border-b border-gray-100">
             <tr>
                 <th class="text-left text-xs font-medium text-gray-500 px-4 py-3">Event</th>

@@ -130,8 +130,8 @@
 
     {{-- Tab: Sale Phases --}}
     <div x-show="tab === 'phases'">
-        <div class="bg-white border border-gray-100 rounded-xl overflow-hidden">
-            <table class="w-full">
+        <div class="bg-white border border-gray-100 rounded-xl overflow-x-auto">
+            <table class="w-full min-w-[600px]">
                 <thead class="bg-gray-50 border-b border-gray-100">
                     <tr>
                         <th class="text-left text-xs font-medium text-gray-500 px-4 py-3">Phase</th>
@@ -169,8 +169,8 @@
 
     {{-- Tab: Categories --}}
     <div x-show="tab === 'categories'">
-        <div class="bg-white border border-gray-100 rounded-xl overflow-hidden">
-            <table class="w-full">
+        <div class="bg-white border border-gray-100 rounded-xl overflow-x-auto">
+            <table class="w-full min-w-[700px]">
                 <thead class="bg-gray-50 border-b border-gray-100">
                     <tr>
                         <th class="text-left text-xs font-medium text-gray-500 px-4 py-3">Kategori</th>
@@ -212,8 +212,8 @@
 
     {{-- Tab: Orders --}}
     <div x-show="tab === 'orders'">
-        <div class="bg-white border border-gray-100 rounded-xl overflow-hidden">
-            <table class="w-full">
+        <div class="bg-white border border-gray-100 rounded-xl overflow-x-auto">
+            <table class="w-full min-w-[800px]">
                 <thead class="bg-gray-50 border-b border-gray-100">
                     <tr>
                         <th class="text-left text-xs font-medium text-gray-500 px-4 py-3">Order Code</th>
@@ -281,8 +281,8 @@
 
     {{-- Tab: Guest Data --}}
     <div x-show="tab === 'guests'">
-        <div class="bg-white border border-gray-100 rounded-xl overflow-hidden">
-            <table class="w-full">
+        <div class="bg-white border border-gray-100 rounded-xl overflow-x-auto">
+            <table class="w-full min-w-[650px]">
                 <thead class="bg-gray-50 border-b border-gray-100">
                     <tr>
                         <th class="text-left text-xs font-medium text-gray-500 px-4 py-3">Order Code</th>
@@ -331,8 +331,8 @@
 
     {{-- Tab: Success Logs --}}
     <div x-show="tab === 'logs'">
-        <div class="bg-white border border-gray-100 rounded-xl overflow-hidden">
-            <table class="w-full">
+        <div class="bg-white border border-gray-100 rounded-xl overflow-x-auto">
+            <table class="w-full min-w-[750px]">
                 <thead class="bg-gray-50 border-b border-gray-100">
                     <tr>
                         <th class="text-left text-xs font-medium text-gray-500 px-4 py-3">Email</th>
