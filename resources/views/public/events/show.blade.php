@@ -490,6 +490,10 @@ updateMembershipVisibility();
 window.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('tcModal');
     if (!modal) return;
+
+    // Move modal to body to avoid parent transform/animation positioning issues on mobile
+    document.body.appendChild(modal);
+
     const modalContent = modal.querySelector('div');
     const btn = document.getElementById('closeTcModalBtn');
 
