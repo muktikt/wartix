@@ -40,7 +40,10 @@
                         <h1 class="text-xl font-bold text-gray-900">{{ $event->title }}</h1>
                     </div>
                     <span class="text-xs px-2.5 py-1 rounded-full font-medium
-                        {{ $event->status === 'ongoing' ? 'bg-green-50 text-green-700' : 'bg-indigo-50 text-indigo-700' }}">
+                        @if($event->status === 'ongoing') bg-green-50 text-green-700
+                        @elseif($event->status === 'finished') bg-gray-100 text-gray-500
+                        @else bg-indigo-50 text-indigo-700
+                        @endif">
                         {{ ucfirst($event->status) }}
                     </span>
                 </div>
@@ -58,7 +61,7 @@
                         {{ $event->event_date->format('d M Y') }}
                     </div>
                 </div>
-                @if($totalSlots !== null)
+                @if($event->status !== 'finished' && $totalSlots !== null)
                 <div class="mb-4 p-3 bg-gradient-to-br from-indigo-50 to-indigo-100/40 border border-indigo-100/60 rounded-xl flex items-center justify-between">
                     <div>
                         <span class="text-[10px] font-semibold text-indigo-500 uppercase tracking-wider block">Slot Tersedia</span>
@@ -121,9 +124,59 @@
             </div>
         </div>
 
-        {{-- Right — Order Form --}}
+        {{-- Right Column --}}
         <div class="md:col-span-1 md:h-full md:overflow-y-auto md:pr-2 custom-scrollbar">
             <div>
+
+            @if($event->status === 'finished')
+                {{-- Event Recap Stats --}}
+                <div class="bg-white border border-gray-100 rounded-2xl p-5">
+                    <div class="flex items-center gap-2 mb-5">
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                        <h3 class="text-sm font-semibold text-gray-900">Hasil Event</h3>
+                        <span class="ml-auto text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full font-medium">Finished</span>
+                    </div>
+
+                    <div class="space-y-3 mb-5">
+                        {{-- Total Akun --}}
+                        <div class="bg-indigo-50 rounded-xl p-4">
+                            <span class="text-[10px] font-semibold text-indigo-500 uppercase tracking-wider block mb-1">Total Akun Order</span>
+                            <span class="text-2xl font-bold text-indigo-900">{{ number_format($eventStats['total_accounts']) }}</span>
+                            <span class="text-xs text-indigo-400 ml-1">akun</span>
+                        </div>
+
+                        {{-- Akun Sukses --}}
+                        <div class="bg-green-50 rounded-xl p-4">
+                            <span class="text-[10px] font-semibold text-green-500 uppercase tracking-wider block mb-1">Akun Berhasil</span>
+                            <span class="text-2xl font-bold text-green-900">{{ number_format($eventStats['success_accounts']) }}</span>
+                            <span class="text-xs text-green-400 ml-1">akun</span>
+                        </div>
+
+                        {{-- Success Rate --}}
+                        <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-4">
+                            <span class="text-[10px] font-semibold text-amber-500 uppercase tracking-wider block mb-1">Success Rate</span>
+                            <div class="flex items-baseline gap-1">
+                                <span class="text-2xl font-bold text-amber-900">{{ $eventStats['success_rate'] }}</span>
+                                <span class="text-sm font-semibold text-amber-600">%</span>
+                            </div>
+                            {{-- Progress bar --}}
+                            <div class="mt-2 h-2 bg-amber-100 rounded-full overflow-hidden">
+                                <div class="h-full rounded-full transition-all duration-500
+                                    {{ $eventStats['success_rate'] >= 80 ? 'bg-green-500' : ($eventStats['success_rate'] >= 50 ? 'bg-amber-500' : 'bg-red-400') }}"
+                                    style="width: {{ min($eventStats['success_rate'], 100) }}%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center py-3 bg-gray-50 rounded-xl">
+                        <p class="text-xs text-gray-400">Event ini telah selesai.</p>
+                        <p class="text-xs text-gray-400">Terima kasih atas partisipasi Anda!</p>
+                    </div>
+                </div>
+            @else
+                {{-- Order Form (active event) --}}
                 <div class="bg-white border border-gray-100 rounded-2xl p-5">
                     <h3 class="text-sm font-semibold text-gray-900 mb-4">Form Order</h3>
 
@@ -366,11 +419,13 @@
                         </p>
                     </form>
                 </div>
+            @endif
             </div>
         </div>
     </div>
 </div>
 
+@if($event->status !== 'finished')
 {{-- Terms & Conditions Modal --}}
 <div id="tcModal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300">
     <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl transform scale-95 transition-all duration-300">
@@ -388,7 +443,9 @@
         </button>
     </div>
 </div>
+@endif
 
+@if($event->status !== 'finished')
 <script>
 const categorySelect = document.getElementById('categorySelect');
 const qtySelect      = document.getElementById('qtySelect');
@@ -598,4 +655,5 @@ if (orderForm) {
     });
 }
 </script>
+@endif
 @endsection

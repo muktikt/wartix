@@ -84,6 +84,24 @@ class EventController extends Controller
         $totalSlots = $event->resolved_total_slots;
         $availableSlots = $event->resolved_available_slots;
 
-        return view('public.events.show', compact('event', 'totalSlots', 'availableSlots'));
+        // Per-event statistics (used when event is finished)
+        $totalAccounts = Order::where('event_id', $event->id)
+            ->distinct('email')
+            ->count('email');
+
+        $successAccounts = Order::where('event_id', $event->id)
+            ->where('order_status', 'success')
+            ->distinct('email')
+            ->count('email');
+
+        $eventStats = [
+            'total_accounts'   => $totalAccounts,
+            'success_accounts' => $successAccounts,
+            'success_rate'     => $totalAccounts > 0
+                ? round(($successAccounts / $totalAccounts) * 100, 1)
+                : 0.0,
+        ];
+
+        return view('public.events.show', compact('event', 'totalSlots', 'availableSlots', 'eventStats'));
     }
 }
