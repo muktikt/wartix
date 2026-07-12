@@ -113,9 +113,9 @@
                 {{-- Categories & fee --}}
                 <div class="space-y-2">
                     @foreach($event->ticketCategories as $cat)
-                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
-                        <span class="text-sm font-medium text-gray-900">{{ $cat->name }}</span>
-                        <span class="text-sm font-semibold text-indigo-600">
+                    <div class="flex items-center justify-between gap-4 p-3 bg-gray-50 rounded-xl">
+                        <span class="text-xs sm:text-sm font-medium text-gray-900 leading-tight">{{ $cat->name }}</span>
+                        <span class="text-xs sm:text-sm font-semibold text-indigo-600 flex-shrink-0 whitespace-nowrap text-right">
                             Rp {{ number_format($cat->fee_per_ticket) }}/tiket
                         </span>
                     </div>
