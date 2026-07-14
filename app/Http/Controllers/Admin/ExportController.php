@@ -37,21 +37,21 @@ class ExportController extends Controller
                     $order->order_code,
                     $order->full_name,
                     $order->email,
-                    $order->phone_number ? "'" . $order->phone_number : '',
-                    $order->identity_number ? "'" . $order->identity_number : '',
+                    $order->phone_number ? '="' . $order->phone_number . '"' : '',
+                    $order->identity_number ? '="' . $order->identity_number . '"' : '',
                     $order->event->title ?? '-',
                     ($order->ticketCategory->name ?? '-') . ' x' . $order->qty,
                     $order->qty,
                     ucfirst($order->order_status),
                     ucfirst($order->payment_status),
                     $isMultiGuest ? 'Ya (' . $order->guests->count() . ' tiket)' : 'Tidak',
-                    $order->created_at ? "'" . $order->created_at->format('d M Y H:i') : '-',
+                    $order->created_at ? '="' . $order->created_at->format('d M Y H:i') . '"' : '-',
                 ];
 
                 // Append guest NIK columns
                 for ($i = 0; $i < $maxGuests; $i++) {
                     $guest = $additionalGuests->get($i);
-                    $row[] = ($guest && $guest->identity_number) ? "'" . $guest->identity_number : '';
+                    $row[] = ($guest && $guest->identity_number) ? '="' . $guest->identity_number . '"' : '';
                 }
 
                 return $row;
@@ -78,7 +78,7 @@ class ExportController extends Controller
                     $order->qty,
                     'Rp ' . number_format((int) $order->grand_total),
                     ucfirst($order->order_status),
-                    $order->created_at ? "'" . $order->created_at->format('d M Y H:i') : '-',
+                    $order->created_at ? '="' . $order->created_at->format('d M Y H:i') . '"' : '-',
                 ];
             })->all()
         );
