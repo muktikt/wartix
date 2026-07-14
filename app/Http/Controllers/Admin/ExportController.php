@@ -45,7 +45,7 @@ class ExportController extends Controller
                     ucfirst($order->order_status),
                     ucfirst($order->payment_status),
                     $isMultiGuest ? 'Ya (' . $order->guests->count() . ' tiket)' : 'Tidak',
-                    $order->created_at ? '="' . $order->created_at->format('d M Y H:i') . '"' : '-',
+                    $order->created_at ? '="' . $order->created_at->format('d M Y') . '"' : '-',
                 ];
 
                 // Append guest NIK columns
@@ -78,7 +78,7 @@ class ExportController extends Controller
                     $order->qty,
                     'Rp ' . number_format((int) $order->grand_total),
                     ucfirst($order->order_status),
-                    $order->created_at ? '="' . $order->created_at->format('d M Y H:i') . '"' : '-',
+                    $order->created_at ? '="' . $order->created_at->format('d M Y') . '"' : '-',
                 ];
             })->all()
         );
