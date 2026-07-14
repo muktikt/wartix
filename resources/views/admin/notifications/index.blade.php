@@ -30,8 +30,13 @@
 @else
     <div class="space-y-2">
         @foreach($notifications as $notif)
-        <div class="flex items-start gap-3 bg-white border rounded-xl p-4 transition-all duration-200 hover:shadow-sm
+        <div class="relative flex items-start gap-3 bg-white border rounded-xl p-4 transition-all duration-200 hover:shadow-sm
+            {{ $notif->link ? 'cursor-pointer hover:border-indigo-200' : '' }}
             {{ $notif->isRead() ? 'border-gray-100 opacity-70' : 'border-indigo-100 bg-indigo-50/30' }}">
+
+            @if($notif->link)
+            <a href="{{ route('admin.notifications.read', $notif->id) }}" class="absolute inset-0 z-0 rounded-xl"></a>
+            @endif
 
             {{-- Icon --}}
             <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0
@@ -73,7 +78,7 @@
             </div>
 
             {{-- Actions --}}
-            <div class="flex items-center gap-1 flex-shrink-0">
+            <div class="relative z-10 flex items-center gap-1 flex-shrink-0">
                 @if($notif->link)
                 <a href="{{ route('admin.notifications.read', $notif->id) }}"
                     class="w-7 h-7 rounded-lg flex items-center justify-center text-gray-400 hover:bg-indigo-50 hover:text-indigo-600 transition-colors"
