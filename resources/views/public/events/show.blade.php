@@ -83,7 +83,7 @@
                 </div>
                 @endif
                 @if($event->description)
-                <p class="text-sm text-gray-500 leading-relaxed">{{ $event->description }}</p>
+                <p class="text-sm text-gray-500 leading-relaxed whitespace-pre-line">{{ $event->description }}</p>
                 @endif
             </div>
 
