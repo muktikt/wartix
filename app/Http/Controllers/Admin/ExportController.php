@@ -36,9 +36,9 @@ class ExportController extends Controller
                 $row = [
                     $order->order_code,
                     $order->full_name,
-                    MaskService::email($order->email),
-                    $order->phone_number,
-                    MaskService::nik($order->identity_number ?? ''),
+                    $order->email,
+                    $order->phone_number ? "'" . $order->phone_number : '',
+                    $order->identity_number ? "'" . $order->identity_number : '',
                     $order->event->title ?? '-',
                     ($order->ticketCategory->name ?? '-') . ' x' . $order->qty,
                     $order->qty,
@@ -51,7 +51,7 @@ class ExportController extends Controller
                 // Append guest NIK columns
                 for ($i = 0; $i < $maxGuests; $i++) {
                     $guest = $additionalGuests->get($i);
-                    $row[] = $guest ? MaskService::nik($guest->identity_number ?? '') : '';
+                    $row[] = ($guest && $guest->identity_number) ? "'" . $guest->identity_number : '';
                 }
 
                 return $row;
@@ -72,7 +72,7 @@ class ExportController extends Controller
                 return [
                     $order->order_code,
                     $order->full_name,
-                    MaskService::email($order->email),
+                    $order->email,
                     $order->event->title ?? '-',
                     ($order->ticketCategory->name ?? '-') . ' x' . $order->qty,
                     $order->qty,
