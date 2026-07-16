@@ -29,9 +29,14 @@
             @csrf @method('PATCH')
             <select name="status" onchange="this.form.submit()"
                 class="text-sm border border-gray-200 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                @foreach(['upcoming','ongoing','finished'] as $s)
-                <option value="{{ $s }}" {{ $event->status === $s ? 'selected' : '' }}>
-                    {{ ucfirst($s) }}
+                @foreach([
+                    'upcoming' => 'Upcoming (Buka Registrasi)',
+                    'slot_penuh' => 'Slot Penuh (Tutup Registrasi)',
+                    'ongoing' => 'Proses (Event Berlangsung)',
+                    'finished' => 'Finished (Event Selesai)'
+                ] as $val => $label)
+                <option value="{{ $val }}" {{ $event->status === $val ? 'selected' : '' }}>
+                    {{ $label }}
                 </option>
                 @endforeach
             </select>
@@ -62,12 +67,19 @@
                 @php
                 $sc = match($event->status) {
                     'ongoing'  => 'bg-green-50 text-green-700',
+                    'slot_penuh' => 'bg-rose-50 text-rose-700',
                     'upcoming' => 'bg-indigo-50 text-indigo-700',
                     'finished' => 'bg-gray-100 text-gray-500',
                 };
+                $statusLabel = match($event->status) {
+                    'ongoing'  => 'Proses',
+                    'slot_penuh' => 'Slot Penuh',
+                    'upcoming' => 'Upcoming',
+                    'finished' => 'Finished',
+                };
                 @endphp
                 <span class="text-xs px-2.5 py-1 rounded-lg font-medium {{ $sc }}">
-                    {{ ucfirst($event->status) }}
+                    {{ $statusLabel }}
                 </span>
             </div>
             <div class="grid grid-cols-4 gap-4 mt-3">

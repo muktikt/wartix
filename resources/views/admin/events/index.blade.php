@@ -47,12 +47,19 @@
                     @php
                     $sc = match($event->status) {
                         'ongoing'  => 'bg-green-50 text-green-700',
+                        'slot_penuh' => 'bg-rose-50 text-rose-700',
                         'upcoming' => 'bg-indigo-50 text-indigo-700',
                         'finished' => 'bg-gray-100 text-gray-500',
                     };
+                    $statusLabel = match($event->status) {
+                        'ongoing'  => 'Proses',
+                        'slot_penuh' => 'Slot Penuh',
+                        'upcoming' => 'Upcoming',
+                        'finished' => 'Finished',
+                    };
                     @endphp
                     <span class="text-xs px-2 py-0.5 rounded-md font-medium {{ $sc }}">
-                        {{ ucfirst($event->status) }}
+                        {{ $statusLabel }}
                     </span>
                 </td>
                 <td class="px-4 py-3 text-sm text-gray-600">

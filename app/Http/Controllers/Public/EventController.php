@@ -11,7 +11,7 @@ class EventController extends Controller
     public function index(Request $request)
     {
         $query = Event::with(['salePhases', 'ticketCategories'])
-            ->whereIn('status', ['upcoming', 'ongoing', 'finished']);
+            ->whereIn('status', ['upcoming', 'slot_penuh', 'ongoing', 'finished']);
 
         if ($search = $request->get('q')) {
             $query->where(function ($q) use ($search) {
@@ -65,8 +65,8 @@ class EventController extends Controller
             return $event;
         });
 
-        $cities    = Event::whereIn('status', ['upcoming', 'ongoing', 'finished'])->distinct()->pluck('city');
-        $types     = Event::whereIn('status', ['upcoming', 'ongoing', 'finished'])->distinct()->pluck('event_type');
+        $cities    = Event::whereIn('status', ['upcoming', 'slot_penuh', 'ongoing', 'finished'])->distinct()->pluck('city');
+        $types     = Event::whereIn('status', ['upcoming', 'slot_penuh', 'ongoing', 'finished'])->distinct()->pluck('event_type');
 
         return view('public.events.index', compact('events', 'cities', 'types'));
     }

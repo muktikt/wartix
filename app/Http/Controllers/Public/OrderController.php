@@ -29,6 +29,12 @@ class OrderController extends Controller
 
         $event = Event::with('customFields')->findOrFail($request->event_id);
 
+        if ($event->status !== 'upcoming') {
+            return back()->withInput()->withErrors([
+                'event_id' => 'Pendaftaran untuk event ini sudah ditutup.',
+            ]);
+        }
+
         $phase    = SalePhase::where('event_id', $event->id)->find($request->sale_phase_id);
         $category = TicketCategory::where('event_id', $event->id)->find($request->ticket_category_id);
 
@@ -74,14 +80,21 @@ class OrderController extends Controller
 
         $qty = (int) $request->qty;
 
+        $availableSlots = $event->resolved_available_slots;
+        if ($availableSlots !== null && $qty > $availableSlots) {
+            return back()->withInput()->withErrors([
+                'qty' => "Slot tidak mencukupi. Sisa slot yang tersedia adalah {$availableSlots}.",
+            ]);
+        }
+
         if ($category->slot_limit !== null) {
             $soldCategory = Order::where('ticket_category_id', $category->id)
                 ->whereNotIn('order_status', ['failed', 'cancelled'])
                 ->count();
 
-            if ($soldCategory + 1 > $category->slot_limit) {
+            if ($soldCategory + $qty > $category->slot_limit) {
                 return back()->withInput()->withErrors([
-                    'ticket_category_id' => 'Slot untuk kategori ini sudah penuh.',
+                    'ticket_category_id' => 'Slot untuk kategori ini sudah penuh atau tidak mencukupi.',
                 ]);
             }
         }
@@ -91,9 +104,9 @@ class OrderController extends Controller
                 ->whereNotIn('order_status', ['failed', 'cancelled'])
                 ->count();
 
-            if ($soldPhase + 1 > $phase->slot_limit) {
+            if ($soldPhase + $qty > $phase->slot_limit) {
                 return back()->withInput()->withErrors([
-                    'sale_phase_id' => 'Slot untuk sale phase ini sudah penuh.',
+                    'sale_phase_id' => 'Slot untuk sale phase ini sudah penuh atau tidak mencukupi.',
                 ]);
             }
         }

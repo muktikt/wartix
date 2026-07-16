@@ -24,6 +24,29 @@ class Order extends Model
     protected static function booted(): void
     {
         static::addGlobalScope(new HideUnlinkedOrdersScope());
+
+        static::saved(function ($order) {
+            $order->syncEventStatus();
+        });
+
+        static::deleted(function ($order) {
+            $order->syncEventStatus();
+        });
+    }
+
+    public function syncEventStatus(): void
+    {
+        $event = $this->event;
+        if ($event) {
+            $available = $event->resolved_available_slots;
+            if ($available !== null) {
+                if ($available <= 0 && $event->status === 'upcoming') {
+                    $event->update(['status' => 'slot_penuh']);
+                } elseif ($available > 0 && $event->status === 'slot_penuh') {
+                    $event->update(['status' => 'upcoming']);
+                }
+            }
+        }
     }
 
     public function event()

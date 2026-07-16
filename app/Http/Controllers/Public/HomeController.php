@@ -22,12 +22,12 @@ class HomeController extends Controller
                 'total_accounts' => $totalAccounts,
                 'success_accounts' => $successAccounts,
                 'total_events'   => Event::count(),
-                'active_events'  => Event::whereIn('status', ['upcoming', 'ongoing'])->count(),
+                'active_events'  => Event::whereIn('status', ['upcoming', 'slot_penuh', 'ongoing'])->count(),
             ];
         });
 
         $activeEvents = Cache::remember('active_events', 15, function () {
-            return Event::whereIn('status', ['upcoming', 'ongoing', 'finished'])
+            return Event::whereIn('status', ['upcoming', 'slot_penuh', 'ongoing', 'finished'])
                 ->with(['salePhases', 'ticketCategories'])
                 ->latest()
                 ->limit(6)

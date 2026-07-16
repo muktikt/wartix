@@ -94,7 +94,12 @@
                         <label class="block text-xs font-medium text-gray-700 mb-1.5">Status *</label>
                         <select name="status"
                             class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                            @foreach(['upcoming' => 'Upcoming', 'ongoing' => 'Ongoing', 'finished' => 'Finished'] as $val => $label)
+                            @foreach([
+                                'upcoming' => 'Upcoming (Buka Registrasi)',
+                                'slot_penuh' => 'Slot Penuh (Tutup Registrasi)',
+                                'ongoing' => 'Proses (Event Berlangsung)',
+                                'finished' => 'Finished (Event Selesai)'
+                            ] as $val => $label)
                             <option value="{{ $val }}" {{ old('status', $event->status ?? 'upcoming') === $val ? 'selected' : '' }}>{{ $label }}</option>
                             @endforeach
                         </select>

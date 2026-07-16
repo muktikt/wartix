@@ -48,7 +48,7 @@ class EventController extends Controller
     public function updateStatus(Request $request, Event $event)
     {
         $request->validate([
-            'status' => 'required|in:upcoming,ongoing,finished',
+            'status' => 'required|in:upcoming,slot_penuh,ongoing,finished',
         ]);
 
         $event->update(['status' => $request->status]);

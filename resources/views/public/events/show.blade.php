@@ -41,10 +41,11 @@
                     </div>
                     <span class="text-xs px-2.5 py-1 rounded-full font-medium
                         @if($event->status === 'ongoing') bg-green-50 text-green-700
+                        @elseif($event->status === 'slot_penuh') bg-rose-50 text-rose-700
                         @elseif($event->status === 'finished') bg-gray-100 text-gray-500
                         @else bg-indigo-50 text-indigo-700
                         @endif">
-                        {{ ucfirst($event->status) }}
+                        {{ $event->status === 'ongoing' ? 'Proses' : ($event->status === 'slot_penuh' ? 'Slot Penuh' : ucfirst($event->status)) }}
                     </span>
                 </div>
                 <div class="grid grid-cols-2 gap-3 text-sm mb-4">
@@ -174,6 +175,36 @@
                         <p class="text-xs text-gray-400">Event ini telah selesai.</p>
                         <p class="text-xs text-gray-400">Terima kasih atas partisipasi Anda!</p>
                     </div>
+                </div>
+            @elseif($event->status === 'slot_penuh')
+                <div class="bg-white border border-gray-100 rounded-2xl p-6 text-center">
+                    <div class="w-16 h-16 bg-rose-50 rounded-full flex items-center justify-center mx-auto mb-4 text-rose-500">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-base font-bold text-gray-900 mb-1">Slot Penuh</h3>
+                    <p class="text-xs text-gray-500 leading-relaxed mb-6">
+                        Mohon maaf, kuota tiket untuk event ini telah terpenuhi dan pendaftaran telah ditutup.
+                    </p>
+                    <a href="{{ route('events.index') }}" class="inline-flex justify-center w-full bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold py-2.5 rounded-xl transition-colors">
+                        Lihat Event Lainnya
+                    </a>
+                </div>
+            @elseif($event->status === 'ongoing')
+                <div class="bg-white border border-gray-100 rounded-2xl p-6 text-center">
+                    <div class="w-16 h-16 bg-amber-50 rounded-full flex items-center justify-center mx-auto mb-4 text-amber-500">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-base font-bold text-gray-900 mb-1">Event Berlangsung</h3>
+                    <p class="text-xs text-gray-500 leading-relaxed mb-6">
+                        Pendaftaran telah ditutup karena event saat ini sedang berlangsung (Proses).
+                    </p>
+                    <a href="{{ route('events.index') }}" class="inline-flex justify-center w-full bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold py-2.5 rounded-xl transition-colors">
+                        Lihat Event Lainnya
+                    </a>
                 </div>
             @else
                 {{-- Order Form (active event) --}}
@@ -425,7 +456,7 @@
     </div>
 </div>
 
-@if($event->status !== 'finished')
+@if($event->status === 'upcoming')
 {{-- Terms & Conditions Modal --}}
 <div id="tcModal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300">
     <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl transform scale-95 transition-all duration-300">
@@ -445,7 +476,7 @@
 </div>
 @endif
 
-@if($event->status !== 'finished')
+@if($event->status === 'upcoming')
 <script>
 const categorySelect = document.getElementById('categorySelect');
 const qtySelect      = document.getElementById('qtySelect');
