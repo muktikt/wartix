@@ -102,16 +102,6 @@
                         Platform Ticket Assistance untuk event high-demand.
                         Priority Access, Realtime Monitoring, dan update via Telegram.
                     </p>
-                        --}}
-                        {{-- Threads (Ganti '#' dengan link jika sudah ada) --}}
-                        {{--
-                        <a href="{{ $threadsLink }}" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition-colors duration-200" title="Threads">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path d="M12.5.75c-6.19 0-10.75 4.09-10.75 11.27 0 7.42 4.7 11.23 10.75 11.23 3.62 0 6.64-1.32 8.34-3.67a1 1 0 10-1.6-1.2c-1.3 1.8-3.6 2.87-6.74 2.87-5 0-8.75-3-8.75-9.23 0-5.84 3.58-9.27 8.75-9.27 4.6 0 7.8 2.8 7.8 7.54v2.79c0 1-.58 1.63-1.27 1.63-.56 0-.98-.44-.98-1.4V10.2a1 1 0 00-1-1 4.54 4.54 0 00-3.79 1.83 5.43 5.43 0 00-4.66-2c-3.15 0-5.55 2.5-5.55 5.82 0 3.29 2.4 5.81 5.55 5.81 2.37 0 4.14-1.32 4.75-3a3.3 3.3 0 003.09 1.94c1.86 0 3.23-1.44 3.23-3.63v-2.79c0-5.88-4.08-9.54-9.8-9.54zm-2.22 13.06c-1.92 0-3.33-1.52-3.33-3.81s1.41-3.81 3.33-3.81 3.33 1.52 3.33 3.81-1.41 3.81-3.33 3.81z"/>
-                            </svg>
-                        </a>
-                        --}}
-                    </div>
                 </div>
                 <div>
                     <h4 class="text-xs font-semibold text-white uppercase tracking-wider mb-3">Product</h4>
