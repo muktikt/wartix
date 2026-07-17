@@ -4,6 +4,15 @@
 
 @section('content')
 
+@php
+    $telegramLink = 'https://t.me/wartixdotcom';
+    $whatsappLink = 'https://chat.whatsapp.com/CBgJ9tYH2F08OlteajZcBJ?s=cl&p=i&ilr=4';
+    $xLink = 'https://x.com/wartixcom';
+    $tiktokLink = 'https://www.tiktok.com/@wartix.com';
+    $instagramLink = '#'; 
+    $threadsLink = '#'; 
+@endphp
+
 {{-- HERO --}}
 <section class="animated-gradient py-16 px-4">
     <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
@@ -58,40 +67,48 @@
             </div>
 
             {{-- Social Media Links --}}
-            <div class="mt-8 pt-5 border-t border-gray-100 flex flex-wrap items-center gap-3">
-                <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Social Media:</span>
-                <div class="flex flex-wrap items-center gap-2">
+            <div class="mt-8 pt-6 border-t border-gray-200/50 flex flex-wrap items-center gap-4">
+                <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Follow Us:</span>
+                <div class="flex items-center gap-3">
                     <!-- WhatsApp -->
                     <a href="{{ $whatsappLink }}" target="_blank" rel="noopener noreferrer" 
-                        class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white text-gray-500 border border-gray-200 hover:bg-emerald-50 hover:text-emerald-600 hover:border-emerald-300 transition-all duration-300 hover-lift text-xs font-semibold shadow-sm" title="WhatsApp Group">
-                        <svg class="w-4 h-4 text-emerald-500" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        class="group flex items-center justify-center w-10 h-10 rounded-xl bg-white border border-gray-200 text-gray-400 hover:text-emerald-500 hover:border-emerald-300 hover:bg-emerald-50 transition-all duration-300 hover:scale-105 shadow-sm" title="WhatsApp Group">
+                        <svg class="w-5 h-5 text-gray-400 group-hover:text-emerald-500 transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.197 1.45 4.817 1.451 5.485 0 9.948-4.469 9.952-9.953.002-2.656-1.03-5.153-2.905-7.03C16.637 1.745 14.145.717 11.492.717 6.004.717 1.542 5.185 1.538 10.67c-.001 1.77.462 3.497 1.342 5.034l-.993 3.627 3.71-.973zm11.538-4.63c-.301-.15-1.78-.879-2.056-.979-.275-.1-.475-.15-.675.15-.2.3-.775.979-.95 1.179-.175.2-.35.225-.65.075-1.02-.519-1.797-1.012-2.521-2.262-.19-.328.19-.304.543-.997.099-.2.05-.375-.025-.525-.075-.15-.675-1.625-.925-2.225-.244-.589-.493-.51-.675-.52-.172-.007-.368-.009-.565-.009-.197 0-.517.074-.788.374-.27.3-1.03 1.008-1.03 2.46 0 1.453 1.055 2.858 1.202 3.058.147.2 2.078 3.174 5.034 4.453.703.304 1.252.486 1.68.623.707.225 1.35.193 1.86.117.567-.085 1.78-.727 2.03-1.429.25-.701.25-1.301.175-1.429-.075-.125-.275-.201-.575-.351z"/>
                         </svg>
-                        WhatsApp
                     </a>
                     <!-- X (Twitter) -->
-                    <a href="https://x.com/wartixcom" target="_blank" rel="noopener noreferrer" 
-                        class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white text-gray-500 border border-gray-200 hover:bg-slate-50 hover:text-black hover:border-slate-300 transition-all duration-300 hover-lift text-xs font-semibold shadow-sm" title="X (Twitter)">
-                        <svg class="w-3.5 h-3.5 text-slate-800" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <a href="{{ $xLink }}" target="_blank" rel="noopener noreferrer" 
+                        class="group flex items-center justify-center w-10 h-10 rounded-xl bg-white border border-gray-200 text-gray-400 hover:text-black hover:border-slate-800 hover:bg-slate-50 transition-all duration-300 hover:scale-105 shadow-sm" title="X (Twitter)">
+                        <svg class="w-5 h-5 text-gray-400 group-hover:text-slate-900 transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                         </svg>
-                        X (Twitter)
                     </a>
                     <!-- TikTok -->
-                    <a href="https://www.tiktok.com/@wartix.com" target="_blank" rel="noopener noreferrer" 
-                        class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white text-gray-500 border border-gray-200 hover:bg-rose-50 hover:text-rose-600 hover:border-rose-300 transition-all duration-300 hover-lift text-xs font-semibold shadow-sm" title="TikTok">
-                        <svg class="w-3.5 h-3.5 text-rose-500" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <a href="{{ $tiktokLink }}" target="_blank" rel="noopener noreferrer" 
+                        class="group flex items-center justify-center w-10 h-10 rounded-xl bg-white border border-gray-200 text-gray-400 hover:text-rose-500 hover:border-rose-300 hover:bg-rose-50 transition-all duration-300 hover:scale-105 shadow-sm" title="TikTok">
+                        <svg class="w-5 h-5 text-gray-400 group-hover:text-rose-500 transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.02 1.63 4.17 1.13 1.2 2.68 1.93 4.3 2.11v3.78c-1.78-.15-3.49-.89-4.82-2.13-.07-.06-.11-.08-.21-.01-.05.95-.02 1.9-.02 2.86 0 2.27-.45 4.51-1.66 6.43-1.41 2.21-3.66 3.75-6.22 4.22-2.1.39-4.29.17-6.26-.67-2.58-1.07-4.57-3.23-5.32-5.91-.77-2.67-.36-5.59 1.14-7.91 1.77-2.73 4.79-4.38 8.02-4.37.1 0 .2 0 .3 0v3.72c-2.22-.05-4.34 1.12-5.4 3.07-1.13 2.01-1.02 4.61.27 6.5 1.24 1.83 3.51 2.76 5.69 2.37 1.85-.32 3.44-1.62 4.12-3.37.45-1.15.54-2.39.52-3.61-.01-3.29-.01-6.57-.02-9.86z"/>
                         </svg>
-                        TikTok
                     </a>
                     
-                    {{-- Instagram & Threads (Masa Depan) --}}
-                    {{--
-                    <a href="#" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white text-gray-300 hover:text-[#E1306C] border border-gray-200 hover:border-pink-300 transition-all duration-300 hover-lift text-xs font-semibold shadow-sm" title="Instagram (Segera)">
-                        ...
+                    <!-- Divider -->
+                    <span class="w-px h-6 bg-gray-200 mx-1"></span>
+
+                    <!-- Instagram -->
+                    <a href="{{ $instagramLink }}" onclick="return false;"
+                        class="group flex items-center justify-center w-10 h-10 rounded-xl bg-gray-50 border border-gray-150 text-gray-300 cursor-not-allowed opacity-50 transition-all duration-300" title="Instagram (Segera)">
+                        <svg class="w-5 h-5 text-gray-300 transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                        </svg>
                     </a>
-                    --}}
+                    <!-- Threads -->
+                    <a href="{{ $threadsLink }}" onclick="return false;"
+                        class="group flex items-center justify-center w-10 h-10 rounded-xl bg-gray-50 border border-gray-150 text-gray-300 cursor-not-allowed opacity-50 transition-all duration-300" title="Threads (Segera)">
+                        <svg class="w-5 h-5 text-gray-300 transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12.27 2c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10-4.48-10-10-10zm.11 16.48c-3.15 0-5.69-2.22-5.69-5.32 0-3.24 2.45-5.59 5.89-5.59 1.48 0 2.76.47 3.51 1.25.13.14.13.36 0 .5l-.89.89c-.12.12-.32.13-.46.02-.57-.46-1.39-.77-2.18-.77-2.14 0-3.66 1.48-3.66 3.65 0 2.11 1.54 3.52 3.69 3.52 1.34 0 2.37-.58 2.89-1.28.1-.14.28-.19.43-.1l1.17.68c.15.09.2.28.1.43-.88 1.35-2.61 2.17-4.87 2.17zm6.05-3.05c-.13.14-.35.15-.49.02l-.93-.93c-.13-.13-.13-.35 0-.48 1.09-1.09 1.63-2.66 1.63-4.54 0-3.75-2.68-6.1-6.26-6.1-3.68 0-6.4 2.42-6.4 6.2 0 3.64 2.59 6.02 6.09 6.02.82 0 1.61-.15 2.33-.43.19-.07.4.02.48.2l.48 1.12c.08.19-.01.41-.2.49-.97.37-2.03.57-3.13.57-4.71 0-8.19-3.27-8.19-8.02 0-4.88 3.68-8.2 8.52-8.2 4.74 0 8.12 3.12 8.12 8.1 0 2.41-.7 4.45-2.07 5.76z"/>
+                        </svg>
+                    </a>
                 </div>
             </div>
         </div>
