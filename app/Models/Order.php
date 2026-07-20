@@ -88,4 +88,9 @@ class Order extends Model
     {
         return $this->hasOne(TelegramConnection::class);
     }
+
+    public function categoryChoices()
+    {
+        return $this->hasMany(OrderCategoryChoice::class)->orderBy('priority');
+    }
 }
