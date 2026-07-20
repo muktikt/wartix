@@ -69,95 +69,97 @@
 
         {{-- Right --}}
         <div class="flex justify-center md:justify-end animate-fade-in-up">
-            <div class="bg-white border border-gray-100 rounded-2xl p-5 w-full max-w-sm shadow-sm hover-glow transition-all duration-300">
-                <div class="flex items-center justify-between mb-4">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-indigo-600 animate-float" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
-                        </svg>
-                        <span class="text-sm font-semibold text-gray-900">Preview Realtime Monitor</span>
+            <div class="w-full max-w-sm flex flex-col gap-4">
+                <div class="bg-white border border-gray-100 rounded-2xl p-5 w-full shadow-sm hover-glow transition-all duration-300">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-indigo-600 animate-float" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
+                            </svg>
+                            <span class="text-sm font-semibold text-gray-900">Preview Realtime Monitor</span>
+                        </div>
+                        <span class="flex items-center gap-1 text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded-full font-medium">
+                            <span class="w-1.5 h-1.5 bg-green-500 rounded-full live-indicator"></span>
+                            Live
+                        </span>
                     </div>
-                    <span class="flex items-center gap-1 text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded-full font-medium">
-                        <span class="w-1.5 h-1.5 bg-green-500 rounded-full live-indicator"></span>
-                        Live
-                    </span>
-                </div>
 
-                <div class="text-xs text-gray-500 leading-relaxed mb-4">
-                    Klik <span class="font-medium text-gray-700">Lihat detail</span> untuk langsung turun ke bagian Realtime Success Monitor di dashboard ini.
-                </div>
+                    <div class="text-xs text-gray-500 leading-relaxed mb-4">
+                        Klik <span class="font-medium text-gray-700">Lihat detail</span> untuk langsung turun ke bagian Realtime Success Monitor di dashboard ini.
+                    </div>
 
-                @php
-                    $previewSuccess = $recentSuccess->take(4);
-                @endphp
+                    @php
+                        $previewSuccess = $recentSuccess->take(4);
+                    @endphp
 
-                <div class="space-y-2">
-                    @forelse($previewSuccess as $log)
-                        @php
-                            $email = \App\Services\MaskService::email($log->email ?? 'us***@example.com');
-                            $event = $log->event->title ?? '-';
-                            $phase = $log->salePhase->name ?? '-';
-                            $qty = $log->qty;
-                        @endphp
-                        <div class="rounded-xl border border-gray-100 bg-gray-50 px-3 py-2 transition-transform duration-300 hover:scale-[1.02]">
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="bg-green-500/15 text-green-600 text-[10px] font-semibold px-2 py-0.5 rounded">SUCCESS</span>
-                                <span class="text-xs text-gray-500 truncate">{{ $email }}</span>
+                    <div class="space-y-2">
+                        @forelse($previewSuccess as $log)
+                            @php
+                                $email = \App\Services\MaskService::email($log->email ?? 'us***@example.com');
+                                $event = $log->event->title ?? '-';
+                                $phase = $log->salePhase->name ?? '-';
+                                $qty = $log->qty;
+                            @endphp
+                            <div class="rounded-xl border border-gray-100 bg-gray-50 px-3 py-2 transition-transform duration-300 hover:scale-[1.02]">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="bg-green-500/15 text-green-600 text-[10px] font-semibold px-2 py-0.5 rounded">SUCCESS</span>
+                                    <span class="text-xs text-gray-500 truncate">{{ $email }}</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-xs text-gray-700">
+                                    <span class="font-medium truncate">{{ $event }}</span>
+                                    <span class="text-gray-300">&bull;</span>
+                                    <span class="truncate">{{ $phase }}</span>
+                                    <span class="text-gray-300">&bull;</span>
+                                    <span>x{{ $qty }}</span>
+                                </div>
                             </div>
-                            <div class="flex items-center gap-2 text-xs text-gray-700">
-                                <span class="font-medium truncate">{{ $event }}</span>
-                                <span class="text-gray-300">&bull;</span>
-                                <span class="truncate">{{ $phase }}</span>
-                                <span class="text-gray-300">&bull;</span>
-                                <span>x{{ $qty }}</span>
+                        @empty
+                            <div class="rounded-xl border border-dashed border-gray-200 bg-gray-50 px-3 py-6 text-center text-xs text-gray-400">
+                                Belum ada data sukses untuk ditampilkan.
                             </div>
-                        </div>
-                    @empty
-                        <div class="rounded-xl border border-dashed border-gray-200 bg-gray-50 px-3 py-6 text-center text-xs text-gray-400">
-                            Belum ada data sukses untuk ditampilkan.
-                        </div>
-                    @endforelse
+                        @endforelse
+                    </div>
+
+                    <a href="#monitor"
+                        class="mt-4 inline-flex items-center gap-2 text-sm font-medium text-indigo-600 hover:text-indigo-700 transition-colors duration-200 group">
+                        Lihat detail
+                        <svg class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
                 </div>
 
-                <a href="#monitor"
-                    class="mt-4 inline-flex items-center gap-2 text-sm font-medium text-indigo-600 hover:text-indigo-700 transition-colors duration-200 group">
-                    Lihat detail
-                    <svg class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                    </svg>
-                </a>
-            </div>
-
-            {{-- Social Media Links --}}
-            <div class="mt-4 flex flex-wrap items-center justify-center md:justify-start gap-3">
-                <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Follow Us:</span>
-                <div class="flex items-center gap-2.5">
-                    <!-- WhatsApp -->
-                    <a href="{{ $whatsappLink }}" target="_blank" rel="noopener noreferrer" 
-                        class="group flex items-center justify-center w-9 h-9 rounded-full bg-white border border-gray-200 text-gray-400 hover:text-white hover:bg-[#25D366] hover:border-[#25D366] transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 shadow-sm hover:shadow-md hover:shadow-emerald-500/20 active:scale-95" title="WhatsApp Group">
-                        <i class="fa-brands fa-whatsapp text-base transition-transform duration-300 group-hover:scale-110"></i>
-                    </a>
-                    <!-- X (Twitter) -->
-                    <a href="{{ $xLink }}" target="_blank" rel="noopener noreferrer" 
-                        class="group flex items-center justify-center w-9 h-9 rounded-full bg-white border border-gray-200 text-gray-400 hover:text-white hover:bg-black hover:border-black transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 shadow-sm hover:shadow-md hover:shadow-black/20 active:scale-95" title="X (Twitter)">
-                        <i class="fa-brands fa-x-twitter text-sm transition-transform duration-300 group-hover:scale-110"></i>
-                    </a>
-                    <!-- TikTok -->
-                    <a href="{{ $tiktokLink }}" target="_blank" rel="noopener noreferrer" 
-                        class="group flex items-center justify-center w-9 h-9 rounded-full bg-white border border-gray-200 text-gray-400 hover:text-white hover:bg-zinc-900 hover:border-zinc-900 transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 shadow-sm hover:shadow-md hover:shadow-black/20 active:scale-95" title="TikTok">
-                        <i class="fa-brands fa-tiktok text-sm transition-transform duration-300 group-hover:scale-110"></i>
-                    </a>
-                    <span class="w-px h-5 bg-gray-200"></span>
-                    <!-- Instagram -->
-                    <a href="{{ $instagramLink }}" onclick="return false;"
-                        class="group flex items-center justify-center w-9 h-9 rounded-full bg-gray-50 border border-gray-150 text-gray-300 cursor-not-allowed opacity-50 transition-all duration-300" title="Instagram (Segera)">
-                        <i class="fa-brands fa-instagram text-base"></i>
-                    </a>
-                    <!-- Threads -->
-                    <a href="{{ $threadsLink }}" onclick="return false;"
-                        class="group flex items-center justify-center w-9 h-9 rounded-full bg-gray-50 border border-gray-150 text-gray-300 cursor-not-allowed opacity-50 transition-all duration-300" title="Threads (Segera)">
-                        <i class="fa-brands fa-threads text-sm"></i>
-                    </a>
+                {{-- Social Media Links --}}
+                <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 px-1">
+                    <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Follow Us:</span>
+                    <div class="flex items-center gap-2.5">
+                        <!-- WhatsApp -->
+                        <a href="{{ $whatsappLink }}" target="_blank" rel="noopener noreferrer" 
+                            class="group flex items-center justify-center w-9 h-9 rounded-full bg-white border border-gray-200 text-gray-400 hover:text-white hover:bg-[#25D366] hover:border-[#25D366] transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 shadow-sm hover:shadow-md hover:shadow-emerald-500/20 active:scale-95" title="WhatsApp Group">
+                            <i class="fa-brands fa-whatsapp text-base transition-transform duration-300 group-hover:scale-110"></i>
+                        </a>
+                        <!-- X (Twitter) -->
+                        <a href="{{ $xLink }}" target="_blank" rel="noopener noreferrer" 
+                            class="group flex items-center justify-center w-9 h-9 rounded-full bg-white border border-gray-200 text-gray-400 hover:text-white hover:bg-black hover:border-black transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 shadow-sm hover:shadow-md hover:shadow-black/20 active:scale-95" title="X (Twitter)">
+                            <i class="fa-brands fa-x-twitter text-sm transition-transform duration-300 group-hover:scale-110"></i>
+                        </a>
+                        <!-- TikTok -->
+                        <a href="{{ $tiktokLink }}" target="_blank" rel="noopener noreferrer" 
+                            class="group flex items-center justify-center w-9 h-9 rounded-full bg-white border border-gray-200 text-gray-400 hover:text-white hover:bg-zinc-900 hover:border-zinc-900 transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 shadow-sm hover:shadow-md hover:shadow-black/20 active:scale-95" title="TikTok">
+                            <i class="fa-brands fa-tiktok text-sm transition-transform duration-300 group-hover:scale-110"></i>
+                        </a>
+                        <span class="w-px h-5 bg-gray-200"></span>
+                        <!-- Instagram -->
+                        <a href="{{ $instagramLink }}" onclick="return false;"
+                            class="group flex items-center justify-center w-9 h-9 rounded-full bg-gray-50 border border-gray-150 text-gray-300 cursor-not-allowed opacity-50 transition-all duration-300" title="Instagram (Segera)">
+                            <i class="fa-brands fa-instagram text-base"></i>
+                        </a>
+                        <!-- Threads -->
+                        <a href="{{ $threadsLink }}" onclick="return false;"
+                            class="group flex items-center justify-center w-9 h-9 rounded-full bg-gray-50 border border-gray-150 text-gray-300 cursor-not-allowed opacity-50 transition-all duration-300" title="Threads (Segera)">
+                            <i class="fa-brands fa-threads text-sm"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
