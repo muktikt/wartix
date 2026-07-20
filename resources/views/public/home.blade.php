@@ -14,8 +14,8 @@
 @endphp
 
 {{-- HERO --}}
-<section class="animated-gradient py-16 px-4">
-    <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+<section class="animated-gradient py-10 px-4">
+    <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-start">
 
         {{-- Left --}}
         <div class="animate-fade-in-up">
@@ -64,42 +64,6 @@
                     </svg>
                     Join Telegram Channel
                 </a>
-            </div>
-
-            {{-- Social Media Links --}}
-            <div class="mt-8 pt-6 border-t border-gray-200/50 flex flex-wrap items-center gap-4">
-                <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Follow Us:</span>
-                <div class="flex items-center gap-3">
-                    <!-- WhatsApp -->
-                    <a href="{{ $whatsappLink }}" target="_blank" rel="noopener noreferrer" 
-                        class="group flex items-center justify-center w-10 h-10 rounded-full bg-white border border-gray-200 text-gray-400 hover:text-white hover:bg-[#25D366] hover:border-[#25D366] transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 shadow-sm hover:shadow-md hover:shadow-emerald-500/20 active:scale-95" title="WhatsApp Group">
-                        <i class="fa-brands fa-whatsapp text-lg transition-transform duration-300 group-hover:scale-110"></i>
-                    </a>
-                    <!-- X (Twitter) -->
-                    <a href="{{ $xLink }}" target="_blank" rel="noopener noreferrer" 
-                        class="group flex items-center justify-center w-10 h-10 rounded-full bg-white border border-gray-200 text-gray-400 hover:text-white hover:bg-black hover:border-black transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 shadow-sm hover:shadow-md hover:shadow-black/20 active:scale-95" title="X (Twitter)">
-                        <i class="fa-brands fa-x-twitter text-base transition-transform duration-300 group-hover:scale-110"></i>
-                    </a>
-                    <!-- TikTok -->
-                    <a href="{{ $tiktokLink }}" target="_blank" rel="noopener noreferrer" 
-                        class="group flex items-center justify-center w-10 h-10 rounded-full bg-white border border-gray-200 text-gray-400 hover:text-white hover:bg-zinc-900 hover:border-zinc-900 transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 shadow-sm hover:shadow-md hover:shadow-black/20 active:scale-95" title="TikTok">
-                        <i class="fa-brands fa-tiktok text-base transition-transform duration-300 group-hover:scale-110"></i>
-                    </a>
-                    
-                    <!-- Divider -->
-                    <span class="w-px h-6 bg-gray-200 mx-1"></span>
-
-                    <!-- Instagram -->
-                    <a href="{{ $instagramLink }}" onclick="return false;"
-                        class="group flex items-center justify-center w-10 h-10 rounded-full bg-gray-50 border border-gray-150 text-gray-300 cursor-not-allowed opacity-50 transition-all duration-300" title="Instagram (Segera)">
-                        <i class="fa-brands fa-instagram text-lg"></i>
-                    </a>
-                    <!-- Threads -->
-                    <a href="{{ $threadsLink }}" onclick="return false;"
-                        class="group flex items-center justify-center w-10 h-10 rounded-full bg-gray-50 border border-gray-150 text-gray-300 cursor-not-allowed opacity-50 transition-all duration-300" title="Threads (Segera)">
-                        <i class="fa-brands fa-threads text-base"></i>
-                    </a>
-                </div>
             </div>
         </div>
 
@@ -162,6 +126,39 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                     </svg>
                 </a>
+            </div>
+
+            {{-- Social Media Links --}}
+            <div class="mt-4 flex flex-wrap items-center justify-center md:justify-start gap-3">
+                <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Follow Us:</span>
+                <div class="flex items-center gap-2.5">
+                    <!-- WhatsApp -->
+                    <a href="{{ $whatsappLink }}" target="_blank" rel="noopener noreferrer" 
+                        class="group flex items-center justify-center w-9 h-9 rounded-full bg-white border border-gray-200 text-gray-400 hover:text-white hover:bg-[#25D366] hover:border-[#25D366] transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 shadow-sm hover:shadow-md hover:shadow-emerald-500/20 active:scale-95" title="WhatsApp Group">
+                        <i class="fa-brands fa-whatsapp text-base transition-transform duration-300 group-hover:scale-110"></i>
+                    </a>
+                    <!-- X (Twitter) -->
+                    <a href="{{ $xLink }}" target="_blank" rel="noopener noreferrer" 
+                        class="group flex items-center justify-center w-9 h-9 rounded-full bg-white border border-gray-200 text-gray-400 hover:text-white hover:bg-black hover:border-black transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 shadow-sm hover:shadow-md hover:shadow-black/20 active:scale-95" title="X (Twitter)">
+                        <i class="fa-brands fa-x-twitter text-sm transition-transform duration-300 group-hover:scale-110"></i>
+                    </a>
+                    <!-- TikTok -->
+                    <a href="{{ $tiktokLink }}" target="_blank" rel="noopener noreferrer" 
+                        class="group flex items-center justify-center w-9 h-9 rounded-full bg-white border border-gray-200 text-gray-400 hover:text-white hover:bg-zinc-900 hover:border-zinc-900 transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 shadow-sm hover:shadow-md hover:shadow-black/20 active:scale-95" title="TikTok">
+                        <i class="fa-brands fa-tiktok text-sm transition-transform duration-300 group-hover:scale-110"></i>
+                    </a>
+                    <span class="w-px h-5 bg-gray-200"></span>
+                    <!-- Instagram -->
+                    <a href="{{ $instagramLink }}" onclick="return false;"
+                        class="group flex items-center justify-center w-9 h-9 rounded-full bg-gray-50 border border-gray-150 text-gray-300 cursor-not-allowed opacity-50 transition-all duration-300" title="Instagram (Segera)">
+                        <i class="fa-brands fa-instagram text-base"></i>
+                    </a>
+                    <!-- Threads -->
+                    <a href="{{ $threadsLink }}" onclick="return false;"
+                        class="group flex items-center justify-center w-9 h-9 rounded-full bg-gray-50 border border-gray-150 text-gray-300 cursor-not-allowed opacity-50 transition-all duration-300" title="Threads (Segera)">
+                        <i class="fa-brands fa-threads text-sm"></i>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
