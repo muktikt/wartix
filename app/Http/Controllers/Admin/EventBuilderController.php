@@ -161,6 +161,7 @@ class EventBuilderController extends Controller
             'max_ticket_per_order'=> 'required|integer|min:1|max:10',
             'phases'              => 'required|array|min:1',
             'phases.*.name'       => 'required|string|max:100',
+            'categories.*.keyword'=> 'nullable|string|max:50',
             'categories'          => 'required|array|min:1',
             'categories.*.name'   => 'required|string|max:100',
             'categories.*.fee_per_ticket'        => 'required|integer|min:0',
@@ -209,7 +210,7 @@ class EventBuilderController extends Controller
             ->delete();
     }
 
-    private function syncTicketCategories(Event $event, array $categoriesInput, string $paymentMode): void
+    private function syncTicketCategories(Event $event, array $categoriesInput): void
     {
         $keepIds = [];
 
@@ -217,9 +218,10 @@ class EventBuilderController extends Controller
             $data = [
                 'event_id'              => $event->id,
                 'name'                  => $cat['name'],
+                'keyword'               => $cat['keyword'] ?? null,
                 'fee_per_ticket'        => $cat['fee_per_ticket'],
                 'ticket_price'          => $cat['ticket_price'] ?? 0,
-                'payment_mode'          => $paymentMode,
+                'payment_mode'          => $cat['payment_mode'] ?? 'service_fee_only',
                 'custom_payment_amount' => $cat['custom_payment_amount'] ?? null,
                 'max_qty'               => $cat['max_qty'] ?? 4,
                 'slot_limit'            => $cat['slot_limit'] ?? null,

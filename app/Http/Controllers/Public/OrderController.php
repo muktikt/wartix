@@ -6,6 +6,7 @@ use App\Models\Event;
 use App\Models\Order;
 use App\Models\OrderGuest;
 use App\Models\OrderCustomField;
+use App\Models\OrderCategoryChoice;
 use App\Models\SalePhase;
 use App\Models\TicketCategory;
 use Illuminate\Http\Request;
@@ -18,13 +19,15 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'event_id'           => 'required|exists:events,id',
-            'sale_phase_id'      => 'required|exists:sale_phases,id',
-            'ticket_category_id' => 'required|exists:ticket_categories,id',
-            'full_name'          => 'required|string|max:255',
-            'phone_number'       => 'required|string|max:20',
-            'email'              => 'required|email|max:255',
-            'telegram_username'  => 'nullable|string|max:100',
+            'event_id'        => 'required|exists:events,id',
+            'sale_phase_id'   => 'required|exists:sale_phases,id',
+            'category_choices'=> 'required|array|min:1',
+            'category_choices.*.ticket_category_id' => 'required|exists:ticket_categories,id',
+            'category_choices.*.priority'           => 'required|integer|min:1',
+            'full_name'       => 'required|string|max:255',
+            'phone_number'    => 'required|string|max:20',
+            'email'           => 'required|email|max:255',
+            'telegram_username' => 'nullable|string|max:100',
         ]);
 
         $event = Event::with('customFields')->findOrFail($request->event_id);
@@ -35,12 +38,11 @@ class OrderController extends Controller
             ]);
         }
 
-        $phase    = SalePhase::where('event_id', $event->id)->find($request->sale_phase_id);
-        $category = TicketCategory::where('event_id', $event->id)->find($request->ticket_category_id);
+        $phase = SalePhase::where('event_id', $event->id)->find($request->sale_phase_id);
 
-        if (!$phase || !$category) {
+        if (!$phase) {
             return back()->withInput()->withErrors([
-                'ticket_category_id' => 'Sale phase atau kategori tidak valid untuk event ini.',
+                'sale_phase_id' => 'Sale phase tidak valid untuk event ini.',
             ]);
         }
 
@@ -48,6 +50,34 @@ class OrderController extends Controller
             return back()->withInput()->withErrors([
                 'sale_phase_id' => 'Sale phase ini belum dibuka atau sudah ditutup.',
             ]);
+        }
+
+        // Ambil semua pilihan kategori, urutkan by priority
+        $categoryChoices = collect($request->category_choices)
+            ->sortBy('priority')
+            ->values();
+
+        // Kategori UTAMA (priority 1) untuk validasi & hitung fee awal
+        $primaryCategoryId = $categoryChoices->first()['ticket_category_id'];
+        $category = TicketCategory::where('event_id', $event->id)
+            ->find($primaryCategoryId);
+
+        if (!$category) {
+            return back()->withInput()->withErrors([
+                'category_choices' => 'Kategori utama tidak valid untuk event ini.',
+            ]);
+        }
+
+        // Validasi semua kategori cadangan juga harus milik event ini
+        foreach ($categoryChoices->skip(1) as $choice) {
+            $valid = TicketCategory::where('event_id', $event->id)
+                ->where('id', $choice['ticket_category_id'])
+                ->exists();
+            if (!$valid) {
+                return back()->withInput()->withErrors([
+                    'category_choices' => 'Salah satu kategori cadangan tidak valid untuk event ini.',
+                ]);
+            }
         }
 
         $maxQty = min($event->max_ticket_per_order, $category->max_qty ?: $event->max_ticket_per_order);
@@ -80,6 +110,7 @@ class OrderController extends Controller
 
         $qty = (int) $request->qty;
 
+        // Cek slot keseluruhan event
         $availableSlots = $event->resolved_available_slots;
         if ($availableSlots !== null && $qty > $availableSlots) {
             return back()->withInput()->withErrors([
@@ -87,6 +118,7 @@ class OrderController extends Controller
             ]);
         }
 
+        // Cek slot kategori UTAMA
         if ($category->slot_limit !== null) {
             $soldCategory = Order::where('ticket_category_id', $category->id)
                 ->whereNotIn('order_status', ['failed', 'cancelled'])
@@ -94,11 +126,12 @@ class OrderController extends Controller
 
             if ($soldCategory + $qty > $category->slot_limit) {
                 return back()->withInput()->withErrors([
-                    'ticket_category_id' => 'Slot untuk kategori ini sudah penuh atau tidak mencukupi.',
+                    'category_choices' => 'Slot untuk kategori utama sudah penuh atau tidak mencukupi.',
                 ]);
             }
         }
 
+        // Cek slot phase
         if ($phase->slot_limit !== null) {
             $soldPhase = Order::where('sale_phase_id', $phase->id)
                 ->whereNotIn('order_status', ['failed', 'cancelled'])
@@ -111,6 +144,7 @@ class OrderController extends Controller
             }
         }
 
+        // Hitung fee berdasarkan kategori UTAMA (akan diupdate saat success report masuk)
         $serviceFeeTotal  = $category->fee_per_ticket * $qty;
         $ticketPriceTotal = 0;
         $grandTotal       = 0;
@@ -130,7 +164,7 @@ class OrderController extends Controller
             'order_code'          => 'WRTX-' . date('Y') . '-' . strtoupper(Str::random(6)),
             'event_id'            => $event->id,
             'sale_phase_id'       => $phase->id,
-            'ticket_category_id'  => $category->id,
+            'ticket_category_id'  => null, // diisi setelah success report match kategori
             'qty'                 => $qty,
             'title'               => $request->title,
             'full_name'           => $request->full_name,
@@ -146,9 +180,19 @@ class OrderController extends Controller
             'payment_mode'        => $category->payment_mode,
             'payment_status'      => 'unpaid',
             'order_status'        => 'pending_link',
-            'membership_code'     => $request->membership_code,
+            'membership_code'     => $request->membership_code ?? null,
         ]);
 
+        // Simpan semua pilihan kategori ke pivot table
+        foreach ($categoryChoices as $choice) {
+            OrderCategoryChoice::create([
+                'order_id'           => $order->id,
+                'ticket_category_id' => $choice['ticket_category_id'],
+                'priority'           => $choice['priority'],
+            ]);
+        }
+
+        // Guest data
         if ($event->guest_enabled && $event->guest_mode === 'multi_guest' && $qty > 1) {
             OrderGuest::create([
                 'order_id'        => $order->id,
@@ -174,6 +218,7 @@ class OrderController extends Controller
             }
         }
 
+        // Custom fields
         foreach ($activeCustomFields as $field) {
             $value = $request->input("custom_fields.{$field->id}");
             if ($value !== null && $value !== '') {
@@ -185,11 +230,9 @@ class OrderController extends Controller
             }
         }
 
-        // Invalidate cache agar slot update real-time
         Cache::forget('active_events');
         Cache::forget('home_stats');
 
-        // Notify admin about new order
         \App\Models\AdminNotification::notifyNewOrder($order->load('event'));
 
         return redirect()->route('order.success', $order->order_code);
@@ -199,7 +242,7 @@ class OrderController extends Controller
     {
         $order = Order::withoutGlobalScope(\App\Models\Scopes\HideUnlinkedOrdersScope::class)
             ->where('order_code', $orderCode)
-            ->with(['event', 'salePhase', 'ticketCategory', 'guests'])
+            ->with(['event', 'salePhase', 'ticketCategory', 'guests', 'categoryChoices.ticketCategory'])
             ->firstOrFail();
 
         $telegramBotUsername = \App\Models\Setting::get('telegram_bot_username', '');
