@@ -510,24 +510,7 @@
 </div>
 @endif
 
-@if($event->status === 'upcoming')
 <script>
-const categorySelect = document.getElementById('categorySelect');
-const qtySelect      = document.getElementById('qtySelect');
-const feeEstimate    = document.getElementById('feeEstimate');
-const feeDisplay     = document.getElementById('feeDisplay');
-const totalDisplay   = document.getElementById('totalDisplay');
-const ticketPriceRow = document.getElementById('ticketPriceRow');
-const ticketPriceDisp= document.getElementById('ticketPriceDisplay');
-const salePhaseSelect = document.getElementById('salePhaseSelect');
-const membershipField = document.getElementById('membershipCodeField');
-const membershipInput = document.getElementById('membershipCodeInput');
-const oldGuestNiks = @json(collect(($event->max_ticket_per_order ?? 0) >= 2 ? range(2, $event->max_ticket_per_order) : [])->mapWithKeys(fn($i) => ["guest_nik_$i" => old("guest_nik_$i")]));
-
-function formatRp(num) {
-    return 'Rp ' + num.toLocaleString('id-ID');
-}
-
 function categoryPicker() {
     return {
         primaryChoice: '',
@@ -579,6 +562,25 @@ function categoryPicker() {
             totalDisplay.textContent = 'Rp ' + grandTotal.toLocaleString('id-ID');
         }
     }
+}
+</script>
+
+@if($event->status === 'upcoming')
+<script>
+const categorySelect = document.getElementById('categorySelect');
+const qtySelect      = document.getElementById('qtySelect');
+const feeEstimate    = document.getElementById('feeEstimate');
+const feeDisplay     = document.getElementById('feeDisplay');
+const totalDisplay   = document.getElementById('totalDisplay');
+const ticketPriceRow = document.getElementById('ticketPriceRow');
+const ticketPriceDisp= document.getElementById('ticketPriceDisplay');
+const salePhaseSelect = document.getElementById('salePhaseSelect');
+const membershipField = document.getElementById('membershipCodeField');
+const membershipInput = document.getElementById('membershipCodeInput');
+const oldGuestNiks = @json(collect(($event->max_ticket_per_order ?? 0) >= 2 ? range(2, $event->max_ticket_per_order) : [])->mapWithKeys(fn($i) => ["guest_nik_$i" => old("guest_nik_$i")]));
+
+function formatRp(num) {
+    return 'Rp ' + num.toLocaleString('id-ID');
 }
 
 // Update estimasi kalau qty berubah
