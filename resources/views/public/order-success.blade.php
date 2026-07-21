@@ -24,11 +24,11 @@
                 </div>
                 <div class="flex justify-between text-sm">
                     <span class="text-gray-500">Sale Phase</span>
-                    <span class="font-medium text-gray-700">{{ $order->salePhase->name }}</span>
+                    <span class="font-medium text-gray-700">{{ $order->salePhase->name ?? '-' }}</span>
                 </div>
                 <div class="flex justify-between text-sm">
                     <span class="text-gray-500">Kategori</span>
-                    <span class="font-medium text-gray-700">{{ $order->ticketCategory->name }} x{{ $order->qty }}</span>
+                    <span class="font-medium text-gray-700">{{ $order->ticketCategory->name ?? ($order->categoryChoices->first()?->ticketCategory?->name ?? '-') }} x{{ $order->qty }}</span>
                 </div>
                 <div class="flex justify-between text-sm border-t border-gray-200 pt-2 mt-2">
                     <span class="text-gray-500">Fee Jasa</span>

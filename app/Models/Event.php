@@ -87,7 +87,8 @@ class Event extends Model
             return null;
         }
 
-        $usedSlots = $this->orders()
+        $usedSlots = Order::withoutGlobalScopes()
+            ->where('event_id', $this->id)
             ->whereNotIn('order_status', ['failed', 'cancelled'])
             ->count();
 

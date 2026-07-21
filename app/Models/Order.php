@@ -36,16 +36,20 @@ class Order extends Model
 
     public function syncEventStatus(): void
     {
-        $event = $this->event;
-        if ($event) {
-            $available = $event->resolved_available_slots;
-            if ($available !== null) {
-                if ($available <= 0 && $event->status === 'upcoming') {
-                    $event->update(['status' => 'slot_penuh']);
-                } elseif ($available > 0 && $event->status === 'slot_penuh') {
-                    $event->update(['status' => 'upcoming']);
+        try {
+            $event = $this->event;
+            if ($event) {
+                $available = $event->resolved_available_slots;
+                if ($available !== null) {
+                    if ($available <= 0 && $event->status === 'upcoming') {
+                        $event->update(['status' => 'slot_penuh']);
+                    } elseif ($available > 0 && $event->status === 'slot_penuh') {
+                        $event->update(['status' => 'upcoming']);
+                    }
                 }
             }
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('syncEventStatus error: ' . $e->getMessage());
         }
     }
 
