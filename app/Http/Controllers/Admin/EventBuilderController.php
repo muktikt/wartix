@@ -58,7 +58,7 @@ class EventBuilderController extends Controller
         ]);
 
         $this->syncSalePhases($event, $request->phases);
-        $this->syncTicketCategories($event, $request->categories, $request->payment_mode);
+        $this->syncTicketCategories($event, $request->categories);
         $this->syncCustomFields($event, $request->custom_fields ?? []);
 
         if ($event->status === 'ongoing' || $event->status === 'upcoming') {
@@ -131,7 +131,7 @@ class EventBuilderController extends Controller
             ->pluck('name');
 
         $this->syncSalePhases($event, $request->phases);
-        $this->syncTicketCategories($event, $request->categories, $request->payment_mode);
+        $this->syncTicketCategories($event, $request->categories);
         $this->syncCustomFields($event, $request->custom_fields ?? []);
 
         $message = 'Event berhasil diupdate!';
@@ -162,12 +162,12 @@ class EventBuilderController extends Controller
             'phases'              => 'required|array|min:1',
             'phases.*.name'       => 'required|string|max:100',
             'categories.*.keyword'=> 'nullable|string|max:50',
-            'categories'          => 'required|array|min:1',
-            'categories.*.name'   => 'required|string|max:100',
+            'categories'                         => 'required|array|min:1',
+            'categories.*.name'                  => 'required|string|max:100',
             'categories.*.fee_per_ticket'        => 'required|integer|min:0',
-            'payment_mode'                       => 'required|in:service_fee_only,full_payment,custom_payment',
-            'categories.*.ticket_price'          => 'required_if:payment_mode,full_payment|nullable|integer|min:1',
-            'categories.*.custom_payment_amount' => 'required_if:payment_mode,custom_payment|nullable|integer|min:1',
+            'categories.*.payment_mode'          => 'required|in:service_fee_only,full_payment,custom_payment',
+            'categories.*.ticket_price'          => 'nullable|integer|min:0',
+            'categories.*.custom_payment_amount' => 'nullable|integer|min:0',
             'custom_fields'                    => 'nullable|array',
             'custom_fields.*.label'            => 'required_with:custom_fields|string|max:255',
             'custom_fields.*.field_type'       => 'required_with:custom_fields|in:text,password,number,textarea,select',
