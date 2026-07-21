@@ -91,7 +91,7 @@ class OrderController extends Controller
         }
 
         if ($event->platform_type === 'tiketcom') {
-            $rules['title'] = 'required|in:Tuan,Nyonya,Nona';
+            $rules['title'] = 'nullable|in:Tuan,Nyonya,Nona';
         }
 
         if (str_contains(strtolower($phase->name), 'membership')) {
@@ -166,7 +166,7 @@ class OrderController extends Controller
             'sale_phase_id'       => $phase->id,
             'ticket_category_id'  => null, // diisi setelah success report match kategori
             'qty'                 => $qty,
-            'title'               => $request->title,
+            'title'               => $request->title ?? 'Tuan',
             'full_name'           => $request->full_name,
             'phone_number'        => $request->phone_number,
             'email'               => $request->email,
@@ -198,7 +198,7 @@ class OrderController extends Controller
                 'order_id'        => $order->id,
                 'ticket_position' => 1,
                 'guest_type'      => 'main_buyer',
-                'title'           => $request->title,
+                'title'           => $request->title ?? 'Tuan',
                 'full_name'       => $request->full_name,
                 'identity_number' => $request->identity_number,
             ]);
@@ -210,7 +210,7 @@ class OrderController extends Controller
                         'order_id'        => $order->id,
                         'ticket_position' => $i,
                         'guest_type'      => 'additional_guest',
-                        'title'           => $event->same_title_for_guest ? $request->title : null,
+                        'title'           => $event->same_title_for_guest ? ($request->title ?? 'Tuan') : null,
                         'full_name'       => null,
                         'identity_number' => $guestNik,
                     ]);

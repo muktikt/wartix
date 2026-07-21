@@ -343,26 +343,7 @@
 
                         <hr class="border-gray-100 mb-4">
 
-                        {{-- Platform: Tiket.com --}}
-                        @if($event->platform_type === 'tiketcom')
 
-                        {{-- Sapaan --}}
-                        <div class="mb-3">
-                            <label class="block text-xs font-medium text-gray-700 mb-1.5">Sapaan</label>
-                            <div class="flex gap-2">
-                                @foreach(['Tuan', 'Nyonya', 'Nona'] as $title)
-                                <label class="flex-1 cursor-pointer">
-                                    <input type="radio" name="title" value="{{ $title }}" class="sr-only peer" required
-                                        {{ old('title') === $title ? 'checked' : '' }}>
-                                    <div class="text-center text-xs border border-gray-200 rounded-lg py-2 peer-checked:bg-indigo-600 peer-checked:text-white peer-checked:border-indigo-600 transition-colors">
-                                        {{ $title }}
-                                    </div>
-                                </label>
-                                @endforeach
-                            </div>
-                        </div>
-
-                        @endif
 
                         {{-- Nama Lengkap --}}
                         <div class="mb-3">
@@ -683,8 +664,12 @@ if (orderForm) {
         const requiredFields = orderForm.querySelectorAll('[required]');
         
         requiredFields.forEach(field => {
-            // Skip hidden elements (e.g. elements inside hidden parent divs)
-            if (field.offsetWidth === 0 && field.offsetHeight === 0) {
+            // Check visibility (radio inputs with class sr-only have 0 width/height but their parent label is visible)
+            const isVisible = field.type === 'radio'
+                ? (field.closest('label')?.offsetWidth > 0 || field.parentElement?.offsetWidth > 0)
+                : (field.offsetWidth > 0 || field.offsetHeight > 0);
+
+            if (!isVisible) {
                 return;
             }
 
@@ -704,17 +689,9 @@ if (orderForm) {
             if (isInvalid) {
                 let labelText = '';
                 // Try to find the label
-                let label = field.closest('label');
+                let label = field.closest('div.mb-3')?.querySelector('label') || field.closest('label');
                 if (label) {
                     labelText = label.innerText.trim();
-                } else {
-                    const parentDiv = field.closest('div');
-                    if (parentDiv) {
-                        const siblingLabel = parentDiv.querySelector('label');
-                        if (siblingLabel) {
-                            labelText = siblingLabel.innerText.trim();
-                        }
-                    }
                 }
 
                 // Clean label text
@@ -733,23 +710,6 @@ if (orderForm) {
         if (missingFields.length > 0) {
             e.preventDefault();
             alert("Maaf, mohon lengkapi bagian berikut yang belum diisi:\n- " + missingFields.join("\n- "));
-            
-            // Focus the first invalid field
-            for (let field of requiredFields) {
-                if (field.offsetWidth > 0 && field.offsetHeight > 0) {
-                    if (field.type === 'radio') {
-                        const name = field.name;
-                        const checked = orderForm.querySelector(`input[name="${name}"]:checked`);
-                        if (!checked) {
-                            field.focus();
-                            break;
-                        }
-                    } else if (field.value.trim() === '' || (field.minLength && field.value.length < field.minLength)) {
-                        field.focus();
-                        break;
-                    }
-                }
-            }
         }
     });
 }
