@@ -54,7 +54,7 @@
                     $statusLabel = match($event->status) {
                         'ongoing'  => 'Proses',
                         'slot_penuh' => 'Slot Penuh',
-                        'upcoming' => 'Upcoming',
+                        'upcoming' => 'Aktif',
                         'finished' => 'Finished',
                     };
                     @endphp

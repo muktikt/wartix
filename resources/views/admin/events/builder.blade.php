@@ -95,7 +95,7 @@
                         <select name="status"
                             class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                             @foreach([
-                                'upcoming' => 'Upcoming (Buka Registrasi)',
+                                'upcoming' => 'Aktif (Buka Registrasi)',
                                 'slot_penuh' => 'Slot Penuh (Tutup Registrasi)',
                                 'ongoing' => 'Proses (Event Berlangsung)',
                                 'finished' => 'Finished (Event Selesai)'

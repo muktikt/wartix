@@ -30,7 +30,7 @@
             <select name="status" onchange="this.form.submit()"
                 class="text-sm border border-gray-200 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 @foreach([
-                    'upcoming' => 'Upcoming (Buka Registrasi)',
+                    'upcoming' => 'Aktif (Buka Registrasi)',
                     'slot_penuh' => 'Slot Penuh (Tutup Registrasi)',
                     'ongoing' => 'Proses (Event Berlangsung)',
                     'finished' => 'Finished (Event Selesai)'
@@ -74,7 +74,7 @@
                 $statusLabel = match($event->status) {
                     'ongoing'  => 'Proses',
                     'slot_penuh' => 'Slot Penuh',
-                    'upcoming' => 'Upcoming',
+                    'upcoming' => 'Aktif',
                     'finished' => 'Finished',
                 };
                 @endphp

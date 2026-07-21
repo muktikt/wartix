@@ -18,7 +18,7 @@
             @elseif($event->status === 'finished')
                 <span class="bg-gray-500 text-white text-xs font-semibold px-2.5 py-1 rounded-full">Finished</span>
             @else
-                <span class="bg-indigo-500 text-white text-xs font-semibold px-2.5 py-1 rounded-full">Upcoming</span>
+                <span class="bg-indigo-500 text-white text-xs font-semibold px-2.5 py-1 rounded-full">Aktif</span>
             @endif
         </div>
     </div>
