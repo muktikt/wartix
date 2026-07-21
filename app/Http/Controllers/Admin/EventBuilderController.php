@@ -186,7 +186,7 @@ class EventBuilderController extends Controller
                 'name'        => $phase['name'],
                 'start_time'  => $phase['start_time'] ?? null,
                 'end_time'    => $phase['end_time'] ?? null,
-                'status'      => $phase['status'] ?? 'upcoming',
+                'status'      => $phase['status'] ?? 'open',
                 'slot_limit'  => $phase['slot_limit'] ?? null,
                 'description' => $phase['description'] ?? null,
                 'sort_order'  => $i,
