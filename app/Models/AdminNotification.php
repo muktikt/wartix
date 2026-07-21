@@ -41,19 +41,24 @@ class AdminNotification extends Model
     /**
      * Create a notification for a new order.
      */
-    public static function notifyNewOrder(Order $order): self
+    public static function notifyNewOrder(Order $order): ?self
     {
-        $eventName = $order->event->title ?? 'event';
+        try {
+            $eventName = $order->event->title ?? 'event';
 
-        return static::create([
-            'type'     => 'order_created',
-            'title'    => 'Order Baru Masuk',
-            'message'  => "{$order->full_name} order {$order->qty} tiket untuk {$eventName}",
-            'icon'     => 'cart',
-            'color'    => 'indigo',
-            'link'     => route('admin.orders.show', $order->id),
-            'order_id' => $order->id,
-        ]);
+            return static::create([
+                'type'     => 'order_created',
+                'title'    => 'Order Baru Masuk',
+                'message'  => "{$order->full_name} order {$order->qty} tiket untuk {$eventName}",
+                'icon'     => 'cart',
+                'color'    => 'indigo',
+                'link'     => route('admin.orders.show', $order->id),
+                'order_id' => $order->id,
+            ]);
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('Failed to create AdminNotification for order: ' . $e->getMessage());
+            return null;
+        }
     }
 
     /**
