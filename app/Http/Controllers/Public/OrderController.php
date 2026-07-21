@@ -21,8 +21,8 @@ class OrderController extends Controller
         $request->validate([
             'event_id'        => 'required|exists:events,id',
             'sale_phase_id'   => 'required|exists:sale_phases,id',
-            'category_choices'=> 'required|array|min:1',
-            'category_choices.*.ticket_category_id' => 'required|exists:ticket_categories,id',
+            'category_choices'                      => 'required|array|min:1',
+            'category_choices.*.ticket_category_id' => 'nullable|exists:ticket_categories,id',
             'category_choices.*.priority'           => 'required|integer|min:1',
             'full_name'       => 'required|string|max:255',
             'phone_number'    => 'required|string|max:20',
@@ -52,8 +52,9 @@ class OrderController extends Controller
             ]);
         }
 
-        // Ambil semua pilihan kategori, urutkan by priority
+        // Ambil semua pilihan kategori yang diisi, urutkan by priority
         $categoryChoices = collect($request->category_choices)
+            ->filter(fn ($choice) => !empty($choice['ticket_category_id']))
             ->sortBy('priority')
             ->values();
 
