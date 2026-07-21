@@ -559,13 +559,12 @@ function categoryPicker() {
                 ticketPriceRow?.classList.add('hidden');
             }
 
-            totalDisplay.textContent = 'Rp ' + grandTotal.toLocaleString('id-ID');
+            if (totalDisplay) totalDisplay.textContent = 'Rp ' + grandTotal.toLocaleString('id-ID');
         }
     }
 }
 </script>
 
-@if($event->status === 'upcoming')
 <script>
 const categorySelect = document.getElementById('categorySelect');
 const qtySelect      = document.getElementById('qtySelect');
@@ -584,7 +583,7 @@ function formatRp(num) {
 }
 
 // Update estimasi kalau qty berubah
-document.getElementById('qtySelect')?.addEventListener('change', function() {
+qtySelect?.addEventListener('change', function() {
     // Trigger Alpine update estimate
     const picker = document.querySelector('[x-data]')?.__x?.$data;
     if (picker) picker.updateEstimate();
@@ -604,11 +603,6 @@ function updateMembershipVisibility() {
     }
 }
 
-
-qtySelect.addEventListener('change', function() {
-    updateEstimate();
-    updateGuestFields();
-});
 if (salePhaseSelect) {
     salePhaseSelect.addEventListener('change', updateMembershipVisibility);
 }
@@ -619,7 +613,7 @@ function updateGuestFields() {
     const container= document.getElementById('guestContainer');
     if (!guestDiv || !container) return;
 
-    const qty = parseInt(qtySelect.value) || 1;
+    const qty = parseInt(qtySelect?.value) || 1;
     container.innerHTML = '';
 
     if (qty > 1) {
@@ -670,8 +664,8 @@ window.addEventListener('DOMContentLoaded', () => {
         document.body.style.overflow = '';
     };
 
-    btn.addEventListener('click', closeModal);
-    modal.addEventListener('click', (e) => {
+    btn?.addEventListener('click', closeModal);
+    modal?.addEventListener('click', (e) => {
         if (e.target === modal) closeModal();
     });
 });
@@ -755,5 +749,4 @@ if (orderForm) {
     });
 }
 </script>
-@endif
 @endsection

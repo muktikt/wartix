@@ -218,23 +218,13 @@
                     @if($isEdit && $event->ticketCategories->count())
                         @foreach($event->ticketCategories as $i => $cat)
                         <div class="border border-gray-100 rounded-xl p-4">
-                            <div class="grid grid-cols-5 gap-3">
+                            <div class="grid grid-cols-4 gap-3">
                                 <div>
                                     <label class="block text-xs text-gray-600 mb-1">Nama Kategori *</label>
                                     <input type="hidden" name="categories[{{ $i }}][id]" value="{{ $cat->id }}">
                                     <input type="text" name="categories[{{ $i }}][name]" value="{{ $cat->name }}"
                                         class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                         required>
-                                </div>
-                                <div>
-                                    <label class="block text-xs text-gray-600 mb-1">
-                                        Keyword
-                                        <span class="text-gray-400 font-normal">(opsional)</span>
-                                    </label>
-                                    <input type="text" name="categories[{{ $i }}][keyword]"
-                                        value="{{ $cat->keyword ?? '' }}"
-                                        placeholder="cat1, vip, tribune"
-                                        class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                 </div>
                                 <div>
                                     <label class="block text-xs text-gray-600 mb-1">Fee / Tiket (Rp) *</label>
@@ -261,21 +251,12 @@
                         @endforeach
                     @else
                     <div class="border border-gray-100 rounded-xl p-4">
-                        <div class="grid grid-cols-5 gap-3">
+                        <div class="grid grid-cols-4 gap-3">
                             <div>
                                 <label class="block text-xs text-gray-600 mb-1">Nama Kategori *</label>
                                 <input type="text" name="categories[0][name]" placeholder="CAT 1"
                                     class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                     required>
-                            </div>
-                            <div>
-                                <label class="block text-xs text-gray-600 mb-1">
-                                    Keyword
-                                    <span class="text-gray-400 font-normal">(opsional)</span>
-                                </label>
-                                <input type="text" name="categories[0][keyword]"
-                                    placeholder="cat1, vip, tribune"
-                                    class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                             </div>
                             <div>
                                 <label class="block text-xs text-gray-600 mb-1">Fee / Tiket (Rp) *</label>
@@ -534,16 +515,11 @@ function addCategory() {
             <button type="button" onclick="this.closest('div.border').remove()"
                 class="text-xs text-red-400 hover:text-red-600">Hapus</button>
         </div>
-        <div class="grid grid-cols-5 gap-3">
+        <div class="grid grid-cols-4 gap-3">
             <div>
                 <label class="block text-xs text-gray-600 mb-1">Nama *</label>
                 <input type="text" name="categories[${categoryIndex}][name]" placeholder="CAT 2"
                     class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
-            </div>
-            <div>
-                <label class="block text-xs text-gray-600 mb-1">Keyword <span class="text-gray-400">(opsional)</span></label>
-                <input type="text" name="categories[${categoryIndex}][keyword]" placeholder="cat2"
-                    class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
             </div>
             <div>
                 <label class="block text-xs text-gray-600 mb-1">Fee (Rp) *</label>
