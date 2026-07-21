@@ -74,6 +74,30 @@
                     <p class="text-xs text-gray-400 mb-0.5">Kategori</p>
                     <p class="text-sm text-gray-700">{{ $order->ticketCategory->name ?? '-' }}</p>
                 </div>
+                {{-- Pilihan Kategori (Utama & Cadangan) --}}
+                @if($order->categoryChoices && $order->categoryChoices->count())
+                <div class="col-span-2 mt-2">
+                    <p class="text-xs text-gray-400 mb-1.5">Semua Pilihan Kategori</p>
+                    <div class="space-y-1.5">
+                        @foreach($order->categoryChoices->sortBy('priority') as $choice)
+                        <div class="flex items-center gap-2 p-2 bg-gray-50 rounded-lg">
+                            <span class="text-xs px-2 py-0.5 rounded font-medium {{ $choice->priority === 1 ? 'bg-indigo-50 text-indigo-700' : 'bg-gray-100 text-gray-500' }}">
+                                {{ $choice->priority === 1 ? 'Utama' : 'Cadangan '.($choice->priority - 1) }}
+                            </span>
+                            <span class="text-sm text-gray-700">{{ $choice->ticketCategory->name ?? '-' }}</span>
+                            <span class="text-xs text-gray-400">
+                                Rp {{ number_format($choice->ticketCategory->fee_per_ticket ?? 0) }}/tiket
+                            </span>
+                            @if($order->ticket_category_id && $order->ticket_category_id === $choice->ticket_category_id)
+                            <span class="ml-auto text-xs bg-green-50 text-green-700 px-2 py-0.5 rounded font-medium">
+                                ✓ Yang Berhasil
+                            </span>
+                            @endif
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
                 <div>
                     <p class="text-xs text-gray-400 mb-0.5">Qty</p>
                     <p class="text-sm font-semibold text-gray-900">{{ $order->qty }} tiket</p>

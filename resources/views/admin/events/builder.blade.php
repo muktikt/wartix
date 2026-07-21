@@ -209,33 +209,16 @@
 
             {{-- Step 4: Categories & Fee --}}
             <div class="bg-white border border-gray-100 rounded-xl p-5">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-sm font-semibold text-gray-900 flex items-center gap-2">
-                        <span class="w-5 h-5 bg-indigo-600 text-white rounded-full text-xs flex items-center justify-center">4</span>
-                        Categories & Fee
-                        <span class="text-xs text-gray-400 font-normal ml-1">(berlaku untuk semua phase)</span>
-                    </h3>
-                    <div class="flex items-center gap-2">
-                        <span class="text-xs font-medium text-gray-700">Payment Mode:</span>
-                        @php
-                            $currentPaymentMode = 'service_fee_only';
-                            if ($isEdit && $event->ticketCategories->count()) {
-                                $currentPaymentMode = $event->ticketCategories->first()->payment_mode;
-                            }
-                        @endphp
-                        <select name="payment_mode"
-                            class="text-xs border border-gray-200 rounded-lg px-2 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                            <option value="service_fee_only" {{ $currentPaymentMode === 'service_fee_only' ? 'selected' : '' }}>Fee Only</option>
-                            <option value="full_payment" {{ $currentPaymentMode === 'full_payment' ? 'selected' : '' }}>Full Payment</option>
-                            <option value="custom_payment" {{ $currentPaymentMode === 'custom_payment' ? 'selected' : '' }}>Custom</option>
-                        </select>
-                    </div>
-                </div>
+                <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                    <span class="w-5 h-5 bg-indigo-600 text-white rounded-full text-xs flex items-center justify-center">4</span>
+                    Categories & Fee
+                    <span class="text-xs text-gray-400 font-normal ml-1">(berlaku untuk semua phase)</span>
+                </h3>
                 <div class="space-y-3" id="categoriesContainer">
                     @if($isEdit && $event->ticketCategories->count())
                         @foreach($event->ticketCategories as $i => $cat)
                         <div class="border border-gray-100 rounded-xl p-4">
-                            <div class="grid grid-cols-3 gap-3">
+                            <div class="grid grid-cols-5 gap-3">
                                 <div>
                                     <label class="block text-xs text-gray-600 mb-1">Nama Kategori *</label>
                                     <input type="hidden" name="categories[{{ $i }}][id]" value="{{ $cat->id }}">
@@ -244,10 +227,29 @@
                                         required>
                                 </div>
                                 <div>
+                                    <label class="block text-xs text-gray-600 mb-1">
+                                        Keyword
+                                        <span class="text-gray-400 font-normal">(opsional)</span>
+                                    </label>
+                                    <input type="text" name="categories[{{ $i }}][keyword]"
+                                        value="{{ $cat->keyword ?? '' }}"
+                                        placeholder="cat1, vip, tribune"
+                                        class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                </div>
+                                <div>
                                     <label class="block text-xs text-gray-600 mb-1">Fee / Tiket (Rp) *</label>
                                     <input type="number" name="categories[{{ $i }}][fee_per_ticket]" value="{{ $cat->fee_per_ticket }}"
                                         class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                         required>
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-600 mb-1">Payment Mode</label>
+                                    <select name="categories[{{ $i }}][payment_mode]"
+                                        class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                        <option value="service_fee_only" {{ $cat->payment_mode === 'service_fee_only' ? 'selected' : '' }}>Fee Only</option>
+                                        <option value="full_payment" {{ $cat->payment_mode === 'full_payment' ? 'selected' : '' }}>Full Payment</option>
+                                        <option value="custom_payment" {{ $cat->payment_mode === 'custom_payment' ? 'selected' : '' }}>Custom</option>
+                                    </select>
                                 </div>
                                 <div>
                                     <label class="block text-xs text-gray-600 mb-1">Max Qty</label>
@@ -259,7 +261,7 @@
                         @endforeach
                     @else
                     <div class="border border-gray-100 rounded-xl p-4">
-                        <div class="grid grid-cols-3 gap-3">
+                        <div class="grid grid-cols-5 gap-3">
                             <div>
                                 <label class="block text-xs text-gray-600 mb-1">Nama Kategori *</label>
                                 <input type="text" name="categories[0][name]" placeholder="CAT 1"
@@ -267,10 +269,28 @@
                                     required>
                             </div>
                             <div>
+                                <label class="block text-xs text-gray-600 mb-1">
+                                    Keyword
+                                    <span class="text-gray-400 font-normal">(opsional)</span>
+                                </label>
+                                <input type="text" name="categories[0][keyword]"
+                                    placeholder="cat1, vip, tribune"
+                                    class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div>
                                 <label class="block text-xs text-gray-600 mb-1">Fee / Tiket (Rp) *</label>
                                 <input type="number" name="categories[0][fee_per_ticket]" placeholder="300000"
                                     class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                     required>
+                            </div>
+                            <div>
+                                <label class="block text-xs text-gray-600 mb-1">Payment Mode</label>
+                                <select name="categories[0][payment_mode]"
+                                    class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                    <option value="service_fee_only">Fee Only</option>
+                                    <option value="full_payment">Full Payment</option>
+                                    <option value="custom_payment">Custom</option>
+                                </select>
                             </div>
                             <div>
                                 <label class="block text-xs text-gray-600 mb-1">Max Qty</label>
@@ -514,16 +534,30 @@ function addCategory() {
             <button type="button" onclick="this.closest('div.border').remove()"
                 class="text-xs text-red-400 hover:text-red-600">Hapus</button>
         </div>
-        <div class="grid grid-cols-3 gap-3">
+        <div class="grid grid-cols-5 gap-3">
             <div>
                 <label class="block text-xs text-gray-600 mb-1">Nama *</label>
                 <input type="text" name="categories[${categoryIndex}][name]" placeholder="CAT 2"
                     class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
             </div>
             <div>
+                <label class="block text-xs text-gray-600 mb-1">Keyword <span class="text-gray-400">(opsional)</span></label>
+                <input type="text" name="categories[${categoryIndex}][keyword]" placeholder="cat2"
+                    class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+            <div>
                 <label class="block text-xs text-gray-600 mb-1">Fee (Rp) *</label>
                 <input type="number" name="categories[${categoryIndex}][fee_per_ticket]"
                     class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+            </div>
+            <div>
+                <label class="block text-xs text-gray-600 mb-1">Payment Mode</label>
+                <select name="categories[${categoryIndex}][payment_mode]"
+                    class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <option value="service_fee_only">Fee Only</option>
+                    <option value="full_payment">Full Payment</option>
+                    <option value="custom_payment">Custom</option>
+                </select>
             </div>
             <div>
                 <label class="block text-xs text-gray-600 mb-1">Max Qty</label>

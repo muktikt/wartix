@@ -271,41 +271,75 @@
                         </div>
                         @endif
 
-                        {{-- Ticket Category --}}
-                        <div class="mb-3">
+                        {{-- Ticket Category (Utama + Cadangan) --}}
+                        <div class="mb-4" x-data="categoryPicker()">
+
                             <label class="block text-xs font-medium text-gray-700 mb-1.5">Kategori Tiket</label>
-                            <select name="ticket_category_id" id="categorySelect" required
-                                class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                                <option value="">Pilih kategori</option>
-                                @foreach($event->ticketCategories as $cat)
-                                    @if($cat->slot_limit !== null)
-                                        @if($cat->available_slots > 0)
+
+                            {{-- Kategori Utama --}}
+                            <div class="mb-2">
+                                <label class="block text-xs text-gray-500 mb-1">
+                                    Pilihan Utama <span class="text-red-500">*</span>
+                                </label>
+                                <select name="category_choices[0][ticket_category_id]"
+                                    x-model="primaryChoice"
+                                    @change="updateEstimate()"
+                                    required
+                                    class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                    <option value="">Pilih kategori utama</option>
+                                    @foreach($event->ticketCategories as $cat)
+                                    <option value="{{ $cat->id }}"
+                                        data-fee="{{ $cat->fee_per_ticket }}"
+                                        data-price="{{ $cat->ticket_price }}"
+                                        data-mode="{{ $cat->payment_mode }}"
+                                        data-name="{{ $cat->name }}">
+                                        {{ $cat->name }} — Rp {{ number_format($cat->fee_per_ticket) }}/tiket
+                                    </option>
+                                    @endforeach
+                                </select>
+                                <input type="hidden" name="category_choices[0][priority]" value="1">
+                            </div>
+
+                            {{-- Kategori Cadangan (dinamis) --}}
+                            <template x-for="(choice, index) in extraChoices" :key="index">
+                                <div class="mb-2 flex gap-2 items-end">
+                                    <div class="flex-1">
+                                        <label class="block text-xs text-gray-500 mb-1"
+                                            x-text="`Cadangan ${index + 1}`"></label>
+                                        <select
+                                            :name="`category_choices[${index + 1}][ticket_category_id]`"
+                                            x-model="extraChoices[index]"
+                                            class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                            <option value="">Pilih kategori cadangan</option>
+                                            @foreach($event->ticketCategories as $cat)
                                             <option value="{{ $cat->id }}"
                                                 data-fee="{{ $cat->fee_per_ticket }}"
-                                                data-price="{{ $cat->ticket_price }}"
-                                                data-mode="{{ $cat->payment_mode }}"
-                                                {{ old('ticket_category_id') == $cat->id ? 'selected' : '' }}>
-                                                {{ $cat->name }} — Rp {{ number_format($cat->fee_per_ticket) }}/tiket (Sisa {{ $cat->available_slots }} slot)
+                                                data-name="{{ $cat->name }}">
+                                                {{ $cat->name }} — Rp {{ number_format($cat->fee_per_ticket) }}/tiket
                                             </option>
-                                        @else
-                                            <option value="{{ $cat->id }}" disabled class="text-gray-400"
-                                                data-fee="{{ $cat->fee_per_ticket }}"
-                                                data-price="{{ $cat->ticket_price }}"
-                                                data-mode="{{ $cat->payment_mode }}">
-                                                {{ $cat->name }} — Rp {{ number_format($cat->fee_per_ticket) }}/tiket (Penuh)
-                                            </option>
-                                        @endif
-                                    @else
-                                        <option value="{{ $cat->id }}"
-                                            data-fee="{{ $cat->fee_per_ticket }}"
-                                            data-price="{{ $cat->ticket_price }}"
-                                            data-mode="{{ $cat->payment_mode }}"
-                                            {{ old('ticket_category_id') == $cat->id ? 'selected' : '' }}>
-                                            {{ $cat->name }} — Rp {{ number_format($cat->fee_per_ticket) }}/tiket
-                                        </option>
-                                    @endif
-                                @endforeach
-                            </select>
+                                            @endforeach
+                                        </select>
+                                        <input type="hidden"
+                                            :name="`category_choices[${index + 1}][priority]`"
+                                            :value="index + 2">
+                                    </div>
+                                    <button type="button" @click="removeChoice(index)"
+                                        class="mb-0.5 text-red-400 hover:text-red-600 text-xs px-2 py-2.5 border border-red-100 rounded-xl hover:bg-red-50 transition-colors">
+                                        Hapus
+                                    </button>
+                                </div>
+                            </template>
+
+                            {{-- Tombol tambah cadangan --}}
+                            <button type="button" @click="addChoice()"
+                                class="w-full mt-1 border border-dashed border-indigo-300 text-indigo-600 text-xs py-2 rounded-xl hover:bg-indigo-50 transition-colors">
+                                + Tambah Kategori Cadangan
+                            </button>
+
+                            {{-- Info fee --}}
+                            <p class="text-xs text-gray-400 mt-2">
+                                Fee final sesuai kategori yang berhasil. QRIS dikirim otomatis setelah sukses.
+                            </p>
                         </div>
 
                         {{-- Qty --}}
@@ -494,32 +528,66 @@ function formatRp(num) {
     return 'Rp ' + num.toLocaleString('id-ID');
 }
 
-function updateEstimate() {
-    const opt  = categorySelect.options[categorySelect.selectedIndex];
-    const qty  = parseInt(qtySelect.value) || 1;
-    const fee  = parseInt(opt?.dataset?.fee || 0);
-    const price= parseInt(opt?.dataset?.price || 0);
-    const mode = opt?.dataset?.mode || '';
+function categoryPicker() {
+    return {
+        primaryChoice: '',
+        extraChoices: [],
 
-    if (!fee && !price) { feeEstimate.classList.add('hidden'); return; }
+        addChoice() {
+            this.extraChoices.push('');
+        },
 
-    feeEstimate.classList.remove('hidden');
-    const totalFee   = fee * qty;
-    const totalPrice = price * qty;
-    let grandTotal   = totalFee;
+        removeChoice(index) {
+            this.extraChoices.splice(index, 1);
+        },
 
-    feeDisplay.textContent = formatRp(totalFee);
+        updateEstimate() {
+            const select = document.querySelector('[name="category_choices[0][ticket_category_id]"]');
+            const opt    = select?.options[select?.selectedIndex];
+            const qty    = parseInt(document.getElementById('qtySelect')?.value) || 1;
+            const fee    = parseInt(opt?.dataset?.fee || 0);
+            const price  = parseInt(opt?.dataset?.price || 0);
+            const mode   = opt?.dataset?.mode || '';
 
-    if (mode === 'full_payment' && price > 0) {
-        ticketPriceRow.classList.remove('hidden');
-        ticketPriceDisp.textContent = formatRp(totalPrice);
-        grandTotal = totalFee + totalPrice;
-    } else {
-        ticketPriceRow.classList.add('hidden');
+            const feeEstimate    = document.getElementById('feeEstimate');
+            const feeDisplay     = document.getElementById('feeDisplay');
+            const totalDisplay   = document.getElementById('totalDisplay');
+            const ticketPriceRow = document.getElementById('ticketPriceRow');
+            const ticketPriceDisp= document.getElementById('ticketPriceDisplay');
+
+            if (!fee && !price) {
+                feeEstimate?.classList.add('hidden');
+                return;
+            }
+
+            feeEstimate?.classList.remove('hidden');
+
+            const totalFee   = fee * qty;
+            const totalPrice = price * qty;
+            let grandTotal   = totalFee;
+
+            feeDisplay.textContent = 'Rp ' + totalFee.toLocaleString('id-ID');
+
+            if (mode === 'full_payment' && price > 0) {
+                ticketPriceRow?.classList.remove('hidden');
+                if (ticketPriceDisp) ticketPriceDisp.textContent = 'Rp ' + totalPrice.toLocaleString('id-ID');
+                grandTotal = totalFee + totalPrice;
+            } else {
+                ticketPriceRow?.classList.add('hidden');
+            }
+
+            totalDisplay.textContent = 'Rp ' + grandTotal.toLocaleString('id-ID');
+        }
     }
-
-    totalDisplay.textContent = formatRp(grandTotal);
 }
+
+// Update estimasi kalau qty berubah
+document.getElementById('qtySelect')?.addEventListener('change', function() {
+    // Trigger Alpine update estimate
+    const picker = document.querySelector('[x-data]')?.__x?.$data;
+    if (picker) picker.updateEstimate();
+    updateGuestFields();
+});
 
 function updateMembershipVisibility() {
     if (!salePhaseSelect || !membershipField || !membershipInput) return;
@@ -534,7 +602,7 @@ function updateMembershipVisibility() {
     }
 }
 
-categorySelect.addEventListener('change', updateEstimate);
+
 qtySelect.addEventListener('change', function() {
     updateEstimate();
     updateGuestFields();
@@ -570,7 +638,6 @@ function updateGuestFields() {
 }
 
 // Initialize on page load
-updateEstimate();
 updateGuestFields();
 updateMembershipVisibility();
 

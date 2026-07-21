@@ -47,6 +47,7 @@ class OrderController extends Controller
             'event',
             'salePhase',
             'ticketCategory',
+            'categoryChoices.ticketCategory',
             'guests',
             'customFieldAnswers.customField',
             'successLog',
