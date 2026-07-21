@@ -32,7 +32,7 @@ class OrderController extends Controller
 
         $event = Event::with('customFields')->findOrFail($request->event_id);
 
-        if ($event->status !== 'upcoming') {
+        if ($event->status === 'finished' || $event->status === 'slot_penuh') {
             return back()->withInput()->withErrors([
                 'event_id' => 'Pendaftaran untuk event ini sudah ditutup.',
             ]);
