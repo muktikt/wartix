@@ -265,6 +265,47 @@
 }
 
 /* ============================================================
+   BUTTON CLICK & ACTIVE STATES
+   ============================================================ */
+
+.btn-press {
+    transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn-press:active {
+    transform: scale(0.96) translateY(1px) !important;
+}
+
+/* ============================================================
+   FORM INPUT GLOW & TRANSITION
+   ============================================================ */
+
+input, select, textarea {
+    transition: border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #6366f1 !important;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15), 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+    outline: none !important;
+}
+
+/* ============================================================
+   SHAKE ANIMATION FOR ERRORS
+   ============================================================ */
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-4px); }
+    40%, 80% { transform: translateX(4px); }
+}
+
+.animate-shake {
+    animation: shake 0.4s ease-in-out;
+}
+
+/* ============================================================
    LIVE PULSE INDICATOR (green dot with ripple)
    ============================================================ */
 
@@ -447,6 +488,28 @@
 
 .table-row-hover:hover {
     transform: translateX(2px);
+}
+
+/* ============================================================
+   TEXT GRADIENT SHINE ANIMATION
+   ============================================================ */
+
+@keyframes textShine {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 200% 50%;
+    }
+}
+
+.animate-text-shine {
+    background: linear-gradient(to right, #4f46e5 20%, #9333ea 40%, #f43f5e 60%, #9333ea 80%, #4f46e5 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    text-fill-color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: textShine 6s linear infinite;
 }
 
 /* ============================================================

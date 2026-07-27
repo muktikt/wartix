@@ -217,7 +217,7 @@
 
                         {{-- Validation Errors --}}
                         @if ($errors->any())
-                        <div class="mb-4 p-4 bg-red-50 border-l-4 border-red-500 rounded-xl">
+                        <div class="mb-4 p-4 bg-red-50 border-l-4 border-red-500 rounded-xl animate-shake">
                             <div class="flex">
                                 <div class="flex-shrink-0">
                                     <svg class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
@@ -304,7 +304,7 @@
 
                             {{-- Tombol tambah cadangan --}}
                             <button type="button" id="addBackupCategoryBtn"
-                                class="w-full mt-2 border border-dashed border-indigo-300 text-indigo-600 text-xs py-2 rounded-xl hover:bg-indigo-50 transition-colors">
+                                class="w-full mt-2 border border-dashed border-indigo-300 text-indigo-600 text-xs py-2 rounded-xl hover:bg-indigo-50 transition-colors btn-press">
                                 + Tambah Kategori Cadangan
                             </button>
 
@@ -428,7 +428,7 @@
                         @endif
 
                         <button type="submit"
-                            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold py-3 rounded-xl transition-colors">
+                            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold py-3 rounded-xl transition-colors btn-press">
                             Submit Order
                         </button>
 

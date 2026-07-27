@@ -18,7 +18,7 @@ const initScrollReveal = () => {
     document.body.classList.add('js-loaded');
 
     if (!('IntersectionObserver' in window)) {
-        document.querySelectorAll('.reveal-on-scroll').forEach((el) => {
+        document.querySelectorAll('.reveal-on-scroll, .scroll-animate').forEach((el) => {
             el.classList.add('is-visible');
         });
         return;
@@ -39,7 +39,7 @@ const initScrollReveal = () => {
         { threshold: 0.05, rootMargin: '0px 0px -30px 0px' }
     );
 
-    document.querySelectorAll('.reveal-on-scroll').forEach((el) => {
+    document.querySelectorAll('.reveal-on-scroll, .scroll-animate').forEach((el) => {
         observer.observe(el);
     });
 };

@@ -1,4 +1,4 @@
-<div class="bg-white border border-gray-100 rounded-2xl overflow-hidden hover-lift hover-glow hover:shadow-lg transition-all duration-300 group">
+<div class="bg-white border border-gray-100 rounded-2xl overflow-hidden hover-lift hover-glow hover:border-indigo-200/50 hover:shadow-xl transition-all duration-300 group">
     {{-- Banner --}}
     <div class="relative h-40 bg-gradient-to-br from-indigo-900 to-purple-900 overflow-hidden">
         @if($event->banner_image)
@@ -92,7 +92,7 @@
         @endif
 
         <a href="{{ route('events.show', $event->slug) }}"
-            class="block w-full text-center bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium py-2 rounded-lg transition-all duration-300 hover:shadow-md hover:shadow-indigo-500/20">
+            class="block w-full text-center bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium py-2 rounded-lg transition-all duration-300 hover:shadow-md hover:shadow-indigo-500/20 btn-press">
             View Detail
         </a>
     </div>
