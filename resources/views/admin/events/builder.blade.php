@@ -31,8 +31,8 @@
                     <span class="w-5 h-5 bg-indigo-600 text-white rounded-full text-xs flex items-center justify-center">1</span>
                     Ticketing Platform
                 </h3>
-                <div class="grid grid-cols-4 gap-3">
-                    @foreach(['tiketcom' => 'Tiket.com', 'loket' => 'Loket', 'yesplis' => 'Yesplis', 'custom' => 'Custom'] as $val => $label)
+                <div class="grid grid-cols-3 md:grid-cols-6 gap-3">
+                    @foreach(['tiketcom' => 'Tiket.com', 'loket' => 'Loket', 'yesplis' => 'Yesplis', 'goers' => 'Goers', 'fasticket' => 'Fasticket', 'custom' => 'Custom'] as $val => $label)
                     <label class="cursor-pointer">
                         <input type="radio" name="platform_type" value="{{ $val }}"
                             x-model="platform"

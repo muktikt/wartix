@@ -104,6 +104,32 @@ class OrderController extends Controller
             $rules['membership_code'] = 'required|string|max:255';
         }
 
+        // Gelar hanya wajib untuk platform yang punya field gelar di form aslinya
+        if (in_array($event->platform_type, \App\Models\Order::PLATFORMS_WITH_TITLE, true)) {
+            $rules['title'] = 'required|in:' . implode(',', array_keys(\App\Models\Order::TITLE_OPTIONS));
+        }
+
+        // Gender hanya wajib untuk platform yang punya field ini (goers)
+        if (in_array($event->platform_type, \App\Models\Order::PLATFORMS_WITH_GENDER, true)) {
+            $rules['gender'] = 'required|in:' . implode(',', array_keys(\App\Models\Order::GENDER_OPTIONS));
+        }
+
+        // Tanggal lahir hanya wajib untuk platform yang punya field ini (loket, goers)
+        if (in_array($event->platform_type, \App\Models\Order::PLATFORMS_WITH_BIRTH_DATE, true)) {
+            $rules['birth_date'] = 'required|date|before:today';
+        }
+
+        // Kota hanya wajib untuk platform yang punya field ini (goers)
+        if (in_array($event->platform_type, \App\Models\Order::PLATFORMS_WITH_CITY, true)) {
+            $rules['city'] = 'required|string|max:255';
+        }
+
+        // Metode pembayaran hanya wajib untuk platform yang punya field ini (fasticket)
+        if (in_array($event->platform_type, \App\Models\Order::PLATFORMS_WITH_PAYMENT_METHOD, true)) {
+            $allowedPaymentMethods = collect(\App\Models\Order::PAYMENT_METHOD_GROUPS)->flatMap(fn ($options) => array_keys($options));
+            $rules['payment_method'] = 'required|in:' . $allowedPaymentMethods->implode(',');
+        }
+
         $activeCustomFields = $event->customFields->where('is_active', true);
 
         foreach ($activeCustomFields as $field) {
@@ -177,6 +203,10 @@ class OrderController extends Controller
                 'ticket_category_id'  => $category->id,
                 'qty'                 => $qty,
                 'title'               => $request->title ?? null,
+                'birth_date'          => $request->birth_date ?? null,
+                'gender'              => $request->gender ?? null,
+                'city'                => $request->city ?? null,
+                'payment_method'      => $request->payment_method ?? null,
                 'full_name'           => $request->full_name,
                 'phone_number'        => $request->phone_number,
                 'email'               => $request->email,
@@ -249,6 +279,12 @@ class OrderController extends Controller
             } catch (\Throwable $e) {
                 Log::warning('AdminNotification gagal dibuat: ' . $e->getMessage());
             }
+
+            // Notifikasi order baru ke bot Telegram admin via n8n (non-blocking)
+            dispatch(new \App\Jobs\TriggerN8nWebhook([
+                'event_type' => 'order_created',
+                'order_id'   => $order->id,
+            ]));
 
             return redirect()->route('order.success', $order->order_code);
 

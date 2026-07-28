@@ -29,7 +29,7 @@ class TelegramLinkController extends Controller
 
         $order = Order::withoutGlobalScope(HideUnlinkedOrdersScope::class)
             ->where('telegram_link_token', $token)
-            ->with(['event', 'salePhase', 'ticketCategory'])
+            ->with(['event', 'salePhase', 'ticketCategory', 'categoryChoices.ticketCategory'])
             ->first();
 
         if (!$order) {
@@ -66,13 +66,16 @@ class TelegramLinkController extends Controller
         return response()->json([
             'valid' => true,
             'order' => [
-                'order_code'    => $order->order_code,
-                'event_title'   => $order->event->title ?? '-',
-                'phase_name'    => $order->salePhase->name ?? '-',
-                'category_name' => $order->ticketCategory->name ?? '-',
-                'qty'           => $order->qty,
-                'grand_total'   => $order->grand_total,
-                'full_name'     => $order->full_name,
+                'order_code'       => $order->order_code,
+                'event_title'      => $order->event->title ?? '-',
+                'phase_name'       => $order->salePhase->name ?? '-',
+                'category_name'    => $order->ticketCategory->name ?? '-',
+                'qty'              => $order->qty,
+                'grand_total'      => $order->grand_total,
+                'full_name'        => $order->full_name,
+                // Teks siap kirim, sudah diformat sesuai platform event ini
+                // (gelar untuk tiket.com/goers, tanggal lahir untuk loket, dst).
+                'confirmation_text' => $order->buildTelegramConfirmationMessage(),
             ],
             'admin_username' => $adminUsername,
         ]);

@@ -211,13 +211,13 @@
                 <div class="bg-white border border-gray-100 rounded-2xl p-5">
                     <h3 class="text-sm font-semibold text-gray-900 mb-4">Form Order</h3>
 
-                    <form action="{{ route('orders.store') }}" method="POST" id="orderForm">
+                    <form action="{{ route('orders.store') }}" method="POST" id="orderForm" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="event_id" value="{{ $event->id }}">
 
                         {{-- Validation Errors --}}
                         @if ($errors->any())
-                        <div class="mb-4 p-4 bg-red-50 border-l-4 border-red-500 rounded-xl animate-shake">
+                        <div class="mb-4 p-4 bg-red-50 border-l-4 border-red-500 rounded-xl">
                             <div class="flex">
                                 <div class="flex-shrink-0">
                                     <svg class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
@@ -304,7 +304,7 @@
 
                             {{-- Tombol tambah cadangan --}}
                             <button type="button" id="addBackupCategoryBtn"
-                                class="w-full mt-2 border border-dashed border-indigo-300 text-indigo-600 text-xs py-2 rounded-xl hover:bg-indigo-50 transition-colors btn-press">
+                                class="w-full mt-2 border border-dashed border-indigo-300 text-indigo-600 text-xs py-2 rounded-xl hover:bg-indigo-50 transition-colors">
                                 + Tambah Kategori Cadangan
                             </button>
 
@@ -345,6 +345,70 @@
 
 
 
+                        {{-- Gelar (hanya untuk platform yang punya field ini di form aslinya, mis. tiket.com / fasticket) --}}
+                        @if(in_array($event->platform_type, \App\Models\Order::PLATFORMS_WITH_TITLE, true))
+                        <div class="mb-3">
+                            <label class="block text-xs font-medium text-gray-700 mb-1.5">Gelar <span class="text-red-500">*</span></label>
+                            <select name="title" required
+                                class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="">Pilih gelar</option>
+                                @foreach(\App\Models\Order::TITLE_OPTIONS as $value => $label)
+                                <option value="{{ $value }}" {{ old('title') === $value ? 'selected' : '' }}>{{ $label }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        @endif
+
+                        {{-- Gender (hanya untuk platform yang punya field ini di form aslinya, mis. Goers) --}}
+                        @if(in_array($event->platform_type, \App\Models\Order::PLATFORMS_WITH_GENDER, true))
+                        <div class="mb-3">
+                            <label class="block text-xs font-medium text-gray-700 mb-1.5">Gender <span class="text-red-500">*</span></label>
+                            <select name="gender" required
+                                class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="">Pilih gender</option>
+                                @foreach(\App\Models\Order::GENDER_OPTIONS as $value => $label)
+                                <option value="{{ $value }}" {{ old('gender') === $value ? 'selected' : '' }}>{{ $label }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        @endif
+
+                        {{-- Tanggal Lahir (hanya untuk platform yang punya field ini di form aslinya, mis. Loket / Goers) --}}
+                        @if(in_array($event->platform_type, \App\Models\Order::PLATFORMS_WITH_BIRTH_DATE, true))
+                        <div class="mb-3">
+                            <label class="block text-xs font-medium text-gray-700 mb-1.5">Tanggal Lahir <span class="text-red-500">*</span></label>
+                            <input type="date" name="birth_date" value="{{ old('birth_date') }}" max="{{ now()->subDay()->toDateString() }}"
+                                class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                required>
+                        </div>
+                        @endif
+
+                        {{-- Kota (hanya untuk platform yang punya field ini di form aslinya, mis. Goers) --}}
+                        @if(in_array($event->platform_type, \App\Models\Order::PLATFORMS_WITH_CITY, true))
+                        <div class="mb-3">
+                            <label class="block text-xs font-medium text-gray-700 mb-1.5">Kota <span class="text-red-500">*</span></label>
+                            <input type="text" name="city" value="{{ old('city') }}" placeholder="Kota domisili"
+                                class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                required>
+                        </div>
+                        @endif
+
+                        {{-- Metode Pembayaran (hanya untuk platform yang punya field ini di form aslinya, mis. Fasticket) --}}
+                        @if(in_array($event->platform_type, \App\Models\Order::PLATFORMS_WITH_PAYMENT_METHOD, true))
+                        <div class="mb-3">
+                            <label class="block text-xs font-medium text-gray-700 mb-1.5">Metode Pembayaran <span class="text-red-500">*</span></label>
+                            <select name="payment_method" required
+                                class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="">Pilih metode pembayaran</option>
+                                @foreach(\App\Models\Order::PAYMENT_METHOD_GROUPS as $options)
+                                    @foreach($options as $value => $label)
+                                    <option value="{{ $value }}" {{ old('payment_method') === $value ? 'selected' : '' }}>{{ $label }}</option>
+                                    @endforeach
+                                @endforeach
+                            </select>
+                        </div>
+                        @endif
+
                         {{-- Nama Lengkap --}}
                         <div class="mb-3">
                             <label class="block text-xs font-medium text-gray-700 mb-1.5">Nama Lengkap</label>
@@ -378,15 +442,25 @@
                                 required>
                         </div>
 
-                        {{-- Username Sosial Media --}}
-                        <div class="mb-4">
-                            <label class="block text-xs font-medium text-gray-700 mb-1.5">Username Sosial Media (IG/TikTok/X/Threads)</label>
+                        {{-- Username Instagram --}}
+                        <div class="mb-3">
+                            <label class="block text-xs font-medium text-gray-700 mb-1.5">Username Instagram <span class="text-red-500">*</span></label>
                             <div class="relative">
                                 <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">@</span>
                                 <input type="text" name="telegram_username" value="{{ old('telegram_username') }}" placeholder="username"
-                                    class="w-full text-sm border border-gray-200 rounded-xl pl-7 pr-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                    class="w-full text-sm border border-gray-200 rounded-xl pl-7 pr-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    required>
                             </div>
-                            <p class="text-xs text-gray-400 mt-1">Masukkan salah satu username sosial media Anda (Instagram, TikTok, X, Threads, dll)</p>
+                            <p class="text-xs text-gray-400 mt-1">Wajib akun Instagram (bukan TikTok/X/Threads)</p>
+                        </div>
+
+                        {{-- Screenshot Akun Instagram --}}
+                        <div class="mb-4">
+                            <label class="block text-xs font-medium text-gray-700 mb-1.5">Screenshot Akun Instagram <span class="text-red-500">*</span></label>
+                            <input type="file" name="social_media_screenshot" accept="image/*"
+                                class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                required>
+                            <p class="text-xs text-gray-400 mt-1">Screenshot profil Instagram kamu untuk verifikasi (JPG/PNG, maks 2MB)</p>
                         </div>
 
                         {{-- Custom Fields --}}
@@ -428,7 +502,7 @@
                         @endif
 
                         <button type="submit"
-                            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold py-3 rounded-xl transition-colors btn-press">
+                            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold py-3 rounded-xl transition-colors">
                             Submit Order
                         </button>
 

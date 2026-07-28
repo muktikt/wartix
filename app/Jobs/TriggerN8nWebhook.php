@@ -37,6 +37,24 @@ class TriggerN8nWebhook implements ShouldQueue
                 // Post ke Threads juga
                 $threads->postEventAnnouncement($event, $fullPayload['threads_caption']);
 
+            } elseif ($eventType === 'order_created') {
+                $order = \App\Models\Order::withoutGlobalScope(\App\Models\Scopes\HideUnlinkedOrdersScope::class)
+                    ->with('event')
+                    ->find($this->payload['order_id']);
+
+                if (!$order) return;
+
+                $n8n->triggerAdmin('order_created', $n8n->buildOrderCreatedPayload($order));
+
+            } elseif ($eventType === 'payment_paid') {
+                $order = \App\Models\Order::withoutGlobalScope(\App\Models\Scopes\HideUnlinkedOrdersScope::class)
+                    ->with('event')
+                    ->find($this->payload['order_id']);
+
+                if (!$order) return;
+
+                $n8n->triggerAdmin('payment_paid', $n8n->buildPaymentPaidPayload($order));
+
             } elseif ($eventType === 'event_finished') {
             $event = Event::with([
                 'salePhases',

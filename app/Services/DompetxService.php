@@ -191,6 +191,7 @@ class DompetxService
 
         dispatch(new \App\Jobs\TriggerN8nWebhook([
             'event_type'  => 'payment_paid',
+            'order_id'    => $order->id,
             'order_code'  => $order->order_code,
             'amount'      => $order->grand_total,
         ]));

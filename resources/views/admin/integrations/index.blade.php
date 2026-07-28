@@ -91,6 +91,26 @@
             </div>
         </div>
 
+        {{-- n8n Admin Notification (bot Telegram terpisah) --}}
+        <div class="bg-white border border-gray-100 rounded-xl p-5">
+            <h3 class="text-sm font-semibold text-gray-900 mb-4">n8n Notifikasi Admin (Order Baru & Payment Fee)</h3>
+            <p class="text-xs text-gray-400 mb-3">Webhook terpisah dari n8n Webhook di atas — dipakai untuk kirim notif order baru & payment fee ke bot Telegram admin yang berbeda.</p>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1.5">Webhook URL</label>
+                    <input type="url" name="n8n_admin_webhook_url" value="{{ $settings['n8n_admin_webhook_url'] ?? '' }}"
+                        placeholder="https://your-n8n.sumopod.app/webhook/admin-notify"
+                        class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1.5">Webhook Secret</label>
+                    <input type="password" name="n8n_admin_webhook_secret" value="{{ $settings['n8n_admin_webhook_secret'] ?? '' }}"
+                        placeholder="secret key"
+                        class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+            </div>
+        </div>
+
         {{-- DompetX --}}
         <div class="bg-white border border-gray-100 rounded-xl p-5">
             <h3 class="text-sm font-semibold text-gray-900 mb-4">DompetX Payment</h3>

@@ -154,7 +154,7 @@ class EventBuilderController extends Controller
             'city'                => 'required|string|max:255',
             'event_type'          => 'required|string|max:100',
             'event_date'          => 'required|date',
-            'platform_type'       => 'required|in:tiketcom,loket,yesplis,custom',
+            'platform_type'       => 'required|in:tiketcom,loket,yesplis,goers,fasticket,custom',
             'status'              => 'required|in:upcoming,slot_penuh,ongoing,finished',
             'banner_image'        => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'seatplan_image'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',

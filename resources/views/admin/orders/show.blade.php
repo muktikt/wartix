@@ -128,13 +128,43 @@
             </div>
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <p class="text-xs text-gray-400 mb-0.5">Sapaan</p>
-                    <p class="text-sm text-gray-700">{{ $order->title ?? '-' }}</p>
+                    <p class="text-xs text-gray-400 mb-0.5">Gelar</p>
+                    <p class="text-sm text-gray-700">{{ $order->title_label ?? '-' }}</p>
                 </div>
                 <div>
                     <p class="text-xs text-gray-400 mb-0.5">Nama Lengkap</p>
                     <p class="text-sm font-medium text-gray-900">{{ $order->full_name }}</p>
                 </div>
+                @if($order->birth_date)
+                <div>
+                    <p class="text-xs text-gray-400 mb-0.5">Tanggal Lahir</p>
+                    <p class="text-sm text-gray-700">{{ $order->birth_date->format('d/m/Y') }}</p>
+                </div>
+                @endif
+                @if($order->gender_label)
+                <div>
+                    <p class="text-xs text-gray-400 mb-0.5">Gender</p>
+                    <p class="text-sm text-gray-700">{{ $order->gender_label }}</p>
+                </div>
+                @endif
+                @if($order->city)
+                <div>
+                    <p class="text-xs text-gray-400 mb-0.5">Kota</p>
+                    <p class="text-sm text-gray-700">{{ $order->city }}</p>
+                </div>
+                @endif
+                @if($order->payment_method_label)
+                <div>
+                    <p class="text-xs text-gray-400 mb-0.5">Metode Pembayaran</p>
+                    <p class="text-sm text-gray-700">{{ $order->payment_method_label }}</p>
+                </div>
+                @endif
+                @if($order->membership_code)
+                <div>
+                    <p class="text-xs text-gray-400 mb-0.5">Kode Membership</p>
+                    <p class="text-sm text-gray-700">{{ $order->membership_code }}</p>
+                </div>
+                @endif
                 <div>
                     <p class="text-xs text-gray-400 mb-0.5">Email</p>
                     <p class="text-sm text-gray-700">{{ $order->email }}</p>
@@ -159,11 +189,20 @@
                     </p>
                 </div>
                 <div>
-                    <p class="text-xs text-gray-400 mb-0.5">Username Sosial Media</p>
+                    <p class="text-xs text-gray-400 mb-0.5">Username Instagram</p>
                     <p class="text-sm text-gray-700">
                         {{ $order->telegram_username ? '@'.$order->telegram_username : '-' }}
                     </p>
                 </div>
+                @if($order->social_media_screenshot)
+                <div>
+                    <p class="text-xs text-gray-400 mb-0.5">Screenshot Akun Instagram</p>
+                    <a href="{{ asset('storage/'.$order->social_media_screenshot) }}" target="_blank" class="inline-block mt-1">
+                        <img src="{{ asset('storage/'.$order->social_media_screenshot) }}" alt="Screenshot Instagram"
+                            class="w-20 h-20 object-cover rounded-lg border border-gray-200 hover:opacity-80 transition-opacity">
+                    </a>
+                </div>
+                @endif
             </div>
 
             {{-- Guest NIK List (integrated) --}}

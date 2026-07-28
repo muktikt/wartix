@@ -11,11 +11,15 @@ class N8nService
 {
     private string $webhookUrl;
     private string $secret;
+    private string $adminWebhookUrl;
+    private string $adminSecret;
 
     public function __construct()
     {
-        $this->webhookUrl = Setting::get('n8n_webhook_url', '');
-        $this->secret     = Setting::get('n8n_webhook_secret', '');
+        $this->webhookUrl      = Setting::get('n8n_webhook_url', '');
+        $this->secret          = Setting::get('n8n_webhook_secret', '');
+        $this->adminWebhookUrl = Setting::get('n8n_admin_webhook_url', '');
+        $this->adminSecret     = Setting::get('n8n_admin_webhook_secret', '');
     }
 
     public function trigger(string $eventType, array $payload): bool
@@ -39,6 +43,92 @@ class N8nService
             Log::error("n8n trigger [{$eventType}] failed: " . $e->getMessage());
             return false;
         }
+    }
+
+    /**
+     * Kirim ke webhook n8n khusus notifikasi admin (order baru & payment fee),
+     * yang terpisah dari webhook n8n utama dan bisa pakai bot Telegram berbeda.
+     */
+    public function triggerAdmin(string $eventType, array $payload): bool
+    {
+        if (!$this->adminWebhookUrl) {
+            Log::warning('n8n admin notification webhook URL not configured');
+            return false;
+        }
+
+        try {
+            $response = Http::withHeaders([
+                'X-Wartix-Secret' => $this->adminSecret,
+                'Content-Type'    => 'application/json',
+            ])->post($this->adminWebhookUrl, array_merge(
+                ['event_type' => $eventType],
+                $payload
+            ));
+
+            return $response->successful();
+        } catch (\Exception $e) {
+            Log::error("n8n admin trigger [{$eventType}] failed: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Payload notifikasi order baru masuk, untuk admin (bukan customer).
+     */
+    public function buildOrderCreatedPayload(\App\Models\Order $order): array
+    {
+        $event = $order->event;
+
+        $lines   = [];
+        $lines[] = '🆕 <b>Order Baru Masuk</b>';
+        $lines[] = '';
+        $lines[] = "🎫 Event: {$event->title}";
+        $lines[] = "🌐 Platform: " . strtoupper($event->platform_type ?? '-');
+        $lines[] = "👤 Nama: {$order->full_name}";
+        $lines[] = "📱 HP: {$order->phone_number}";
+        $lines[] = "📧 Email: {$order->email}";
+        $lines[] = "📸 Instagram: @{$order->telegram_username}";
+        $lines[] = "🎟 Qty: {$order->qty}";
+        $lines[] = '💰 Total: Rp ' . number_format($order->grand_total, 0, ',', '.');
+        $lines[] = "🔖 Order Code: <code>{$order->order_code}</code>";
+        $lines[] = '';
+        $lines[] = 'Lihat detail: ' . route('admin.orders.show', $order->id);
+
+        return [
+            'order_id'         => $order->id,
+            'order_code'       => $order->order_code,
+            'event_title'      => $event->title ?? '-',
+            'full_name'        => $order->full_name,
+            'grand_total'      => $order->grand_total,
+            'telegram_message' => implode("\n", $lines),
+        ];
+    }
+
+    /**
+     * Payload notifikasi payment fee sudah diterima, untuk admin (bukan customer).
+     */
+    public function buildPaymentPaidPayload(\App\Models\Order $order): array
+    {
+        $event = $order->event;
+
+        $lines   = [];
+        $lines[] = '✅ <b>Payment Fee Diterima</b>';
+        $lines[] = '';
+        $lines[] = "🎫 Event: {$event->title}";
+        $lines[] = "👤 Nama: {$order->full_name}";
+        $lines[] = '💰 Total: Rp ' . number_format($order->grand_total, 0, ',', '.');
+        $lines[] = "🔖 Order Code: <code>{$order->order_code}</code>";
+        $lines[] = '';
+        $lines[] = 'Lihat detail: ' . route('admin.orders.show', $order->id);
+
+        return [
+            'order_id'         => $order->id,
+            'order_code'       => $order->order_code,
+            'event_title'      => $event->title ?? '-',
+            'full_name'        => $order->full_name,
+            'grand_total'      => $order->grand_total,
+            'telegram_message' => implode("\n", $lines),
+        ];
     }
 
     public function buildEventCreatedPayload(Event $event): array
