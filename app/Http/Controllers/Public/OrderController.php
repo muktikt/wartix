@@ -12,8 +12,10 @@ use App\Models\TicketCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Models\Scopes\HideUnlinkedOrdersScope;
 use App\Services\TelegramLinkTokenService;
 
 class OrderController extends Controller
@@ -40,6 +42,21 @@ class OrderController extends Controller
         if (in_array($event->status, ['finished', 'slot_penuh'])) {
             return back()->withInput()->withErrors([
                 'event_id' => 'Pendaftaran untuk event ini sudah ditutup.',
+            ]);
+        }
+
+        // --- Cek device token (rate limit: 1 order per device per event) ---
+        $deviceToken = $request->cookie('device_token') ?: Str::uuid()->toString();
+
+        $existingOrder = Order::withoutGlobalScope(HideUnlinkedOrdersScope::class)
+            ->where('device_token', $deviceToken)
+            ->where('event_id', $event->id)
+            ->whereNotIn('order_status', ['cancelled', 'failed'])
+            ->first();
+
+        if ($existingOrder) {
+            return back()->withInput()->withErrors([
+                'event_id' => 'Kamu sudah pernah order untuk event ini. Order kamu ('. $existingOrder->order_code .') sedang diproses. Silakan tunggu hingga order selesai atau dihubungi admin.',
             ]);
         }
 
@@ -221,6 +238,7 @@ class OrderController extends Controller
                 'payment_status'      => 'unpaid',
                 'order_status'        => 'pending_link',
                 'membership_code'     => $request->membership_code ?? null,
+                'device_token'        => $deviceToken,
             ]);
 
             // Simpan semua pilihan kategori ke pivot table
@@ -286,7 +304,21 @@ class OrderController extends Controller
                 'order_id'   => $order->id,
             ]));
 
-            return redirect()->route('order.success', $order->order_code);
+            // Set device_token cookie (2 tahun, httpOnly, sameSite Lax)
+            $cookie = Cookie::make(
+                'device_token',
+                $deviceToken,
+                60 * 24 * 365 * 2, // 2 tahun dalam menit
+                '/',
+                null,
+                false,  // secure (false for local dev, set true in production)
+                true,   // httpOnly
+                false,  // raw
+                'Lax'   // sameSite
+            );
+
+            return redirect()->route('order.success', $order->order_code)
+                ->withCookie($cookie);
 
         } catch (\Throwable $e) {
             Log::error('Order store error: ' . $e->getMessage(), [

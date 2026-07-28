@@ -61,6 +61,9 @@ class EventController extends Controller
             ]));
         }
 
+        Cache::forget('active_events');
+        Cache::forget('home_stats');
+
         return back()->with('success', 'Status event berhasil diupdate.');
     }
 }

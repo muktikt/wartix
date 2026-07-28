@@ -206,6 +206,27 @@
                         Lihat Event Lainnya
                     </a>
                 </div>
+            @elseif(!empty($activeOrder))
+                <div class="bg-white border border-indigo-100 rounded-2xl p-6 text-center shadow-sm">
+                    <div class="w-16 h-16 bg-indigo-50 rounded-full flex items-center justify-center mx-auto mb-4 text-indigo-600">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-base font-bold text-gray-900 mb-1">Sudah Melakukan Order</h3>
+                    <p class="text-xs text-gray-500 leading-relaxed mb-4">
+                        Perangkat Anda telah memiliki order aktif untuk event ini (Kode Order: <span class="font-mono font-semibold text-indigo-600">{{ $activeOrder->order_code }}</span>).
+                    </p>
+                    <div class="p-3 bg-gray-50 rounded-xl text-xs text-gray-600 mb-5">
+                        Status saat ini: <span class="font-semibold text-indigo-600">{{ ucfirst($activeOrder->order_status) }}</span>
+                    </div>
+                    <a href="{{ route('order.success', $activeOrder->order_code) }}" class="inline-flex justify-center w-full bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold py-2.5 rounded-xl transition-colors mb-2">
+                        Lihat Detail Order Anda
+                    </a>
+                    <p class="text-[11px] text-gray-400">
+                        Jika order Anda dibatalkan/di-cancel oleh admin, Anda dapat melakukan pemesanan ulang untuk event ini.
+                    </p>
+                </div>
             @else
                 {{-- Order Form (active event) --}}
                 <div class="bg-white border border-gray-100 rounded-2xl p-5">

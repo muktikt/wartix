@@ -86,7 +86,8 @@ class ExportController extends Controller
 
     private function buildOrderQuery(Request $request)
     {
-        $query = Order::with(['event', 'salePhase', 'ticketCategory']);
+        $query = Order::withoutGlobalScope(\App\Models\Scopes\HideUnlinkedOrdersScope::class)
+            ->with(['event', 'salePhase', 'ticketCategory']);
 
         if ($search = $request->get('q')) {
             $query->where(function ($q) use ($search) {
@@ -115,7 +116,8 @@ class ExportController extends Controller
 
     private function buildReportQuery(Request $request)
     {
-        $query = Order::with(['event', 'salePhase', 'ticketCategory']);
+        $query = Order::withoutGlobalScope(\App\Models\Scopes\HideUnlinkedOrdersScope::class)
+            ->with(['event', 'salePhase', 'ticketCategory']);
 
         if ($eventId = $request->get('event_id')) {
             $query->where('event_id', $eventId);

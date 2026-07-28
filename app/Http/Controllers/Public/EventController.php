@@ -102,6 +102,18 @@ class EventController extends Controller
                 : 0.0,
         ];
 
-        return view('public.events.show', compact('event', 'totalSlots', 'availableSlots', 'eventStats'));
+        // Check active order for current device on this event
+        $deviceToken = request()->cookie('device_token');
+        $activeOrder = null;
+
+        if ($deviceToken) {
+            $activeOrder = Order::withoutGlobalScope(\App\Models\Scopes\HideUnlinkedOrdersScope::class)
+                ->where('device_token', $deviceToken)
+                ->where('event_id', $event->id)
+                ->whereNotIn('order_status', ['cancelled', 'failed'])
+                ->first();
+        }
+
+        return view('public.events.show', compact('event', 'totalSlots', 'availableSlots', 'eventStats', 'activeOrder'));
     }
 }

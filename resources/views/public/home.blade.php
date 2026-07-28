@@ -179,15 +179,10 @@
             ];
             @endphp
             @foreach($statsDisplay as $i => $stat)
-            <div class="py-8 px-6 flex items-center gap-4 transition-all duration-300 hover:bg-gray-50 scroll-animate scroll-animate-scale" data-delay="{{ $i * 100 }}">
-                <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-indigo-50 text-indigo-600 transition-transform duration-300 hover:scale-110 flex-shrink-0">
-                    <i class="{{ $stat['icon'] }} text-lg"></i>
-                </div>
-                <div class="text-left">
-                    <div class="text-3xl font-bold text-indigo-600 mb-0.5">{{ $stat['value'] }}</div>
-                    <div class="text-sm font-medium text-gray-900">{{ $stat['label'] }}</div>
-                    <div class="text-xs text-gray-405 mt-0.5">{{ $stat['sub'] }}</div>
-                </div>
+            <div class="py-8 px-6 flex flex-col items-center justify-center text-center transition-all duration-300 hover:bg-gray-50 scroll-animate scroll-animate-scale" data-delay="{{ $i * 100 }}">
+                <div class="text-3xl font-bold text-indigo-600 mb-0.5">{{ $stat['value'] }}</div>
+                <div class="text-sm font-medium text-gray-900">{{ $stat['label'] }}</div>
+                <div class="text-xs text-gray-400 mt-0.5">{{ $stat['sub'] }}</div>
             </div>
             @endforeach
         </div>

@@ -11,7 +11,7 @@
         <select name="order_status"
             class="text-sm border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
             <option value="">Semua Status</option>
-            @foreach(['waiting','processing','success','failed','cancelled'] as $s)
+            @foreach(['pending_link','waiting','processing','success','failed','cancelled'] as $s)
             <option value="{{ $s }}" {{ request('order_status') === $s ? 'selected' : '' }}>{{ ucfirst($s) }}</option>
             @endforeach
         </select>
@@ -71,10 +71,11 @@
                 <td class="px-4 py-3">
                     @php
                     $oc = match($order->order_status) {
-                        'success'    => 'bg-green-50 text-green-700',
-                        'waiting'    => 'bg-yellow-50 text-yellow-700',
-                        'processing' => 'bg-indigo-50 text-indigo-700',
-                        default      => 'bg-red-50 text-red-700',
+                        'success'      => 'bg-green-50 text-green-700',
+                        'waiting'      => 'bg-yellow-50 text-yellow-700',
+                        'processing'   => 'bg-indigo-50 text-indigo-700',
+                        'pending_link' => 'bg-purple-50 text-purple-700',
+                        default        => 'bg-red-50 text-red-700',
                     };
                     @endphp
                     <span class="text-xs px-2 py-0.5 rounded font-medium {{ $oc }}">{{ ucfirst($order->order_status) }}</span>

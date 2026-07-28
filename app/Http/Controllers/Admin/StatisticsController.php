@@ -11,7 +11,8 @@ class StatisticsController extends Controller
 {
     public function index()
     {
-        $ordersByDay = Order::select(
+        $ordersByDay = Order::withoutGlobalScope(\App\Models\Scopes\HideUnlinkedOrdersScope::class)
+            ->select(
                 DB::raw('DATE(created_at) as date'),
                 DB::raw('COUNT(*) as total'),
                 DB::raw('SUM(CASE WHEN order_status = "success" THEN 1 ELSE 0 END) as success')
@@ -29,7 +30,8 @@ class StatisticsController extends Controller
             ->limit(10)
             ->get();
 
-        $revenueByMonth = Order::select(
+        $revenueByMonth = Order::withoutGlobalScope(\App\Models\Scopes\HideUnlinkedOrdersScope::class)
+            ->select(
                 DB::raw('YEAR(created_at) as year'),
                 DB::raw('MONTH(created_at) as month'),
                 DB::raw('SUM(grand_total) as revenue')
@@ -40,7 +42,8 @@ class StatisticsController extends Controller
             ->orderBy('year')->orderBy('month')
             ->get();
 
-        $paymentStatus = Order::select('payment_status', DB::raw('COUNT(*) as total'))
+        $paymentStatus = Order::withoutGlobalScope(\App\Models\Scopes\HideUnlinkedOrdersScope::class)
+            ->select('payment_status', DB::raw('COUNT(*) as total'))
             ->groupBy('payment_status')
             ->get();
 

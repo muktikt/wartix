@@ -19,7 +19,8 @@ class SearchController extends Controller
         $results = [];
 
         if (strlen($q) >= 2) {
-            $results['orders'] = Order::with(['event', 'salePhase', 'ticketCategory'])
+            $results['orders'] = Order::withoutGlobalScope(\App\Models\Scopes\HideUnlinkedOrdersScope::class)
+                ->with(['event', 'salePhase', 'ticketCategory'])
                 ->where(function ($query) use ($q) {
                     $query->where('order_code', 'like', "%{$q}%")
                           ->orWhere('full_name', 'like', "%{$q}%")

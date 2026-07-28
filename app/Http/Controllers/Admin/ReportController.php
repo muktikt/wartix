@@ -11,7 +11,8 @@ class ReportController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Order::with(['event', 'salePhase', 'ticketCategory']);
+        $query = Order::withoutGlobalScope(\App\Models\Scopes\HideUnlinkedOrdersScope::class)
+            ->with(['event', 'salePhase', 'ticketCategory']);
 
         if ($eventId = $request->get('event_id')) {
             $query->where('event_id', $eventId);

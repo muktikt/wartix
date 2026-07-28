@@ -25,12 +25,13 @@
                 <div class="flex items-center gap-2">
                     @php
                     $oc = match($order->order_status) {
-                        'success'    => 'bg-green-50 text-green-700',
-                        'waiting'    => 'bg-yellow-50 text-yellow-700',
-                        'processing' => 'bg-indigo-50 text-indigo-700',
-                        'failed'     => 'bg-red-50 text-red-700',
-                        'cancelled'  => 'bg-gray-100 text-gray-500',
-                        default      => 'bg-gray-100 text-gray-500',
+                        'success'      => 'bg-green-50 text-green-700',
+                        'waiting'      => 'bg-yellow-50 text-yellow-700',
+                        'processing'   => 'bg-indigo-50 text-indigo-700',
+                        'pending_link' => 'bg-purple-50 text-purple-700',
+                        'failed'       => 'bg-red-50 text-red-700',
+                        'cancelled'    => 'bg-gray-100 text-gray-500',
+                        default        => 'bg-gray-100 text-gray-500',
                     };
                     $pc = match($order->payment_status) {
                         'paid'    => 'bg-green-50 text-green-700',
@@ -369,7 +370,7 @@
                 @method('PATCH')
                 <select name="order_status"
                     class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 mb-3 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    @foreach(['waiting','processing','success','failed','cancelled'] as $s)
+                    @foreach(['pending_link','waiting','processing','success','failed','cancelled'] as $s)
                     <option value="{{ $s }}" {{ $order->order_status === $s ? 'selected' : '' }}>
                         {{ ucfirst($s) }}
                     </option>
