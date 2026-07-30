@@ -27,6 +27,10 @@ return Application::configure(basePath: dirname(__DIR__))
             'webhook.whitelist'=> \App\Http\Middleware\WhitelistWebhookIp::class,
         ]);
 
+        $middleware->web(append: [
+            \App\Http\Middleware\HandleInertiaRequests::class,
+        ]);
+
         $middleware->append(\App\Http\Middleware\SecurityHeaders::class);
 
         // Exclude webhook dari CSRF
