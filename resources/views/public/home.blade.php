@@ -190,7 +190,7 @@
 </section>
 
 {{-- ACTIVE EVENTS --}}
-<section class="py-14 px-4" id="active-events">
+<section class="py-14 px-4 scroll-mt-20" id="active-events">
     <div class="max-w-7xl mx-auto">
         <div class="flex items-end justify-between mb-8">
             <div>
@@ -222,7 +222,7 @@
 </section>
 
 {{-- REALTIME MONITOR --}}
-<section class="bg-gray-900 py-12 px-4" id="monitor">
+<section class="bg-gray-900 py-12 px-4 scroll-mt-20" id="monitor">
     <div class="max-w-7xl mx-auto">
         <div class="flex items-center gap-3 mb-6">
             <div class="w-2 h-2 bg-green-400 rounded-full live-indicator scroll-animate scroll-animate-scale"></div>
@@ -268,7 +268,7 @@
 </section>
 
 {{-- CARA ORDER --}}
-<section class="py-14 px-4 bg-white" id="cara-order">
+<section class="py-14 px-4 bg-white scroll-mt-20" id="cara-order">
     <div class="max-w-7xl mx-auto">
         <div class="flex items-center gap-3 mb-6">
             <div class="w-2 h-2 bg-indigo-500 rounded-full live-indicator scroll-animate scroll-animate-scale"></div>
@@ -341,7 +341,7 @@
 </section>
 
 {{-- FAQ --}}
-<section class="py-14 px-4 bg-white" id="faq">
+<section class="py-14 px-4 bg-white scroll-mt-20" id="faq">
     <div class="max-w-2xl mx-auto">
         <h2 class="text-2xl font-bold text-gray-900 text-center mb-2 scroll-animate scroll-animate-scale">FAQ</h2>
         <p class="text-gray-500 text-sm text-center mb-8 scroll-animate scroll-animate-scale" data-delay="150">Pertanyaan yang sering ditanyakan</p>

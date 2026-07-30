@@ -38,49 +38,55 @@
 @endphp
 
 {{-- NAVBAR --}}
-<nav class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-100">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center h-14 gap-6">
+<nav class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-100 py-2.5 px-4 sm:px-6 lg:px-8 w-full">
+    <div class="flex items-center justify-between">
 
-            {{-- Logo --}}
-            <a href="{{ route('home') }}" class="flex items-center gap-2 flex-shrink-0 -ml-5 sm:-ml-8 group btn-press">
+        {{-- Logo & Divider --}}
+        <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2">
                 <img src="{{ asset('images/logo-w.png') }}"
                     alt="Wartix"
-                    class="h-10 sm:h-11 w-auto max-w-[210px] object-contain transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
-                <span class="hidden sm:inline text-sm font-semibold text-gray-900 transition-colors duration-200 group-hover:text-indigo-600">Wartix</span>
-            </a>
-
-            {{-- Nav Links --}}
-            <div class="hidden md:flex items-center gap-1 flex-1">
-                <a href="{{ route('home') }}#active-events"
-                    class="px-3 py-1.5 text-sm rounded-lg transition-colors text-gray-600 hover:text-gray-900 hover:bg-gray-50 btn-press">
-                    Events
-                </a>
-                <a href="{{ route('home') }}#monitor"
-                    class="px-3 py-1.5 text-sm rounded-lg transition-colors btn-press
-                    {{ request()->routeIs('monitor') ? 'text-indigo-600 bg-indigo-50' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50' }}">
-                    Realtime Monitor
-                </a>
-                <a href="{{ route('home') }}#cara-order"
-                    class="px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors btn-press">
-                    Cara Order
-                </a>
-                <a href="{{ route('home') }}#faq"
-                    class="px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors btn-press">
-                    FAQ
-                </a>
+                    class="h-8 sm:h-9 w-auto max-w-[180px] object-contain">
             </div>
+            <div class="hidden sm:block h-4 w-px bg-gray-200"></div>
+            <span class="hidden lg:block text-[11px] font-medium text-gray-400 tracking-tight">Priority Assistance</span>
+        </div>
 
-            {{-- CTA --}}
-            <div class="ml-auto flex items-center gap-2">
-                <a href="{{ $telegramLink }}" target="_blank" rel="noopener noreferrer"
-                    class="flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-3.5 py-1.5 rounded-lg transition-colors btn-press">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        {{-- Nav Links --}}
+        <div class="hidden md:flex items-center gap-6 lg:gap-8">
+            <a href="{{ route('home') }}"
+                class="relative py-1 text-xs font-semibold uppercase tracking-wider transition-colors btn-press text-gray-600 hover:text-indigo-600 active:text-indigo-700">
+                Home
+            </a>
+            <a href="{{ route('home') }}#active-events"
+                class="relative py-1 text-xs font-semibold uppercase tracking-wider transition-colors btn-press text-gray-600 hover:text-indigo-600 active:text-indigo-700">
+                Events
+            </a>
+            <a href="{{ route('home') }}#monitor"
+                class="relative py-1 text-xs font-semibold uppercase tracking-wider transition-colors btn-press text-gray-600 hover:text-indigo-600 active:text-indigo-700">
+                Realtime Monitor
+            </a>
+            <a href="{{ route('home') }}#cara-order"
+                class="relative py-1 text-xs font-semibold uppercase tracking-wider transition-colors btn-press text-gray-600 hover:text-indigo-600 active:text-indigo-700">
+                Cara Order
+            </a>
+            <a href="{{ route('home') }}#faq"
+                class="relative py-1 text-xs font-semibold uppercase tracking-wider transition-colors btn-press text-gray-600 hover:text-indigo-600 active:text-indigo-700">
+                FAQ
+            </a>
+        </div>
+
+        {{-- CTA Button --}}
+        <div class="flex items-center gap-2">
+            <a href="{{ $telegramLink }}" target="_blank" rel="noopener noreferrer"
+                class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold pl-4 pr-1.5 py-1.5 rounded-full transition-all duration-300 shadow-md shadow-indigo-200 hover:shadow-indigo-300 group btn-press">
+                <span>Join Telegram</span>
+                <span class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M9.04 15.38 8.9 19.33c.42 0 .6-.18.83-.4l1.98-1.9 4.1 3c.75.42 1.29.2 1.48-.7l2.68-12.63c.24-1.12-.4-1.56-1.14-1.28L3.8 9.56c-1.1.43-1.08 1.05-.2 1.33l4.05 1.26 9.4-5.92c.44-.29.84-.13.51.17z"/>
                     </svg>
-                    Join Telegram
-                </a>
-            </div>
+                </span>
+            </a>
         </div>
     </div>
 </nav>
