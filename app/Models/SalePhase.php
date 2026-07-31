@@ -15,6 +15,8 @@ class SalePhase extends Model
         'end_time' => 'datetime',
     ];
 
+    protected $appends = ['available_slots'];
+
     public function event()
     {
         return $this->belongsTo(Event::class);

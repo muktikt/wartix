@@ -1,4 +1,5 @@
 import { Head, Link } from '@inertiajs/react';
+import { motion } from 'framer-motion';
 
 const TELEGRAM_LINK = 'https://t.me/wartixdotcom';
 const WHATSAPP_LINK = 'https://chat.whatsapp.com/CBgJ9tYH2F08OlteajZcBJ?s=cl&p=i&ilr=4';
@@ -25,50 +26,62 @@ export default function PublicLayout({ children, title, description }) {
             </Head>
 
             {/* NAVBAR */}
-            <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-100">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center h-14 gap-6">
-                        <Link href={route('home')} className="flex items-center gap-2 flex-shrink-0 -ml-5 sm:-ml-8 group btn-press">
-                            <img
-                                src="/images/logo-w.png"
-                                alt="Wartix"
-                                className="h-10 sm:h-11 w-auto max-w-[210px] object-contain transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
-                            />
-                            <span className="hidden sm:inline text-sm font-semibold text-gray-900 transition-colors duration-200 group-hover:text-indigo-600">Wartix</span>
+            <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-100 py-2.5 px-4 sm:px-6 lg:px-8 w-full">
+                <div className="flex items-center justify-between">
+                    {/* Logo & Divider */}
+                    <div className="flex items-center gap-3">
+                        <Link href={route('home')} className="flex items-center gap-2">
+                            <img src="/images/logo-w.png" alt="Wartix" className="h-8 sm:h-9 w-auto max-w-[180px] object-contain" />
                         </Link>
+                        <div className="hidden sm:block h-4 w-px bg-gray-200"></div>
+                        <span className="hidden lg:block text-[11px] font-medium text-gray-400 tracking-tight">Priority Assistance</span>
+                    </div>
 
-                        <div className="hidden md:flex items-center gap-1 flex-1">
-                            <a href={`${route('home')}#active-events`} className="px-3 py-1.5 text-sm rounded-lg transition-colors text-gray-600 hover:text-gray-900 hover:bg-gray-50 btn-press">
-                                Events
-                            </a>
-                            <Link href={route('monitor')} className="px-3 py-1.5 text-sm rounded-lg transition-colors text-gray-600 hover:text-gray-900 hover:bg-gray-50 btn-press">
-                                Realtime Monitor
-                            </Link>
-                            <a href={`${route('home')}#cara-order`} className="px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors btn-press">
-                                Cara Order
-                            </a>
-                            <a href={`${route('home')}#faq`} className="px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors btn-press">
-                                FAQ
-                            </a>
-                        </div>
+                    {/* Nav Links */}
+                    <div className="hidden md:flex items-center gap-6 lg:gap-8">
+                        <Link href={route('home')} className="relative py-1 text-xs font-semibold uppercase tracking-wider transition-colors btn-press text-gray-600 hover:text-indigo-600 active:text-indigo-700">
+                            Home
+                        </Link>
+                        <a href={`${route('home')}#active-events`} className="relative py-1 text-xs font-semibold uppercase tracking-wider transition-colors btn-press text-gray-600 hover:text-indigo-600 active:text-indigo-700">
+                            Events
+                        </a>
+                        <a href={route('monitor')} className="relative py-1 text-xs font-semibold uppercase tracking-wider transition-colors btn-press text-gray-600 hover:text-indigo-600 active:text-indigo-700">
+                            Realtime Monitor
+                        </a>
+                        <a href={`${route('home')}#cara-order`} className="relative py-1 text-xs font-semibold uppercase tracking-wider transition-colors btn-press text-gray-600 hover:text-indigo-600 active:text-indigo-700">
+                            Cara Order
+                        </a>
+                        <a href={`${route('home')}#faq`} className="relative py-1 text-xs font-semibold uppercase tracking-wider transition-colors btn-press text-gray-600 hover:text-indigo-600 active:text-indigo-700">
+                            FAQ
+                        </a>
+                    </div>
 
-                        <div className="ml-auto flex items-center gap-2">
-                            <a
-                                href={TELEGRAM_LINK}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-3.5 py-1.5 rounded-lg transition-colors btn-press"
-                            >
-                                <TelegramIcon className="w-4 h-4" />
-                                Join Telegram
-                            </a>
-                        </div>
+                    {/* CTA Button */}
+                    <div className="flex items-center gap-2">
+                        <a
+                            href={TELEGRAM_LINK}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold pl-4 pr-1.5 py-1.5 rounded-full transition-all duration-300 shadow-md shadow-indigo-200 hover:shadow-indigo-300 group btn-press"
+                        >
+                            <span>Join Telegram</span>
+                            <span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                                <TelegramIcon className="w-3.5 h-3.5" />
+                            </span>
+                        </a>
                     </div>
                 </div>
             </nav>
 
             {/* PAGE CONTENT */}
-            <div className="animate-fade-in">{children}</div>
+            <motion.main
+                key={typeof window !== 'undefined' ? window.location.pathname : 'page'}
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+            >
+                {children}
+            </motion.main>
 
             {/* FOOTER */}
             <footer className="bg-gray-900 text-gray-400 py-12 px-4">

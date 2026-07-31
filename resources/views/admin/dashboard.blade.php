@@ -26,7 +26,9 @@
                 </svg>
             </div>
         </div>
-        <p class="text-2xl font-semibold text-gray-900 animate-count-up">{{ number_format($card['value']) }}</p>
+        <p class="text-2xl font-semibold text-gray-900" x-data="{ count: 0 }" x-init="let target = {{ (float)$card['value'] }}; let duration = 1200; let start = null; function step(t) { if (!start) start = t; let p = Math.min((t - start) / duration, 1); count = Math.round((1 - Math.pow(1 - p, 3)) * target); if (p < 1) requestAnimationFrame(step); } requestAnimationFrame(step);">
+            <span x-text="count.toLocaleString('id-ID')">0</span>
+        </p>
     </div>
     @endforeach
 </div>
@@ -42,8 +44,8 @@
                 </svg>
             </div>
         </div>
-        <p class="text-2xl font-semibold text-gray-900 animate-count-up">
-            Rp {{ number_format($stats['total_revenue']) }}
+        <p class="text-2xl font-semibold text-gray-900" x-data="{ count: 0 }" x-init="let target = {{ (float)$stats['total_revenue'] }}; let duration = 1200; let start = null; function step(t) { if (!start) start = t; let p = Math.min((t - start) / duration, 1); count = Math.round((1 - Math.pow(1 - p, 3)) * target); if (p < 1) requestAnimationFrame(step); } requestAnimationFrame(step);">
+            Rp <span x-text="count.toLocaleString('id-ID')">0</span>
         </p>
     </div>
     <div class="stat-card bg-white border border-gray-100 rounded-xl p-4 animate-fade-in-up anim-delay-600">
@@ -55,8 +57,8 @@
                 </svg>
             </div>
         </div>
-        <p class="text-2xl font-semibold text-gray-900 animate-count-up">
-            {{ $stats['success_rate'] }}%
+        <p class="text-2xl font-semibold text-gray-900" x-data="{ count: 0 }" x-init="let target = {{ (float)$stats['success_rate'] }}; let duration = 1200; let start = null; function step(t) { if (!start) start = t; let p = Math.min((t - start) / duration, 1); count = ((1 - Math.pow(1 - p, 3)) * target).toFixed(target % 1 === 0 ? 0 : 1); if (p < 1) requestAnimationFrame(step); } requestAnimationFrame(step);">
+            <span x-text="count">0</span>%
         </p>
     </div>
 </div>

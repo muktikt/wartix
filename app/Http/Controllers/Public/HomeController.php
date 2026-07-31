@@ -5,7 +5,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\Order;
 use App\Models\SuccessLog;
+use App\Services\MaskService;
 use Illuminate\Support\Facades\Cache;
+use Inertia\Inertia;
 
 class HomeController extends Controller
 {
@@ -36,20 +38,25 @@ class HomeController extends Controller
 
         $activeEvents = $activeEvents->map(fn (Event $event) => $this->attachAccountStats($event));
 
-        $finishedEvents = Event::where('status', 'finished')
-            ->latest()
-            ->limit(4)
-            ->get();
-
         $recentSuccess = SuccessLog::with(['event', 'salePhase', 'ticketCategory'])
             ->where('status', 'success')
             ->latest()
             ->limit(10)
-            ->get();
+            ->get()
+            ->map(fn (SuccessLog $log) => [
+                'id'    => $log->id,
+                'email' => MaskService::email($log->email ?? 'us***@example.com'),
+                'qty'   => $log->qty,
+                'event' => $log->event ? ['title' => $log->event->title] : null,
+                'sale_phase' => $log->salePhase ? ['name' => $log->salePhase->name] : null,
+                'ticket_category' => $log->ticketCategory ? ['name' => $log->ticketCategory->name] : null,
+            ]);
 
-        return view('public.home', compact(
-            'stats', 'activeEvents', 'finishedEvents', 'recentSuccess'
-        ));
+        return Inertia::render('Public/Home', [
+            'stats'         => $stats,
+            'activeEvents'  => $activeEvents,
+            'recentSuccess' => $recentSuccess,
+        ]);
     }
 
     private function getSuccessRate(): float

@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class EventController extends Controller
 {
@@ -68,7 +69,12 @@ class EventController extends Controller
         $cities    = Event::whereIn('status', ['upcoming', 'slot_penuh', 'ongoing', 'finished'])->distinct()->pluck('city');
         $types     = Event::whereIn('status', ['upcoming', 'slot_penuh', 'ongoing', 'finished'])->distinct()->pluck('event_type');
 
-        return view('public.events.index', compact('events', 'cities', 'types'));
+        return Inertia::render('Public/Events/Index', [
+            'events'  => $events,
+            'cities'  => $cities,
+            'types'   => $types,
+            'filters' => $request->only(['q', 'city', 'type', 'platform', 'status', 'month']),
+        ]);
     }
 
     public function show(string $slug)
@@ -114,6 +120,22 @@ class EventController extends Controller
                 ->first();
         }
 
-        return view('public.events.show', compact('event', 'totalSlots', 'availableSlots', 'eventStats', 'activeOrder'));
+        return Inertia::render('Public/Events/Show', [
+            'event'          => $event,
+            'totalSlots'     => $totalSlots,
+            'availableSlots' => $availableSlots,
+            'eventStats'     => $eventStats,
+            'activeOrder'    => $activeOrder,
+            'fieldConfig'    => [
+                'platformsWithTitle'         => \App\Models\Order::PLATFORMS_WITH_TITLE,
+                'platformsWithGender'        => \App\Models\Order::PLATFORMS_WITH_GENDER,
+                'platformsWithBirthDate'     => \App\Models\Order::PLATFORMS_WITH_BIRTH_DATE,
+                'platformsWithCity'          => \App\Models\Order::PLATFORMS_WITH_CITY,
+                'platformsWithPaymentMethod' => \App\Models\Order::PLATFORMS_WITH_PAYMENT_METHOD,
+                'titleOptions'               => \App\Models\Order::TITLE_OPTIONS,
+                'genderOptions'              => \App\Models\Order::GENDER_OPTIONS,
+                'paymentMethodGroups'        => \App\Models\Order::PAYMENT_METHOD_GROUPS,
+            ],
+        ]);
     }
 }

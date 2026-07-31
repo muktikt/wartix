@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\Event;
 use App\Models\Scopes\HideUnlinkedOrdersScope;
 use App\Models\SuccessLog;
+use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
@@ -45,8 +46,11 @@ class DashboardController extends Controller
             ->limit(10)
             ->get();
 
-        return view('admin.dashboard', compact(
-            'stats', 'recentOrders', 'activeEvents', 'recentSuccess'
-        ));
+        return Inertia::render('Admin/Dashboard', [
+            'stats'         => $stats,
+            'recentOrders'  => $recentOrders,
+            'activeEvents'  => $activeEvents,
+            'recentSuccess' => $recentSuccess,
+        ]);
     }
 }

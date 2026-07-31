@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Models\Scopes\HideUnlinkedOrdersScope;
 use App\Services\TelegramLinkTokenService;
+use Inertia\Inertia;
 
 class OrderController extends Controller
 {
@@ -32,7 +33,8 @@ class OrderController extends Controller
             'full_name'                             => 'required|string|max:255',
             'phone_number'                          => 'required|string|max:20',
             'email'                                 => 'required|email|max:255',
-            'telegram_username'                     => 'nullable|string|max:100',
+            'telegram_username'                     => 'required|string|max:100',
+            'social_media_screenshot'               => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
             'identity_number'                       => 'nullable|string|max:16',
         ]);
 
@@ -213,6 +215,11 @@ class OrderController extends Controller
         try {
             $linkToken = (new TelegramLinkTokenService())->generate($event);
 
+            $screenshotPath = null;
+            if ($request->hasFile('social_media_screenshot')) {
+                $screenshotPath = $request->file('social_media_screenshot')->store('social_media_screenshots', 'public');
+            }
+
             $order = Order::create([
                 'order_code'          => 'WRTX-' . date('Y') . '-' . strtoupper(Str::random(6)),
                 'event_id'            => $event->id,
@@ -229,6 +236,7 @@ class OrderController extends Controller
                 'email'               => $request->email,
                 'identity_number'     => $request->identity_number,
                 'telegram_username'   => $request->telegram_username,
+                'social_media_screenshot' => $screenshotPath,
                 'telegram_link_token' => $linkToken,
                 'service_fee_total'   => $serviceFeeTotal,
                 'ticket_price_total'  => $ticketPriceTotal,
@@ -346,6 +354,10 @@ class OrderController extends Controller
             $telegramLinkUrl = "https://t.me/{$telegramBotUsername}?start={$order->telegram_link_token}";
         }
 
-        return view('public.order-success', compact('order', 'telegramLinkUrl'));
+        return Inertia::render('Public/OrderSuccess', [
+            'order'            => $order,
+            'telegramLinkUrl'  => $telegramLinkUrl,
+            'telegramGroupLink' => \App\Models\Setting::get('telegram_group_link', '#'),
+        ]);
     }
 }

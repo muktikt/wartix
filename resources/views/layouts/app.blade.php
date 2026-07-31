@@ -92,9 +92,9 @@
 </nav>
 
 {{-- PAGE CONTENT --}}
-<div class="animate-fade-in">
+<main class="animate-fade-in-up">
     @yield('content')
-</div>
+</main>
 
     {{-- FOOTER --}}
     <footer class="bg-gray-900 text-gray-400 py-12 px-4 scroll-animate" data-delay="100">

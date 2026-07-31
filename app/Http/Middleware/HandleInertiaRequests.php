@@ -37,12 +37,22 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             'auth' => [
-                'user' => $request->user(),
+                'user'  => $request->user(),
+                'admin' => $request->user('admin'),
             ],
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
                 'error' => fn () => $request->session()->get('error'),
             ],
+            'adminNotifUnreadCount' => function () use ($request) {
+                if (!$request->user('admin')) {
+                    return 0;
+                }
+                if (!\Illuminate\Support\Facades\Schema::hasTable('admin_notifications')) {
+                    return 0;
+                }
+                return \App\Models\AdminNotification::unread()->count();
+            },
         ]);
     }
 }
