@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Public;
 use App\Http\Controllers\Controller;
 use App\Models\SuccessLog;
 use App\Services\MaskService;
+use Inertia\Inertia;
 
 class RealtimeMonitorController extends Controller
 {
@@ -25,6 +26,8 @@ class RealtimeMonitorController extends Controller
                 ];
             });
 
-        return view('public.monitor', compact('logs'));
+        return Inertia::render('Public/Monitor', [
+            'logs' => $logs,
+        ]);
     }
 }
