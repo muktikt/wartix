@@ -14,8 +14,17 @@
 @endphp
 
 {{-- HERO --}}
-<section class="animated-gradient py-10 px-4">
-    <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-start">
+<section class="relative overflow-hidden bg-gradient-to-r from-[#f8f9ff] via-[#f1f3fe] to-[#e8edff] py-14 px-4 sm:px-6 lg:px-8 border-b border-gray-100/80">
+    {{-- Right 3D Blue-Purple Gradient Shape (Exact match to reference) --}}
+    <div class="absolute -right-28 -top-10 w-[620px] h-[620px] rounded-full bg-gradient-to-bl from-[#3b82f6] via-[#6366f1] to-[#7c3aed] opacity-90 blur-2xl pointer-events-none"></div>
+
+    {{-- Bottom-Left Pink-Purple Soft Glow --}}
+    <div class="absolute -left-28 -bottom-10 w-[480px] h-[480px] rounded-full bg-gradient-to-tr from-pink-300/35 via-purple-300/30 to-indigo-200/20 blur-3xl pointer-events-none"></div>
+
+    {{-- Subtle Center Ambient Tint --}}
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-white/10 to-white/40 pointer-events-none"></div>
+
+    <div class="relative z-10 max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-start">
 
         {{-- Left --}}
         <div>
@@ -70,7 +79,7 @@
         {{-- Right --}}
         <div class="flex justify-center md:justify-end animate-scale-in anim-delay-150">
             <div class="w-full max-w-sm flex flex-col gap-4">
-                <div class="bg-white border border-gray-100 rounded-2xl p-5 w-full shadow-sm hover-glow transition-all duration-300">
+                <div class="bg-white/90 backdrop-blur-md border border-white/60 rounded-2xl p-5 w-full shadow-lg hover-glow transition-all duration-300">
                     <div class="flex items-center justify-between mb-4">
                         <div class="flex items-center gap-2">
                             <svg class="w-4 h-4 text-indigo-600 animate-float" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -145,7 +154,7 @@
                         </a>
                         <!-- TikTok -->
                         <a href="{{ $tiktokLink }}" target="_blank" rel="noopener noreferrer" 
-                            class="group flex items-center justify-center w-9 h-9 rounded-full bg-white border border-gray-200 text-gray-500 hover:text-white hover:bg-zinc-900 hover:border-zinc-900 transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 shadow-sm hover:shadow-md hover:shadow-black/20 active:scale-95 btn-press" title="TikTok">
+                            class="group flex items-center justify-center w-9 h-9 rounded-full bg-white border border-gray-200 text-gray-500 hover:text-[#FE2C55] hover:border-[#FE2C55] transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 shadow-sm hover:shadow-md hover:shadow-rose-500/20 active:scale-95 btn-press" title="TikTok">
                             <svg class="w-3.5 h-3.5 fill-current transition-transform duration-300 group-hover:scale-110" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.98-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.07-1.3 1.8-.24.84-.06 1.77.47 2.46.58.78 1.52 1.25 2.49 1.25.75-.01 1.48-.28 2.05-.76.77-.63 1.22-1.6 1.24-2.61.02-4.52.01-9.04.01-13.56z"/></svg>
                         </a>
                         <span class="w-px h-5 bg-gray-200"></span>
@@ -222,12 +231,12 @@
 </section>
 
 {{-- REALTIME MONITOR --}}
-<section class="bg-gray-900 py-12 px-4 scroll-mt-20" id="monitor">
+<section class="bg-gray-50/70 border-y border-gray-100 py-12 px-4 scroll-mt-20" id="monitor">
     <div class="max-w-7xl mx-auto">
         <div class="flex items-center gap-3 mb-6">
-            <div class="w-2 h-2 bg-green-400 rounded-full live-indicator scroll-animate scroll-animate-scale"></div>
-            <h2 class="text-lg font-semibold text-white scroll-animate scroll-animate-left" data-delay="100">Realtime Success Monitor</h2>
-            <span class="text-xs text-gray-500 ml-auto scroll-animate scroll-animate-right" data-delay="200">Data tersensor untuk privasi pengguna</span>
+            <div class="w-2.5 h-2.5 bg-emerald-500 rounded-full live-indicator scroll-animate scroll-animate-scale"></div>
+            <h2 class="text-lg font-bold text-gray-900 scroll-animate scroll-animate-left" data-delay="100">Realtime Success Monitor</h2>
+            <span class="text-xs text-gray-400 ml-auto scroll-animate scroll-animate-right" data-delay="200">Data tersensor untuk privasi pengguna</span>
         </div>
         <div class="space-y-2">
             @forelse($recentSuccess as $i => $log)
@@ -238,26 +247,26 @@
                 $category = $log->ticketCategory->name ?? '-';
                 $qty      = $log->qty;
             @endphp
-            <div class="flex items-center gap-3 bg-gray-800 rounded-xl px-4 py-2.5 text-sm overflow-x-auto hover:bg-gray-750 transition-colors duration-200 scroll-animate {{ $i % 2 === 0 ? 'scroll-animate-left' : 'scroll-animate-right' }}" data-delay="{{ $i * 80 }}">
-                <span class="bg-green-500/20 text-green-400 text-xs font-semibold px-2 py-0.5 rounded flex-shrink-0">SUCCESS</span>
-                <span class="text-white font-medium flex-shrink-0">{{ $email }}</span>
-                <span class="text-gray-600">|</span>
-                <span class="text-gray-300 flex-shrink-0">{{ $event }}</span>
-                <span class="text-gray-600">|</span>
-                <span class="text-gray-400 flex-shrink-0">{{ $phase }}</span>
-                <span class="text-gray-600">|</span>
-                <span class="text-gray-400 flex-shrink-0">{{ $category }}</span>
-                <span class="text-gray-600">|</span>
-                <span class="text-gray-400 flex-shrink-0">x{{ $qty }}</span>
+            <div class="flex items-center gap-3 bg-white border border-gray-200/80 shadow-xs rounded-xl px-4 py-2.5 text-sm overflow-x-auto hover:border-gray-300 transition-colors duration-200 scroll-animate {{ $i % 2 === 0 ? 'scroll-animate-left' : 'scroll-animate-right' }}" data-delay="{{ $i * 80 }}">
+                <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-semibold px-2.5 py-0.5 rounded-full flex-shrink-0">SUCCESS</span>
+                <span class="text-gray-900 font-medium font-mono flex-shrink-0">{{ $email }}</span>
+                <span class="text-gray-300">|</span>
+                <span class="text-gray-800 font-medium flex-shrink-0">{{ $event }}</span>
+                <span class="text-gray-300">|</span>
+                <span class="text-gray-500 flex-shrink-0">{{ $phase }}</span>
+                <span class="text-gray-300">|</span>
+                <span class="text-gray-500 flex-shrink-0">{{ $category }}</span>
+                <span class="text-gray-300">|</span>
+                <span class="text-gray-600 flex-shrink-0"><span class="bg-gray-100 px-2 py-0.5 rounded text-xs font-medium">x{{ $qty }}</span></span>
             </div>
             @empty
-            <div class="text-center py-8 text-gray-500 text-sm">
+            <div class="text-center py-8 text-gray-400 text-sm bg-white border border-gray-100 rounded-xl">
                 Belum ada data sukses. Monitor akan aktif saat event berlangsung.
             </div>
             @endforelse
         </div>
-        <div class="text-center mt-4">
-            <a href="{{ route('monitor') }}" class="text-sm text-indigo-400 hover:text-indigo-300 transition-colors duration-200 group inline-flex items-center gap-1">
+        <div class="text-center mt-6">
+            <a href="{{ route('monitor') }}" class="text-sm text-indigo-600 hover:text-indigo-700 font-medium transition-colors duration-200 group inline-flex items-center gap-1">
                 Lihat semua di Realtime Monitor
                 <svg class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
