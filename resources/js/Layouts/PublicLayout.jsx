@@ -45,9 +45,9 @@ export default function PublicLayout({ children, title, description }) {
                         <a href={`${route('home')}#active-events`} className="relative py-1 text-xs font-semibold uppercase tracking-wider transition-colors btn-press text-gray-600 hover:text-indigo-600 active:text-indigo-700">
                             Events
                         </a>
-                        <Link href={route('monitor')} className="relative py-1 text-xs font-semibold uppercase tracking-wider transition-colors btn-press text-gray-600 hover:text-indigo-600 active:text-indigo-700">
+                        <a href={`${route('home')}#monitor`} className="relative py-1 text-xs font-semibold uppercase tracking-wider transition-colors btn-press text-gray-600 hover:text-indigo-600 active:text-indigo-700">
                             Realtime Monitor
-                        </Link>
+                        </a>
                         <a href={`${route('home')}#cara-order`} className="relative py-1 text-xs font-semibold uppercase tracking-wider transition-colors btn-press text-gray-600 hover:text-indigo-600 active:text-indigo-700">
                             Cara Order
                         </a>
