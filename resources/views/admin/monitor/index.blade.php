@@ -3,14 +3,14 @@
 @section('page-title', 'Realtime Monitor')
 
 @section('content')
-<div class="flex items-center gap-3 mb-5">
+<div class="flex items-center gap-3 mb-5 reveal-drop">
     <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
     <span class="text-sm font-medium text-gray-700">Live Monitor</span>
     <span class="text-xs text-gray-400 ml-auto">Data lengkap — admin only</span>
 </div>
 
 {{-- Filter --}}
-<form method="GET" class="flex gap-3 mb-5">
+<form method="GET" class="flex gap-3 mb-5 reveal-drop" data-delay="100">
     <select name="event_id"
         class="text-sm border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
         <option value="">Semua Event</option>

@@ -3,7 +3,7 @@
 @section('page-title', 'Detail Order')
 
 @section('content')
-<div class="mb-4">
+<div class="mb-4 reveal-drop">
     <a href="{{ route('admin.orders.index') }}"
         class="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -13,7 +13,7 @@
     </a>
 </div>
 
-<div class="grid grid-cols-3 gap-5">
+<div class="grid grid-cols-3 gap-5 stagger-children">
 
     {{-- LEFT --}}
     <div class="col-span-2 space-y-4">

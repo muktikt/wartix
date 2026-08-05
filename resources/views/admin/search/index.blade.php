@@ -3,7 +3,7 @@
 @section('page-title', 'Global Search')
 
 @section('content')
-<form method="GET" class="mb-6">
+<form method="GET" class="mb-6 reveal-drop">
     <div class="flex gap-3">
         <div class="flex-1 relative">
             <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"

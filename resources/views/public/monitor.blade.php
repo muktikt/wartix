@@ -3,7 +3,7 @@
 
 @section('content')
 <div class="max-w-5xl mx-auto px-4 py-10">
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 reveal-drop">
         <div>
             <div class="flex items-center gap-2">
                 <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse"></span>
@@ -14,7 +14,7 @@
         <span class="text-xs bg-gray-100 text-gray-600 px-3 py-1.5 rounded-lg font-medium self-start sm:self-auto">Data tersensor untuk privasi</span>
     </div>
 
-    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden reveal-drop" data-delay="150">
         <div class="overflow-x-auto">
             <table class="w-full text-left text-xs text-gray-600">
                 <thead class="bg-gray-50 border-b border-gray-100 text-gray-500 font-semibold uppercase tracking-wider">

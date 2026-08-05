@@ -9,16 +9,23 @@ Alpine.start();
 
 /**
  * Scroll-triggered animations via Intersection Observer.
- * Elements with the class `.reveal-on-scroll` will fade/slide into view
- * once they enter the viewport. Stagger delays can be added with
- * `data-delay="<ms>"`.
+ * Supports multiple animation types:
+ *   - `.reveal-on-scroll`  : fade/slide up into view
+ *   - `.scroll-animate`    : legacy scroll animations
+ *   - `.reveal-drop`       : drop from above with bounce easing
+ *   - `.stagger-children`  : container whose `.stagger-item` children
+ *                            drop in one-by-one with auto delays
+ *
+ * Stagger delays can be added with `data-delay="<ms>"`.
  */
 const initScrollReveal = () => {
     // Add js-loaded class to body to enable scroll animation styles safely
     document.body.classList.add('js-loaded');
 
+    const allTargets = '.reveal-on-scroll, .scroll-animate, .reveal-drop, .stagger-children';
+
     if (!('IntersectionObserver' in window)) {
-        document.querySelectorAll('.reveal-on-scroll, .scroll-animate').forEach((el) => {
+        document.querySelectorAll(allTargets).forEach((el) => {
             el.classList.add('is-visible');
         });
         return;
@@ -39,7 +46,7 @@ const initScrollReveal = () => {
         { threshold: 0.05, rootMargin: '0px 0px -30px 0px' }
     );
 
-    document.querySelectorAll('.reveal-on-scroll, .scroll-animate').forEach((el) => {
+    document.querySelectorAll(allTargets).forEach((el) => {
         observer.observe(el);
     });
 };

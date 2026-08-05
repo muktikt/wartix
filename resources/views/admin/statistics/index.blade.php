@@ -3,10 +3,10 @@
 @section('page-title', 'Statistics')
 
 @section('content')
-<div class="grid grid-cols-2 gap-5 mb-5">
+<div class="grid grid-cols-2 gap-5 mb-5 stagger-children">
 
     {{-- Orders by Day --}}
-    <div class="bg-white border border-gray-100 rounded-xl p-5">
+    <div class="bg-white border border-gray-100 rounded-xl p-5 stagger-item">
         <h3 class="text-sm font-semibold text-gray-900 mb-4">Orders 30 Hari Terakhir</h3>
         <div class="space-y-2">
             @foreach($ordersByDay->take(7) as $day)
@@ -25,7 +25,7 @@
     </div>
 
     {{-- Success by Event --}}
-    <div class="bg-white border border-gray-100 rounded-xl p-5">
+    <div class="bg-white border border-gray-100 rounded-xl p-5 stagger-item">
         <h3 class="text-sm font-semibold text-gray-900 mb-4">Top Events by Success</h3>
         <div class="space-y-3">
             @foreach($successByEvent as $event)
@@ -43,7 +43,7 @@
     </div>
 
     {{-- Payment Status --}}
-    <div class="bg-white border border-gray-100 rounded-xl p-5">
+    <div class="bg-white border border-gray-100 rounded-xl p-5 stagger-item">
         <h3 class="text-sm font-semibold text-gray-900 mb-4">Payment Status Distribution</h3>
         <div class="space-y-2">
             @php
@@ -71,7 +71,7 @@
     </div>
 
     {{-- Revenue by Month --}}
-    <div class="bg-white border border-gray-100 rounded-xl p-5">
+    <div class="bg-white border border-gray-100 rounded-xl p-5 stagger-item">
         <h3 class="text-sm font-semibold text-gray-900 mb-4">Revenue 6 Bulan Terakhir</h3>
         <div class="space-y-2">
             @foreach($revenueByMonth as $rev)

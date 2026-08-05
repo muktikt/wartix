@@ -4,7 +4,7 @@
 @section('page-title', 'Notifikasi')
 
 @section('content')
-<div class="mb-4 flex items-center justify-between">
+<div class="mb-4 flex items-center justify-between reveal-drop">
     <div>
         <h2 class="text-sm font-semibold text-gray-900">Semua Notifikasi</h2>
         <p class="text-xs text-gray-400 mt-0.5">Notifikasi order masuk dan pembayaran fee</p>

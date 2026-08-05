@@ -27,7 +27,7 @@
     <div class="relative z-10 max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-start">
 
         {{-- Left --}}
-        <div>
+        <div class="reveal-drop">
             <div class="flex flex-wrap gap-2 mb-5">
                 <span class="inline-flex items-center gap-1.5 text-xs font-medium bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full animate-fade-in-down">
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -77,7 +77,7 @@
         </div>
 
         {{-- Right --}}
-        <div class="flex justify-center md:justify-end animate-scale-in anim-delay-150">
+        <div class="flex justify-center md:justify-end reveal-drop" data-delay="150">
             <div class="w-full max-w-sm flex flex-col gap-4">
                 <div class="bg-white/90 backdrop-blur-md border border-white/60 rounded-2xl p-5 w-full shadow-lg hover-glow transition-all duration-300">
                     <div class="flex items-center justify-between mb-4">
@@ -178,7 +178,7 @@
 {{-- STATS --}}
 <section class="border-y border-gray-100 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-2 md:grid-cols-4 divide-x divide-gray-100">
+        <div class="grid grid-cols-2 md:grid-cols-4 divide-x divide-gray-100 stagger-children">
             @php
             $statsDisplay = [
                 ['value' => $stats['success_rate'].'%', 'label' => 'Success Rate',     'sub' => 'Akun sukses', 'icon' => 'fa-solid fa-circle-check'],
@@ -188,7 +188,7 @@
             ];
             @endphp
             @foreach($statsDisplay as $i => $stat)
-            <div class="py-8 px-6 flex flex-col items-center justify-center text-center transition-all duration-300 hover:bg-gray-50 scroll-animate scroll-animate-scale" data-delay="{{ $i * 100 }}">
+            <div class="py-8 px-6 flex flex-col items-center justify-center text-center transition-all duration-300 hover:bg-gray-50 stagger-item">
                 <div class="text-3xl font-bold text-indigo-600 mb-0.5">{{ $stat['value'] }}</div>
                 <div class="text-sm font-medium text-gray-900">{{ $stat['label'] }}</div>
                 <div class="text-xs text-gray-400 mt-0.5">{{ $stat['sub'] }}</div>
@@ -202,11 +202,11 @@
 <section class="py-14 px-4 scroll-mt-20" id="active-events">
     <div class="max-w-7xl mx-auto">
         <div class="flex items-end justify-between mb-8">
-            <div>
-                <h2 class="text-2xl font-bold text-gray-900 scroll-animate scroll-animate-left">Active Events</h2>
-                <p class="text-sm text-gray-500 mt-1 scroll-animate scroll-animate-left" data-delay="100">Event yang sedang tersedia untuk order</p>
+            <div class="reveal-drop">
+                <h2 class="text-2xl font-bold text-gray-900">Active Events</h2>
+                <p class="text-sm text-gray-500 mt-1">Event yang sedang tersedia untuk order</p>
             </div>
-            <a href="{{ route('events.index') }}" class="text-sm text-indigo-600 hover:text-indigo-700 font-medium flex items-center gap-1 group transition-colors duration-200 btn-press scroll-animate scroll-animate-right" data-delay="200">
+            <a href="{{ route('events.index') }}" class="text-sm text-indigo-600 hover:text-indigo-700 font-medium flex items-center gap-1 group transition-colors duration-200 btn-press reveal-drop" data-delay="100">
                 Lihat semua
                 <svg class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -219,9 +219,9 @@
                 <p class="text-gray-400">Belum ada event aktif saat ini.</p>
             </div>
         @else
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 stagger-children">
             @foreach($activeEvents as $i => $event)
-            <div class="scroll-animate {{ $i % 2 === 0 ? 'scroll-animate-left' : 'scroll-animate-right' }}" data-delay="{{ $i * 100 }}">
+            <div class="stagger-item">
                 @include('public.events._card', ['event' => $event])
             </div>
             @endforeach
@@ -233,12 +233,12 @@
 {{-- REALTIME MONITOR --}}
 <section class="bg-gray-50/70 border-y border-gray-100 py-12 px-4 scroll-mt-20" id="monitor">
     <div class="max-w-7xl mx-auto">
-        <div class="flex items-center gap-3 mb-6">
-            <div class="w-2.5 h-2.5 bg-emerald-500 rounded-full live-indicator scroll-animate scroll-animate-scale"></div>
-            <h2 class="text-lg font-bold text-gray-900 scroll-animate scroll-animate-left" data-delay="100">Realtime Success Monitor</h2>
-            <span class="text-xs text-gray-400 ml-auto scroll-animate scroll-animate-right" data-delay="200">Data tersensor untuk privasi pengguna</span>
+        <div class="flex items-center gap-3 mb-6 reveal-drop">
+            <div class="w-2.5 h-2.5 bg-emerald-500 rounded-full live-indicator"></div>
+            <h2 class="text-lg font-bold text-gray-900">Realtime Success Monitor</h2>
+            <span class="text-xs text-gray-400 ml-auto">Data tersensor untuk privasi pengguna</span>
         </div>
-        <div class="space-y-2">
+        <div class="space-y-2 stagger-children">
             @forelse($recentSuccess as $i => $log)
             @php
                 $email    = \App\Services\MaskService::email($log->email ?? 'us***@example.com');
@@ -247,7 +247,7 @@
                 $category = $log->ticketCategory->name ?? '-';
                 $qty      = $log->qty;
             @endphp
-            <div class="flex items-center gap-3 bg-white border border-gray-200/80 shadow-xs rounded-xl px-4 py-2.5 text-sm overflow-x-auto hover:border-gray-300 transition-colors duration-200 scroll-animate {{ $i % 2 === 0 ? 'scroll-animate-left' : 'scroll-animate-right' }}" data-delay="{{ $i * 80 }}">
+            <div class="flex items-center gap-3 bg-white border border-gray-200/80 shadow-xs rounded-xl px-4 py-2.5 text-sm overflow-x-auto hover:border-gray-300 transition-colors duration-200 stagger-item">
                 <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-semibold px-2.5 py-0.5 rounded-full flex-shrink-0">SUCCESS</span>
                 <span class="text-gray-900 font-medium font-mono flex-shrink-0">{{ $email }}</span>
                 <span class="text-gray-300">|</span>
@@ -279,10 +279,10 @@
 {{-- CARA ORDER --}}
 <section class="py-14 px-4 bg-white scroll-mt-20" id="cara-order">
     <div class="max-w-7xl mx-auto">
-        <div class="flex items-center gap-3 mb-6">
-            <div class="w-2 h-2 bg-indigo-500 rounded-full live-indicator scroll-animate scroll-animate-scale"></div>
-            <h2 class="text-lg font-semibold text-gray-900 scroll-animate scroll-animate-left" data-delay="100">Cara Order</h2>
-            <span class="text-xs text-gray-500 ml-auto scroll-animate scroll-animate-right" data-delay="200">Langkah order dari awal sampai selesai</span>
+        <div class="flex items-center gap-3 mb-6 reveal-drop">
+            <div class="w-2 h-2 bg-indigo-500 rounded-full live-indicator"></div>
+            <h2 class="text-lg font-semibold text-gray-900">Cara Order</h2>
+            <span class="text-xs text-gray-500 ml-auto">Langkah order dari awal sampai selesai</span>
         </div>
 
         <div class="grid md:grid-cols-2 gap-6">
@@ -295,7 +295,7 @@
                 ];
             @endphp
 
-            <div class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover-glow transition-all duration-300 scroll-animate scroll-animate-left" data-delay="100">
+            <div class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover-glow transition-all duration-300 reveal-drop" data-delay="100">
                 <div class="flex items-center justify-between mb-4">
                     <div class="flex items-center gap-2">
                         <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -323,7 +323,7 @@
                 </div>
             </div>
 
-            <div class="bg-gradient-to-br from-indigo-50 via-white to-purple-50 border border-gray-100 rounded-2xl p-5 shadow-sm hover-glow transition-all duration-300 scroll-animate scroll-animate-right" data-delay="200">
+            <div class="bg-gradient-to-br from-indigo-50 via-white to-purple-50 border border-gray-100 rounded-2xl p-5 shadow-sm hover-glow transition-all duration-300 reveal-drop" data-delay="200">
                 <div class="flex items-center gap-2 mb-4">
                     <svg class="w-4 h-4 text-indigo-600 animate-float" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
@@ -352,8 +352,8 @@
 {{-- FAQ --}}
 <section class="py-14 px-4 bg-white scroll-mt-20" id="faq">
     <div class="max-w-2xl mx-auto">
-        <h2 class="text-2xl font-bold text-gray-900 text-center mb-2 scroll-animate scroll-animate-scale">FAQ</h2>
-        <p class="text-gray-500 text-sm text-center mb-8 scroll-animate scroll-animate-scale" data-delay="150">Pertanyaan yang sering ditanyakan</p>
+        <h2 class="text-2xl font-bold text-gray-900 text-center mb-2 reveal-drop">FAQ</h2>
+        <p class="text-gray-500 text-sm text-center mb-8 reveal-drop" data-delay="100">Pertanyaan yang sering ditanyakan</p>
 
         @php
         $faqs = [
@@ -365,9 +365,9 @@
         ];
         @endphp
 
-        <div class="space-y-3" x-data="{ open: null }">
+        <div class="space-y-3 stagger-children" x-data="{ open: null }">
             @foreach($faqs as $i => $faq)
-            <div class="border border-gray-100 rounded-xl overflow-hidden hover-glow transition-all duration-300 scroll-animate scroll-animate-scale" data-delay="{{ $i * 80 }}">
+            <div class="border border-gray-100 rounded-xl overflow-hidden hover-glow transition-all duration-300 stagger-item">
                 <button
                     class="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-gray-50 transition-all duration-200 btn-press"
                     @click="open = open === {{ $i }} ? null : {{ $i }}">

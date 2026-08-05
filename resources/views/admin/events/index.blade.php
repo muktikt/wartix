@@ -3,7 +3,7 @@
 @section('page-title', 'Events')
 
 @section('content')
-<div class="flex items-center justify-between mb-5">
+<div class="flex items-center justify-between mb-5 reveal-drop">
     <div>
         <p class="text-xs text-gray-400">Total {{ $events->total() }} event</p>
     </div>
@@ -16,7 +16,7 @@
     </a>
 </div>
 
-<div class="bg-white border border-gray-100 rounded-xl overflow-x-auto">
+<div class="bg-white border border-gray-100 rounded-xl overflow-x-auto reveal-drop" data-delay="100">
     <table class="w-full min-w-[600px]">
         <thead class="bg-gray-50 border-b border-gray-100">
             <tr>

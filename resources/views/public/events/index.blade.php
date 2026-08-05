@@ -4,13 +4,13 @@
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
-    <div class="mb-8">
+    <div class="mb-8 reveal-drop">
         <h1 class="text-2xl font-bold text-gray-900 mb-2">Explore Events</h1>
         <p class="text-sm text-gray-500">Temukan event konser, festival, dan fanmeeting</p>
     </div>
 
     {{-- Search --}}
-    <form method="GET" class="mb-6">
+    <form method="GET" class="mb-6 reveal-drop" data-delay="100">
         <div class="flex gap-3 mb-3">
             <div class="flex-1 relative">
                 <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
@@ -86,9 +86,11 @@
         @endif
     </div>
     @else
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 stagger-children">
         @foreach($events as $event)
-            @include('public.events._card', ['event' => $event])
+            <div class="stagger-item">
+                @include('public.events._card', ['event' => $event])
+            </div>
         @endforeach
     </div>
 

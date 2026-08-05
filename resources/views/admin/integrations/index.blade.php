@@ -5,10 +5,10 @@
 @section('content')
 <form action="{{ route('admin.integrations.update') }}" method="POST">
     @csrf
-    <div class="grid grid-cols-2 gap-5">
+    <div class="grid grid-cols-2 gap-5 stagger-children">
 
         {{-- Telegram --}}
-        <div class="bg-white border border-gray-100 rounded-xl p-5">
+        <div class="bg-white border border-gray-100 rounded-xl p-5 stagger-item">
             <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
                 <svg class="w-4 h-4 text-blue-500" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.412 14.02l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.834.566z"/>
@@ -66,7 +66,7 @@
         </div>
 
         {{-- n8n --}}
-        <div class="bg-white border border-gray-100 rounded-xl p-5">
+        <div class="bg-white border border-gray-100 rounded-xl p-5 stagger-item">
             <h3 class="text-sm font-semibold text-gray-900 mb-4">n8n Webhook</h3>
             <div class="space-y-3">
                 <div>
@@ -92,7 +92,7 @@
         </div>
 
         {{-- n8n Admin Notification (bot Telegram terpisah) --}}
-        <div class="bg-white border border-gray-100 rounded-xl p-5">
+        <div class="bg-white border border-gray-100 rounded-xl p-5 stagger-item">
             <h3 class="text-sm font-semibold text-gray-900 mb-4">n8n Notifikasi Admin (Order Baru & Payment Fee)</h3>
             <p class="text-xs text-gray-400 mb-3">Webhook terpisah dari n8n Webhook di atas — dipakai untuk kirim notif order baru & payment fee ke bot Telegram admin yang berbeda.</p>
             <div class="space-y-3">
@@ -112,7 +112,7 @@
         </div>
 
         {{-- DompetX --}}
-        <div class="bg-white border border-gray-100 rounded-xl p-5">
+        <div class="bg-white border border-gray-100 rounded-xl p-5 stagger-item">
             <h3 class="text-sm font-semibold text-gray-900 mb-4">DompetX Payment</h3>
             <div class="space-y-3">
                 <div>
@@ -155,7 +155,7 @@
         </div>
 
         {{-- Threads --}}
-        <div class="bg-white border border-gray-100 rounded-xl p-5">
+        <div class="bg-white border border-gray-100 rounded-xl p-5 stagger-item">
             <h3 class="text-sm font-semibold text-gray-900 mb-4">Threads Auto Post</h3>
             <div class="space-y-3">
                 <div>
@@ -178,7 +178,7 @@
         </div>
         
         {{-- Events --}}
-        <div class="bg-white border border-gray-100 rounded-xl p-5">
+        <div class="bg-white border border-gray-100 rounded-xl p-5 stagger-item">
             <h3 class="text-sm font-semibold text-gray-900 mb-4">Event Defaults</h3>
             <div class="space-y-3">
                 <div>

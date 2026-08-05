@@ -4,7 +4,7 @@
 
 @section('content')
 {{-- Search & Filter --}}
-<div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+<div class="flex flex-wrap items-center justify-between gap-3 mb-5 reveal-drop">
     <form method="GET" class="flex flex-wrap gap-3">
         <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari order code, nama, email..."
             class="flex-1 min-w-[220px] text-sm border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">

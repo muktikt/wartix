@@ -23,9 +23,9 @@
     <div class="grid md:grid-cols-3 gap-8 md:h-[calc(100vh-8rem)] md:items-stretch">
 
         {{-- Left --}}
-        <div class="md:col-span-2 space-y-6 md:h-full md:overflow-y-auto md:pr-4 custom-scrollbar">
+        <div class="md:col-span-2 space-y-6 md:h-full md:overflow-y-auto md:pr-4 custom-scrollbar stagger-children">
             {{-- Banner --}}
-            <div class="rounded-2xl overflow-hidden bg-gradient-to-br from-indigo-900 to-purple-900 aspect-video flex items-center justify-center">
+            <div class="rounded-2xl overflow-hidden bg-gradient-to-br from-indigo-900 to-purple-900 aspect-video flex items-center justify-center stagger-item">
                 @if($event->banner_image)
                     <img src="{{ asset('storage/'.$event->banner_image) }}" class="w-full h-full object-cover" alt="{{ $event->title }}">
                 @else
@@ -34,7 +34,7 @@
             </div>
 
             {{-- Info --}}
-            <div class="bg-white border border-gray-100 rounded-2xl p-5">
+            <div class="bg-white border border-gray-100 rounded-2xl p-5 stagger-item">
                 <div class="flex items-start justify-between mb-3">
                     <div>
                         <h1 class="text-xl font-bold text-gray-900">{{ $event->title }}</h1>
@@ -90,14 +90,14 @@
 
             {{-- Seatplan --}}
             @if($event->seatplan_image)
-            <div class="bg-white border border-gray-100 rounded-2xl p-5">
+            <div class="bg-white border border-gray-100 rounded-2xl p-5 stagger-item">
                 <h3 class="text-sm font-semibold text-gray-900 mb-3">Denah Tempat Duduk</h3>
                 <img src="{{ asset('storage/'.$event->seatplan_image) }}" class="w-full rounded-xl" alt="Seatplan">
             </div>
             @endif
 
             {{-- Phases & Categories --}}
-            <div class="bg-white border border-gray-100 rounded-2xl p-5">
+            <div class="bg-white border border-gray-100 rounded-2xl p-5 stagger-item">
                 <h3 class="text-sm font-semibold text-gray-900 mb-4">Sale Phase & Kategori</h3>
 
                 {{-- Phase names --}}
@@ -127,7 +127,7 @@
 
         {{-- Right Column --}}
         <div class="md:col-span-1 md:h-full md:overflow-y-auto md:pr-2 custom-scrollbar">
-            <div>
+            <div class="reveal-drop" data-delay="200">
 
             @if($event->status === 'finished')
                 {{-- Event Recap Stats --}}

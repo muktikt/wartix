@@ -4,7 +4,7 @@
 @section('page-title', 'Dashboard')
 
 @section('content')
-<div class="grid grid-cols-4 gap-4 mb-6">
+<div class="grid grid-cols-4 gap-4 mb-6 stagger-children">
 
     {{-- Stat Cards --}}
     @php
@@ -17,7 +17,7 @@
     @endphp
 
     @foreach($cards as $i => $card)
-    <div class="stat-card bg-white border border-gray-100 rounded-xl p-4 animate-fade-in-up anim-delay-{{ ($i + 1) * 100 }}">
+    <div class="stat-card bg-white border border-gray-100 rounded-xl p-4 stagger-item">
         <div class="flex items-center justify-between mb-2">
             <p class="text-xs text-gray-500">{{ $card['label'] }}</p>
             <div class="w-7 h-7 rounded-lg bg-{{ $card['color'] }}-50 flex items-center justify-center">
@@ -34,8 +34,8 @@
 </div>
 
 {{-- Revenue + Success Rate --}}
-<div class="grid grid-cols-2 gap-4 mb-6">
-    <div class="stat-card bg-white border border-gray-100 rounded-xl p-4 animate-fade-in-up anim-delay-500">
+<div class="grid grid-cols-2 gap-4 mb-6 stagger-children">
+    <div class="stat-card bg-white border border-gray-100 rounded-xl p-4 stagger-item">
         <div class="flex items-center justify-between mb-2">
             <p class="text-xs text-gray-500">Total Revenue</p>
             <div class="w-7 h-7 rounded-lg bg-emerald-50 flex items-center justify-center">
@@ -48,7 +48,7 @@
             Rp <span x-text="count.toLocaleString('id-ID')">0</span>
         </p>
     </div>
-    <div class="stat-card bg-white border border-gray-100 rounded-xl p-4 animate-fade-in-up anim-delay-600">
+    <div class="stat-card bg-white border border-gray-100 rounded-xl p-4 stagger-item">
         <div class="flex items-center justify-between mb-2">
             <p class="text-xs text-gray-500">Success Rate</p>
             <div class="w-7 h-7 rounded-lg bg-blue-50 flex items-center justify-center">
@@ -64,7 +64,7 @@
 </div>
 
 {{-- Recent Orders --}}
-<div class="bg-white border border-gray-100 rounded-xl p-4 mb-4 animate-fade-in-up anim-delay-700">
+<div class="bg-white border border-gray-100 rounded-xl p-4 mb-4 reveal-drop" data-delay="200">
     <div class="flex items-center justify-between mb-4">
         <h2 class="text-sm font-semibold text-gray-900">Recent Orders</h2>
         <a href="#" class="text-xs text-indigo-600 hover:underline transition-colors duration-200">Lihat semua</a>
@@ -117,7 +117,7 @@
 </div>
 
 {{-- Quick Actions --}}
-<div class="bg-white border border-gray-100 rounded-xl p-4 animate-fade-in-up anim-delay-800">
+<div class="bg-white border border-gray-100 rounded-xl p-4 reveal-drop" data-delay="300">
     <h2 class="text-sm font-semibold text-gray-900 mb-3">Quick Actions</h2>
     <div class="grid grid-cols-3 gap-3">
         <a href="{{ route('admin.events.builder.create') }}" class="flex items-center gap-2 p-3 border border-gray-100 rounded-xl hover:bg-indigo-50 hover:border-indigo-200 transition-all duration-300 group hover-lift">
@@ -144,7 +144,7 @@
 </div>
 
 @if($stats['pending_link_count'] > 0)
-<div class="bg-yellow-50 border border-yellow-100 rounded-xl p-3 mb-6 flex items-center gap-2 animate-fade-in-up anim-delay-300 mt-4">
+<div class="bg-yellow-50 border border-yellow-100 rounded-xl p-3 mb-6 flex items-center gap-2 reveal-drop mt-4" data-delay="100">
     <svg class="w-4 h-4 text-yellow-600 flex-shrink-0 animate-pulse-soft" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
     </svg>

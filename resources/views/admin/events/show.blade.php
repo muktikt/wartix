@@ -3,7 +3,7 @@
 @section('page-title', 'Detail Event')
 
 @section('content')
-<div class="mb-4 flex items-center justify-between">
+<div class="mb-4 flex items-center justify-between reveal-drop">
     <a href="{{ route('admin.events.index') }}"
         class="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -45,7 +45,7 @@
 </div>
 
 {{-- Event Header --}}
-<div class="bg-white border border-gray-100 rounded-xl p-5 mb-5">
+<div class="bg-white border border-gray-100 rounded-xl p-5 mb-5 reveal-drop" data-delay="100">
     <div class="flex gap-5">
         @if($event->banner_image)
         <img src="{{ asset('storage/'.$event->banner_image) }}"

@@ -4,7 +4,7 @@
 
 @section('content')
 {{-- Stats Cards --}}
-<div class="grid grid-cols-4 gap-4 mb-5">
+<div class="grid grid-cols-4 gap-4 mb-5 stagger-children">
     @php
     $reportCards = [
         ['label' => 'Total Orders',   'value' => number_format($stats['total_orders']),   'color' => 'indigo'],
@@ -14,7 +14,7 @@
     ];
     @endphp
     @foreach($reportCards as $card)
-    <div class="bg-white border border-gray-100 rounded-xl p-4">
+    <div class="bg-white border border-gray-100 rounded-xl p-4 stagger-item">
         <p class="text-xs text-gray-500 mb-1">{{ $card['label'] }}</p>
         <p class="text-xl font-semibold text-gray-900">{{ $card['value'] }}</p>
     </div>
@@ -22,7 +22,7 @@
 </div>
 
 {{-- Filter --}}
-<form method="GET" class="bg-white border border-gray-100 rounded-xl p-4 mb-5">
+<form method="GET" class="bg-white border border-gray-100 rounded-xl p-4 mb-5 reveal-drop" data-delay="150">
     <div class="grid grid-cols-4 gap-3 mb-3">
         <div>
             <label class="block text-xs text-gray-500 mb-1">Event</label>

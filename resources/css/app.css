@@ -420,6 +420,74 @@ input:focus, select:focus, textarea:focus {
 }
 
 /* ============================================================
+   DROP REVEAL ANIMATION (falls smoothly from top, no bounce)
+   Elements drop into view smoothly when scrolling.
+   ============================================================ */
+
+@keyframes dropReveal {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Single element drop reveal - applied via JS IntersectionObserver when scrolling */
+.js-loaded .reveal-drop {
+    opacity: 0;
+    transform: translateY(-20px);
+    will-change: opacity, transform;
+}
+
+.js-loaded .reveal-drop.is-visible {
+    animation: dropReveal 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Auto-stagger children: parent gets .stagger-children, children get .stagger-item */
+.js-loaded .stagger-children .stagger-item {
+    opacity: 0;
+    transform: translateY(-20px);
+    will-change: opacity, transform;
+}
+
+.js-loaded .stagger-children.is-visible .stagger-item {
+    animation: dropReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Stagger delays for up to 12 children */
+.js-loaded .stagger-children.is-visible .stagger-item:nth-child(1)  { animation-delay: 0ms; }
+.js-loaded .stagger-children.is-visible .stagger-item:nth-child(2)  { animation-delay: 60ms; }
+.js-loaded .stagger-children.is-visible .stagger-item:nth-child(3)  { animation-delay: 120ms; }
+.js-loaded .stagger-children.is-visible .stagger-item:nth-child(4)  { animation-delay: 180ms; }
+.js-loaded .stagger-children.is-visible .stagger-item:nth-child(5)  { animation-delay: 240ms; }
+.js-loaded .stagger-children.is-visible .stagger-item:nth-child(6)  { animation-delay: 300ms; }
+.js-loaded .stagger-children.is-visible .stagger-item:nth-child(7)  { animation-delay: 360ms; }
+.js-loaded .stagger-children.is-visible .stagger-item:nth-child(8)  { animation-delay: 420ms; }
+.js-loaded .stagger-children.is-visible .stagger-item:nth-child(9)  { animation-delay: 480ms; }
+.js-loaded .stagger-children.is-visible .stagger-item:nth-child(10) { animation-delay: 540ms; }
+.js-loaded .stagger-children.is-visible .stagger-item:nth-child(11) { animation-delay: 600ms; }
+.js-loaded .stagger-children.is-visible .stagger-item:nth-child(12) { animation-delay: 660ms; }
+
+/* Page entrance drop (applied to main content wrapper) */
+@keyframes pageDropIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-page-drop {
+    animation: pageDropIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ============================================================
    ADMIN SIDEBAR ANIMATION
    ============================================================ */
 
@@ -526,8 +594,10 @@ input:focus, select:focus, textarea:focus {
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
     }
-    .scroll-animate {
-        opacity: 1;
-        transform: none;
+    .scroll-animate,
+    .reveal-drop,
+    .stagger-children .stagger-item {
+        opacity: 1 !important;
+        transform: none !important;
     }
 }
