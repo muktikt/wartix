@@ -50,8 +50,7 @@
             <div class="flex items-center gap-2.5 overflow-hidden">
                 <img src="{{ asset('images/logo-w.png') }}"
                     alt="Wartix"
-                    class="h-7 w-auto flex-shrink-0"
-                    style="filter: brightness(0) saturate(100%) invert(29%) sepia(89%) saturate(1234%) hue-rotate(220deg) brightness(97%) contrast(97%);">
+                    class="h-7 w-auto flex-shrink-0">
                 <span class="text-xs bg-indigo-50 text-indigo-600 px-1.5 py-0.5 rounded font-medium" :class="{ 'md:hidden': sidebarCollapsed }">
                     Admin
                 </span>

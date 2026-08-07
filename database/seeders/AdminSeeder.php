@@ -10,7 +10,7 @@ class AdminSeeder extends Seeder
     public function run(): void
     {
         Admin::create([
-            'name'     => 'Admin Wartix',
+            'name'     => 'Admin Warindong',
             'email'    => 'admin@wartix.id',
             'password' => Hash::make('wartix2024'),
             'role'     => 'superadmin',

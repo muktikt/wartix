@@ -46,7 +46,7 @@ export default function Home({ stats, activeEvents, recentSuccess }) {
     ];
 
     return (
-        <PublicLayout title="Wartix Priority Ticket Assistance">
+        <PublicLayout title="Warindong Priority Ticket Assistance">
             {/* HERO */}
             <section className="relative overflow-hidden bg-gradient-to-r from-[#f8f9ff] via-[#f1f3fe] to-[#e8edff] py-14 px-4 sm:px-6 lg:px-8 border-b border-gray-100/80">
                 {/* Right 3D Blue-Purple Gradient Shape */}
@@ -78,7 +78,7 @@ export default function Home({ stats, activeEvents, recentSuccess }) {
                         </h1>
 
                         <p className="text-gray-500 text-base leading-relaxed mb-8 max-w-md animate-fade-in anim-delay-300">
-                            Wartix membantu kamu mendapatkan tiket konser, festival, dan fanmeeting impian dengan layanan Ticket Assistance, Realtime Monitoring, dan notifikasi langsung via Telegram.
+                            Warindong membantu kamu mendapatkan tiket konser, festival, dan fanmeeting impian dengan layanan Ticket Assistance, Realtime Monitoring, dan notifikasi langsung via Telegram.
                         </p>
 
                         <div className="flex flex-wrap gap-3 animate-fade-in anim-delay-450">

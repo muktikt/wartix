@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Wartix Priority Ticket Assistance')
+@section('title', 'Warindong Priority Ticket Assistance')
 
 @section('content')
 

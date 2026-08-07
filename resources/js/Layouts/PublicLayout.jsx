@@ -20,7 +20,7 @@ export default function PublicLayout({ children, title, description }) {
     return (
         <>
             <Head>
-                <title>{title ? `${title} - Wartix` : 'Wartix Priority Ticket Assistance'}</title>
+                <title>{title ? `${title} - Wartix` : 'Warindong Priority Ticket Assistance'}</title>
                 <meta
                     name="description"
                     content={description || 'Wartix membantu kamu mendapatkan tiket konser, festival, dan fanmeeting dengan Priority Access, Realtime Monitoring, dan update via Telegram.'}
@@ -33,7 +33,7 @@ export default function PublicLayout({ children, title, description }) {
                     {/* Logo & Divider */}
                     <div className="flex items-center gap-3">
                         <Link href={route('home')} className="flex items-center gap-2">
-                            <img src="/images/logo-w.png" alt="Wartix" className="h-8 sm:h-9 w-auto max-w-[180px] object-contain" />
+                            <img src="/images/logo-w.png" alt="Warindong" className="h-8 sm:h-9 w-auto max-w-[180px] object-contain" />
                         </Link>
                         <div className="hidden sm:block h-4 w-px bg-gray-200"></div>
                         <span className="hidden lg:block text-[11px] font-medium text-gray-400 tracking-tight">Priority Assistance</span>
@@ -91,7 +91,7 @@ export default function PublicLayout({ children, title, description }) {
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
                         <div>
                             <div className="flex items-center gap-2 mb-3">
-                                <span className="text-sm font-semibold text-white">Wartix</span>
+                                <span className="text-sm font-semibold text-white">Warindong</span>
                             </div>
                             <p className="text-xs leading-relaxed text-gray-400 mb-4">
                                 Platform Ticket Assistance untuk event high-demand.
@@ -128,7 +128,7 @@ export default function PublicLayout({ children, title, description }) {
                         </div>
                     </div>
                     <div className="border-t border-gray-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2">
-                        <p className="text-xs">&copy; {new Date().getFullYear()} Wartix. All rights reserved.</p>
+                        <p className="text-xs">&copy; {new Date().getFullYear()} Warindong. All rights reserved.</p>
                         <p className="text-xs">Event Assistance Platform</p>
                     </div>
                 </div>
