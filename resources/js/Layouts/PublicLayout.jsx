@@ -3,8 +3,10 @@ import { motion } from 'framer-motion';
 
 const TELEGRAM_LINK = 'https://t.me/wartixdotcom';
 const WHATSAPP_LINK = 'https://chat.whatsapp.com/CBgJ9tYH2F08OlteajZcBJ?s=cl&p=i&ilr=4';
-const X_LINK = 'https://x.com/wartixcom';
-const TIKTOK_LINK = 'https://www.tiktok.com/@wartix.com';
+const X_LINK = 'https://x.com/warindongcom';
+const TIKTOK_LINK = 'https://www.tiktok.com/@warindong.com';
+const INSTAGRAM_LINK = 'https://www.instagram.com/warindongcom';
+const THREADS_LINK = 'https://www.threads.com/@warindongcom';
 
 function TelegramIcon({ className }) {
     return (
@@ -110,6 +112,8 @@ export default function PublicLayout({ children, title, description }) {
                             <ul className="space-y-2 text-xs">
                                 <li><a href={TELEGRAM_LINK} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-200">Telegram Channel</a></li>
                                 <li><a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-200">WhatsApp Group</a></li>
+                                <li><a href={INSTAGRAM_LINK} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-200">Instagram</a></li>
+                                <li><a href={THREADS_LINK} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-200">Threads</a></li>
                                 <li><a href={X_LINK} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-200">X (Twitter)</a></li>
                                 <li><a href={TIKTOK_LINK} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-200">TikTok</a></li>
                             </ul>

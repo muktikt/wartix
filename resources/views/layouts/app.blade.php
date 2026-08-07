@@ -31,10 +31,10 @@
 @php
     $telegramLink = 'https://t.me/wartixdotcom';
     $whatsappLink = 'https://chat.whatsapp.com/CBgJ9tYH2F08OlteajZcBJ?s=cl&p=i&ilr=4';
-    $xLink = 'https://x.com/wartixcom';
-    $tiktokLink = 'https://www.tiktok.com/@wartix.com';
-    $instagramLink = '#'; // Future use
-    $threadsLink = '#'; // Future use
+    $xLink = 'https://x.com/warindongcom';
+    $tiktokLink = 'https://www.tiktok.com/@warindong.com';
+    $instagramLink = 'https://www.instagram.com/warindongcom';
+    $threadsLink = 'https://www.threads.com/@warindongcom';
 @endphp
 
 {{-- NAVBAR --}}
@@ -125,10 +125,8 @@
                         <li><a href="{{ $whatsappLink }}" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors duration-200">WhatsApp Group</a></li>
                         <li><a href="{{ $xLink }}" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors duration-200">X (Twitter)</a></li>
                         <li><a href="{{ $tiktokLink }}" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors duration-200">TikTok</a></li>
-                        {{--
                         <li><a href="{{ $instagramLink }}" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors duration-200">Instagram</a></li>
                         <li><a href="{{ $threadsLink }}" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors duration-200">Threads</a></li>
-                        --}}
                     </ul>
                 </div>
                 <div>
