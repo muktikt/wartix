@@ -13,9 +13,3 @@ Route::post('/orders', [OrderController::class, 'store'])
     ->middleware(['throttle:10,1', 'throttle:order-by-email']);
 Route::get('/order-success/{orderCode}', [OrderController::class, 'success'])->name('order.success');
 Route::get('/monitor', [RealtimeMonitorController::class, 'index'])->name('monitor');
-
-Route::get('/inertia-test', function () {
-    return \Inertia\Inertia::render('Test', [
-        'message' => 'Integrasi React.js & Inertia.js di Wartix berjalan sempurna!'
-    ]);
-});
