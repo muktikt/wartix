@@ -17,6 +17,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     {{-- SEO --}}
+    <meta name="google-site-verification" content="7Et0CRs828pDWQuyFH_ygTCy8IbI6YDnFwWY4Jx780Y" />
     <meta name="robots" content="index, follow">
     <meta property="og:title" content="@yield('title', 'Warindong Priority Ticket Assistance')">
     <meta property="og:description" content="@yield('meta-description', 'Platform Ticket Assistance untuk event high-demand.')">
