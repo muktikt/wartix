@@ -48,44 +48,44 @@ export default function Home({ stats, activeEvents, recentSuccess }) {
     return (
         <PublicLayout title="Warindong Priority Ticket Assistance">
             {/* HERO */}
-            <section className="relative overflow-hidden bg-gradient-to-r from-[#f8f9ff] via-[#f1f3fe] to-[#e8edff] py-14 px-4 sm:px-6 lg:px-8 border-b border-gray-100/80">
+            <section className="relative overflow-hidden bg-gradient-to-r from-[#f8f9ff] via-[#f1f3fe] to-[#e8edff] py-10 sm:py-14 lg:py-20 px-6 sm:px-8 lg:px-12 border-b border-gray-100/80">
                 {/* Right 3D Blue-Purple Gradient Shape */}
-                <div className="absolute -right-28 -top-10 w-[620px] h-[620px] rounded-full bg-gradient-to-bl from-[#3b82f6] via-[#6366f1] to-[#7c3aed] opacity-90 blur-2xl pointer-events-none"></div>
+                <div className="absolute -right-20 -top-20 w-72 h-72 sm:w-[450px] sm:h-[450px] md:w-[620px] md:h-[620px] sm:-right-28 sm:-top-10 rounded-full bg-gradient-to-bl from-[#3b82f6] via-[#6366f1] to-[#7c3aed] opacity-25 sm:opacity-75 md:opacity-90 blur-3xl pointer-events-none"></div>
 
                 {/* Bottom-Left Pink-Purple Soft Glow */}
-                <div className="absolute -left-28 -bottom-10 w-[480px] h-[480px] rounded-full bg-gradient-to-tr from-pink-300/35 via-purple-300/30 to-indigo-200/20 blur-3xl pointer-events-none"></div>
+                <div className="absolute -left-20 -bottom-10 w-64 h-64 sm:w-[360px] sm:h-[360px] md:w-[480px] md:h-[480px] sm:-left-28 rounded-full bg-gradient-to-tr from-pink-300/35 via-purple-300/30 to-indigo-200/20 blur-3xl pointer-events-none"></div>
 
                 {/* Ambient Center Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/10 to-white/40 pointer-events-none"></div>
+                <div className="absolute inset-0 bg-white/40 sm:bg-transparent pointer-events-none"></div>
 
-                <div className="relative z-10 max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-start">
+                <div className="relative z-10 max-w-7xl mx-auto grid md:grid-cols-2 gap-8 md:gap-10 items-start">
                     <div>
                         <div className="flex flex-wrap gap-2 mb-5">
-                            <span className="inline-flex items-center gap-1.5 text-xs font-medium bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full animate-fade-in-down">
+                            <span className="inline-flex items-center gap-1.5 text-xs font-semibold bg-indigo-50/90 border border-indigo-100/80 text-indigo-700 px-3.5 py-1.5 rounded-full animate-fade-in-down shadow-xs">
                                 Priority Access
                             </span>
-                            <span className="inline-flex items-center gap-1.5 text-xs font-medium bg-purple-50 text-purple-700 px-3 py-1 rounded-full animate-fade-in-down anim-delay-100">
+                            <span className="inline-flex items-center gap-1.5 text-xs font-semibold bg-purple-50/90 border border-purple-100/80 text-purple-700 px-3.5 py-1.5 rounded-full animate-fade-in-down anim-delay-100 shadow-xs">
                                 Ticket Assistance
                             </span>
-                            <span className="inline-flex items-center gap-1.5 text-xs font-medium bg-green-50 text-green-700 px-3 py-1 rounded-full animate-fade-in-down anim-delay-200">
+                            <span className="inline-flex items-center gap-1.5 text-xs font-semibold bg-green-50/90 border border-green-100/80 text-green-700 px-3.5 py-1.5 rounded-full animate-fade-in-down anim-delay-200 shadow-xs">
                                 Realtime Monitoring
                             </span>
                         </div>
 
-                        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-4 animate-fade-in-down anim-delay-150">
+                        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight mb-4 animate-fade-in-down anim-delay-150">
                             Priority Ticket Assistance<br />
-                            <span className="text-indigo-600 animate-text-shine">for High-Demand Events</span>
+                            <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent animate-text-shine block sm:inline mt-1 sm:mt-0">for High-Demand Events</span>
                         </h1>
 
-                        <p className="text-gray-500 text-base leading-relaxed mb-8 max-w-md animate-fade-in anim-delay-300">
+                        <p className="text-gray-700 sm:text-gray-600 text-sm sm:text-base leading-relaxed mb-8 max-w-md animate-fade-in anim-delay-300">
                             Warindong membantu kamu mendapatkan tiket konser, festival, dan fanmeeting impian dengan layanan Ticket Assistance, Realtime Monitoring, dan notifikasi langsung via Telegram.
                         </p>
 
-                        <div className="flex flex-wrap gap-3 animate-fade-in anim-delay-450">
-                            <a href="#active-events" className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm px-5 py-2.5 rounded-xl transition-all duration-300 hover-lift hover:shadow-lg hover:shadow-indigo-500/25 btn-press">
+                        <div className="flex flex-col sm:flex-row gap-3 animate-fade-in anim-delay-450">
+                            <a href="#active-events" className="w-full sm:w-auto text-center justify-center inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm px-6 py-3 rounded-xl transition-all duration-300 shadow-md shadow-indigo-200 hover-lift hover:shadow-lg hover:shadow-indigo-500/25 btn-press">
                                 View Active Events
                             </a>
-                            <a href={TELEGRAM_LINK} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 font-medium text-sm px-5 py-2.5 rounded-xl transition-all duration-300 hover-lift hover:border-indigo-200 btn-press">
+                            <a href={TELEGRAM_LINK} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto text-center justify-center inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 font-semibold text-sm px-6 py-3 rounded-xl transition-all duration-300 hover-lift hover:border-indigo-200 btn-press">
                                 Join Telegram Channel
                             </a>
                         </div>
