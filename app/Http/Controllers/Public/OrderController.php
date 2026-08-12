@@ -34,7 +34,7 @@ class OrderController extends Controller
             'phone_number'                          => 'required|string|max:20',
             'email'                                 => 'required|email|max:255',
             'telegram_username'                     => 'required|string|max:100',
-            'social_media_screenshot'               => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'social_media_screenshot'               => 'required|extensions:jpg,jpeg,png,webp|max:2048',
             'identity_number'                       => 'nullable|string|max:16',
         ]);
 
