@@ -13,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Warindong Priority Ticket Assistance')</title>
-    <meta name="description" content="@yield('meta-description', 'Wartix membantu kamu mendapatkan tiket konser, festival, dan fanmeeting dengan Priority Access, Realtime Monitoring, dan update via Telegram.')">
+    <meta name="description" content="@yield('meta-description', 'Warindong membantu kamu mendapatkan tiket konser, festival, dan fanmeeting dengan Priority Access, Realtime Monitoring, dan update via Telegram.')">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     {{-- SEO --}}
@@ -22,9 +22,9 @@
     <meta property="og:title" content="@yield('title', 'Warindong Priority Ticket Assistance')">
     <meta property="og:description" content="@yield('meta-description', 'Platform Ticket Assistance untuk event high-demand.')">
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Wartix">
+    <meta property="og:site_name" content="Warindong">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="@yield('title', 'Wartix')">
+    <meta name="twitter:title" content="@yield('title', 'Warindong')">
     <link rel="canonical" href="{{ url()->current() }}">
 </head>
 <body class="bg-white font-sans antialiased">
@@ -46,7 +46,7 @@
         <div class="flex items-center gap-3">
             <div class="flex items-center gap-2">
                 <img src="{{ asset('images/logo-w.png') }}"
-                    alt="Wartix"
+                    alt="Warindong"
                     class="h-8 sm:h-9 w-auto max-w-[180px] object-contain">
             </div>
             <div class="hidden sm:block h-4 w-px bg-gray-200"></div>
@@ -103,7 +103,7 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
                 <div class="footer-brand">
                     <div class="flex items-center gap-2 mb-3">
-                        <span class="text-sm font-semibold text-white">Wartix</span>
+                        <span class="text-sm font-semibold text-white">Warindong</span>
                     </div>
                     <p class="text-xs leading-relaxed text-gray-400 mb-4">
                         Platform Ticket Assistance untuk event high-demand.
@@ -140,7 +140,7 @@
                 </div>
             </div>
             <div class="border-t border-gray-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2">
-                <p class="text-xs">&copy; {{ date('Y') }} Wartix. All rights reserved.</p>
+                <p class="text-xs">&copy; {{ date('Y') }} Warindong. All rights reserved.</p>
                 <p class="text-xs">Event Assistance Platform</p>
             </div>
         </div>

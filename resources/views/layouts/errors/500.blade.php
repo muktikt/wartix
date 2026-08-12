@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>500 — Wartix</title>
+    <title>500 — Warindong</title>
     @vite(['resources/css/app.css'])
 </head>
 <body class="bg-gradient-to-br from-red-50 via-white to-orange-50 min-h-screen flex items-center justify-center font-sans">

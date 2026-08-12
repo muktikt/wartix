@@ -31,11 +31,11 @@
                 <div>
                     <label class="block text-xs font-medium text-gray-700 mb-1.5">
                         Bot Username
-                        <span class="text-gray-400 font-normal">t.me/WartixcomBot</span>
+                        <span class="text-gray-400 font-normal">t.me/warindongcom_bot</span>
                     </label>
                     <input type="text" name="telegram_bot_username"
                         value="{{ $settings['telegram_bot_username'] ?? '' }}"
-                        placeholder="WartixBot"
+                        placeholder="WarindongBot"
                         class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 </div>
                 {{-- Di bagian Telegram --}}
@@ -59,7 +59,7 @@
                     </label>
                     <input type="text" name="telegram_admin_username"
                         value="{{ $settings['telegram_admin_username'] ?? '' }}"
-                        placeholder="admin_wartix"
+                        placeholder="admin_warindong"
                         class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 </div>
             </div>

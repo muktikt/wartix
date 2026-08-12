@@ -16,7 +16,7 @@ export default function Login() {
 
     return (
         <>
-            <Head title="Login Wartix Admin" />
+            <Head title="Login Warindong Admin" />
             <div className="bg-gradient-to-br from-indigo-50 via-white to-purple-50 min-h-screen flex items-center justify-center font-sans">
                 <motion.div
                     initial={{ opacity: 0, y: 16 }}
@@ -26,10 +26,10 @@ export default function Login() {
                 >
                     <div className="text-center mb-8">
                         <div className="flex items-center justify-center mb-3">
-                            <img src="/images/logo-w.png" alt="Wartix" className="h-14 w-auto" />
+                            <img src="/images/logo-w.png" alt="Warindong" className="h-14 w-auto" />
                         </div>
-                        <h1 className="text-xl font-semibold text-gray-900">Wartix Admin</h1>
-                        <p className="text-sm text-gray-500 mt-1">Masuk ke panel admin Wartix</p>
+                        <h1 className="text-xl font-semibold text-gray-900">Warindong Admin</h1>
+                        <p className="text-sm text-gray-500 mt-1">Masuk ke panel admin Warindong</p>
                     </div>
 
                     <motion.div
@@ -52,7 +52,7 @@ export default function Login() {
                                     type="email"
                                     value={data.email}
                                     onChange={(e) => setData('email', e.target.value)}
-                                    placeholder="admin@wartix.id"
+                                    placeholder="admin@warindong.com"
                                     className={`w-full px-3.5 py-2.5 text-sm border rounded-xl bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition ${errors.email ? 'border-red-300 bg-red-50' : 'border-gray-200'}`}
                                     required
                                     autoFocus
@@ -94,7 +94,7 @@ export default function Login() {
                         </form>
                     </motion.div>
 
-                    <p className="text-center text-xs text-gray-400 mt-5">&copy; {new Date().getFullYear()} Wartix. All rights reserved.</p>
+                    <p className="text-center text-xs text-gray-400 mt-5">&copy; {new Date().getFullYear()} Warindong. All rights reserved.</p>
                 </motion.div>
             </div>
         </>

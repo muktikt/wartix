@@ -19,7 +19,7 @@ const ORDER_STEPS = [
 ];
 
 const FAQS = [
-    { q: 'Apa itu Wartix?', a: 'Wartix adalah platform Ticket Assistance yang membantu kamu mendapatkan tiket konser, festival, dan fanmeeting high-demand dengan layanan profesional dan update realtime via Telegram.' },
+    { q: 'Apa itu Warindong?', a: 'Warindong adalah platform Ticket Assistance yang membantu kamu mendapatkan tiket konser, festival, dan fanmeeting high-demand dengan layanan profesional dan update realtime via Telegram.' },
     { q: 'Apakah ada jaminan berhasil?', a: 'Kami menampilkan success rate berdasarkan data akun yang benar-benar masuk dan berhasil. Hasil tetap bergantung pada ketersediaan tiket di platform resmi.' },
     { q: 'Kapan saya membayar fee jasa?', a: 'Pembayaran fee jasa dilakukan setelah tiket berhasil didapatkan. QRIS akan dikirim otomatis ke Telegram kamu begitu proses berhasil.' },
     { q: 'Data saya aman?', a: 'Ya, data kamu dienkripsi dan hanya digunakan untuk keperluan reservasi tiket. Data sensitif tidak pernah ditampilkan secara publik.' },
@@ -164,16 +164,16 @@ export default function Home({ stats, activeEvents, recentSuccess }) {
             </section>
 
             {/* STATS */}
-            <section className="border-y border-gray-100 bg-white">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-gray-100">
+            <section className="py-10 sm:py-14 px-4 bg-gradient-to-b from-gray-50/50 to-white border-y border-gray-100">
+                <div className="max-w-7xl mx-auto">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
                         {statsDisplay.map((stat) => (
-                            <div key={stat.label} className="py-8 px-6 flex flex-col items-center justify-center text-center transition-all duration-300 hover:bg-gray-50">
-                                <div className="text-3xl font-bold text-indigo-600 mb-0.5">
+                            <div key={stat.label} className="bg-white border border-gray-100/90 rounded-2xl p-5 sm:p-6 shadow-xs hover:shadow-md hover:border-indigo-100 hover-lift transition-all duration-300 flex flex-col items-center justify-center text-center group">
+                                <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-indigo-600 tracking-tight group-hover:scale-105 transition-transform duration-300">
                                     <CountUp end={stat.value} suffix={stat.suffix ?? ''} />
                                 </div>
-                                <div className="text-sm font-medium text-gray-900">{stat.label}</div>
-                                <div className="text-xs text-gray-400 mt-0.5">{stat.sub}</div>
+                                <div className="text-xs sm:text-sm font-bold text-gray-900 mt-2 sm:mt-3">{stat.label}</div>
+                                {stat.sub && <div className="text-[11px] font-medium text-gray-400 mt-1">{stat.sub}</div>}
                             </div>
                         ))}
                     </div>

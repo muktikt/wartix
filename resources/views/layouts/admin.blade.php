@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Dashboard') Wartix Admin</title>
+    <title>@yield('title', 'Dashboard') Warindong Admin</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-gray-50 font-sans antialiased">
@@ -49,7 +49,7 @@
         <div class="h-14 flex items-center justify-between px-3 border-b border-gray-100">
             <div class="flex items-center gap-2.5 overflow-hidden">
                 <img src="{{ asset('images/logo-w.png') }}"
-                    alt="Wartix"
+                    alt="Warindong"
                     class="h-7 w-auto flex-shrink-0">
                 <span class="text-xs bg-indigo-50 text-indigo-600 px-1.5 py-0.5 rounded font-medium" :class="{ 'md:hidden': sidebarCollapsed }">
                     Admin

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="google-site-verification" content="7Et0CRs828pDWQuyFH_ygTCy8IbI6YDnFwWY4Jx780Y" />
-    <title inertia>{{ config('app.name', 'Wartix') }}</title>
+    <title inertia>{{ config('app.name', 'Warindong') }}</title>
 
     @viteReactRefresh
     @routes

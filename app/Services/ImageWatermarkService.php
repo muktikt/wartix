@@ -279,13 +279,13 @@ class ImageWatermarkService
         // ── FOOTER ──────────────────────────────────────────
         $footerY = $bottomY + 90;
         if ($useFont) {
-            $footerText = 'wartix.id — ticket assistance platform';
+            $footerText = 'warindong.com — ticket assistance platform';
             $fbox = imagettfbbox(10, 0, $fontReg, $footerText);
             $fW   = abs($fbox[4] - $fbox[0]);
             $fX   = (int)(($w - $fW) / 2);
             imagettftext($img, 10, 0, $fX, $footerY, $gray2, $fontReg, $footerText);
         } else {
-            imagestring($img, 1, (int)(($w - 200) / 2), $footerY, 'wartix.id', $gray2);
+            imagestring($img, 1, (int)(($w - 200) / 2), $footerY, 'warindong.com', $gray2);
         }
 
         // Simpan

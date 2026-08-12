@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useForm, Link } from '@inertiajs/react';
+import { useForm, Link, Head } from '@inertiajs/react';
 import PublicLayout from '../../../Layouts/PublicLayout';
 import { formatDate, formatRp } from '../../../utils/format';
 
@@ -133,8 +133,54 @@ export default function EventShow({ event, totalSlots, availableSlots, eventStat
 
     const badge = STATUS_LABEL[event.status] ?? STATUS_LABEL.upcoming;
 
+    const eventSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'Event',
+        'name': event.title,
+        'description': event.description || `Priority Ticket Assistance untuk ${event.title}`,
+        'startDate': event.event_date ? new Date(event.event_date).toISOString() : undefined,
+        'eventStatus': 'https://schema.org/EventScheduled',
+        'eventAttendanceMode': 'https://schema.org/OfflineEventAttendanceMode',
+        'location': {
+            '@type': 'Place',
+            'name': event.venue || 'Venue',
+            'address': {
+                '@type': 'PostalAddress',
+                'addressLocality': event.city || 'Indonesia',
+                'addressCountry': 'ID'
+            }
+        },
+        'image': event.banner_image ? [`/storage/${event.banner_image}`] : undefined,
+        'performer': event.artist_name ? {
+            '@type': 'PerformingGroup',
+            'name': event.artist_name
+        } : undefined,
+        'organizer': {
+            '@type': 'Organization',
+            'name': 'Warindong',
+            'url': 'https://warindong.com'
+        },
+        'offers': event.ticket_categories?.map(cat => ({
+            '@type': 'Offer',
+            'name': cat.name,
+            'price': cat.fee_per_ticket || 0,
+            'priceCurrency': 'IDR',
+            'availability': availableSlots > 0 ? 'https://schema.org/InStock' : 'https://schema.org/SoldOut'
+        }))
+    };
+
     return (
         <PublicLayout title={event.title}>
+            <Head>
+                <title>{`${event.title} - Priority Ticket Assistance | Warindong`}</title>
+                <meta name="description" content={`Dapatkan jasa war tiket & priority assistance untuk ${event.title} (${event.artist_name || ''}) di ${event.venue || ''}, ${event.city || ''}.`} />
+                <meta property="og:title" content={`${event.title} - Warindong`} />
+                <meta property="og:description" content={`Jasa war tiket & priority assistance untuk ${event.title}.`} />
+                {event.banner_image && <meta property="og:image" content={`/storage/${event.banner_image}`} />}
+                <script type="application/ld+json">
+                    {JSON.stringify(eventSchema)}
+                </script>
+            </Head>
             <div className="max-w-5xl mx-auto px-4 py-8">
                 <div className="grid md:grid-cols-3 gap-8 md:h-[calc(100vh-8rem)] md:items-stretch">
 
@@ -622,7 +668,7 @@ export default function EventShow({ event, totalSlots, availableSlots, eventStat
                                     </button>
 
                                     <p className="text-xs text-gray-400 text-center mt-3">
-                                        Dengan submit, kamu menyetujui syarat &amp; ketentuan Wartix
+                                        Dengan submit, kamu menyetujui syarat &amp; ketentuan Warindong
                                     </p>
                                 </form>
                             </div>

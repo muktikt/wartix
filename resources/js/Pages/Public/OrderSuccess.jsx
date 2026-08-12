@@ -17,7 +17,7 @@ export default function OrderSuccess({ order, telegramLinkUrl, telegramGroupLink
         ?? '-';
 
     return (
-        <PublicLayout title="Order Berhasil Wartix">
+        <PublicLayout title="Order Berhasil Warindong">
             <div className="min-h-screen flex items-center justify-center px-4 py-12">
                 <div className="max-w-md w-full">
                     <div className="bg-white border border-gray-100 rounded-2xl p-6 text-center">
@@ -27,7 +27,7 @@ export default function OrderSuccess({ order, telegramLinkUrl, telegramGroupLink
                             </svg>
                         </div>
                         <h1 className="text-lg font-bold text-gray-900 mb-1">Order Berhasil Dikirim!</h1>
-                        <p className="text-sm text-gray-500 mb-5">Tim Wartix akan segera memproses order kamu.</p>
+                        <p className="text-sm text-gray-500 mb-5">Tim Warindong akan segera memproses order kamu.</p>
 
                         <div className="bg-gray-50 rounded-xl p-4 text-left mb-5 space-y-2">
                             <div className="flex justify-between text-sm">
@@ -58,7 +58,7 @@ export default function OrderSuccess({ order, telegramLinkUrl, telegramGroupLink
                                     Mengalihkan ke Telegram untuk konfirmasi order...
                                 </p>
                                 <a href={telegramLinkUrl} className="block w-full text-center bg-[#229ED9] hover:bg-[#1e8dcc] text-white text-sm font-medium py-2.5 rounded-xl transition-colors">
-                                    Buka Bot Telegram Wartix
+                                    Buka Bot Telegram Warindong
                                 </a>
                                 <p className="text-xs text-blue-500 mt-2 text-center">
                                     Belum teralihkan otomatis? Klik tombol di atas.

@@ -20,10 +20,10 @@ export default function PublicLayout({ children, title, description }) {
     return (
         <>
             <Head>
-                <title>{title ? `${title} - Wartix` : 'Warindong Priority Ticket Assistance'}</title>
+                <title>{title ? `${title} - Warindong` : 'Warindong Priority Ticket Assistance'}</title>
                 <meta
                     name="description"
-                    content={description || 'Wartix membantu kamu mendapatkan tiket konser, festival, dan fanmeeting dengan Priority Access, Realtime Monitoring, dan update via Telegram.'}
+                    content={description || 'Warindong membantu kamu mendapatkan tiket konser, festival, dan fanmeeting dengan Priority Access, Realtime Monitoring, dan update via Telegram.'}
                 />
             </Head>
 

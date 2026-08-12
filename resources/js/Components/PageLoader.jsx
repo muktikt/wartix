@@ -32,7 +32,7 @@ export default function PageLoader({ isDone }) {
                         transition={{ duration: 0.5, delay: 0.2 }}
                         className="text-2xl font-bold tracking-wider text-slate-100 mb-2"
                     >
-                        WARTIX<span className="text-indigo-400">.</span>
+                        WARINDONG<span className="text-indigo-400">.</span>
                     </motion.h1>
 
                     {/* Subtitle / Progress Line */}

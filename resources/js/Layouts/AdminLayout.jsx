@@ -69,7 +69,7 @@ export default function AdminLayout({ children, title }) {
 
     return (
         <>
-            <Head title={`${title ? title + ' - ' : ''}Wartix Admin`} />
+            <Head title={`${title ? title + ' - ' : ''}Warindong Admin`} />
 
             <div className="flex h-screen overflow-hidden bg-gray-50">
                 {/* Backdrop for mobile */}
@@ -96,7 +96,7 @@ export default function AdminLayout({ children, title }) {
                         <div className="flex items-center gap-2.5 overflow-hidden">
                             <img
                                 src="/images/logo-w.png"
-                                alt="Wartix"
+                                alt="Warindong"
                                 className="h-7 w-auto flex-shrink-0"
                             />
                             {!sidebarCollapsed && (
