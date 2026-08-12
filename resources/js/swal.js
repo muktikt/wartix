@@ -48,7 +48,7 @@ export function showConfirmPopup({
             title: 'wartix-swal-title',
             htmlContainer: 'wartix-swal-html',
             confirmButton: confirmClass,
-            cancelButton: cancelButtonText ? 'wartix-swal-cancel' : 'hidden',
+            cancelButton: cancelText ? 'wartix-swal-cancel' : 'hidden',
             actions: 'flex items-center justify-end gap-2.5 mt-6',
         }
     });
@@ -111,9 +111,9 @@ export function initGlobalConfirmInterceptors() {
             e.preventDefault();
             e.stopPropagation();
 
-            const isDelete = confirmMsg.toLowerCase().includes('hapus') || 
-                             confirmMsg.toLowerCase().includes('delete') ||
-                             Boolean(form.querySelector('input[name="_method"][value="DELETE"]'));
+            const isDelete = confirmMsg.toLowerCase().includes('hapus') ||
+                confirmMsg.toLowerCase().includes('delete') ||
+                Boolean(form.querySelector('input[name="_method"][value="DELETE"]'));
 
             const title = isDelete ? 'Konfirmasi Hapus' : 'Konfirmasi Action';
             const confirmBtnText = isDelete ? 'Ya, Hapus' : 'Ya, Lanjutkan';
