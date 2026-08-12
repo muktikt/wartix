@@ -22,6 +22,19 @@ class Order extends Model
         'birth_date'         => 'date',
     ];
 
+    protected $appends = ['social_media_screenshot_url'];
+
+    public function getSocialMediaScreenshotUrlAttribute(): ?string
+    {
+        if (!$this->social_media_screenshot) {
+            return null;
+        }
+        if (str_starts_with($this->social_media_screenshot, 'http://') || str_starts_with($this->social_media_screenshot, 'https://')) {
+            return $this->social_media_screenshot;
+        }
+        return \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'))->url($this->social_media_screenshot);
+    }
+
     /**
      * Daftar gelar yang dipakai oleh platform yang punya field gelar (Fasticket).
      * Key = value yang disimpan, value = label tampilan.

@@ -25,11 +25,11 @@ class EventBuilderController extends Controller
         $seatplanPath = null;
 
         if ($request->hasFile('banner_image')) {
-            $bannerPath = $request->file('banner_image')->store('banners', 'public');
+            $bannerPath = $request->file('banner_image')->store('banners', config('filesystems.default'));
         }
 
         if ($request->hasFile('seatplan_image')) {
-            $seatplanPath = $request->file('seatplan_image')->store('seatplans', 'public');
+            $seatplanPath = $request->file('seatplan_image')->store('seatplans', config('filesystems.default'));
         }
 
         $event = Event::create([
@@ -88,11 +88,11 @@ class EventBuilderController extends Controller
         $request->validate($this->rules());
 
         if ($request->hasFile('banner_image')) {
-            $event->banner_image = $request->file('banner_image')->store('banners', 'public');
+            $event->banner_image = $request->file('banner_image')->store('banners', config('filesystems.default'));
         }
 
         if ($request->hasFile('seatplan_image')) {
-            $event->seatplan_image = $request->file('seatplan_image')->store('seatplans', 'public');
+            $event->seatplan_image = $request->file('seatplan_image')->store('seatplans', config('filesystems.default'));
         }
 
         $event->update([

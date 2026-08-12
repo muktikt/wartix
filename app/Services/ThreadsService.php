@@ -32,14 +32,14 @@ class ThreadsService
             $mediaIds = [];
 
             // Upload banner
-            if ($event->banner_image) {
-                $id = $this->uploadMedia(asset("storage/{$event->banner_image}"), $caption);
+            if ($event->banner_url) {
+                $id = $this->uploadMedia($event->banner_url, $caption);
                 if ($id) $mediaIds[] = $id;
             }
 
             // Upload seatplan
-            if ($event->seatplan_image) {
-                $id = $this->uploadMedia(asset("storage/{$event->seatplan_image}"), '');
+            if ($event->seatplan_url) {
+                $id = $this->uploadMedia($event->seatplan_url, '');
                 if ($id) $mediaIds[] = $id;
             }
 

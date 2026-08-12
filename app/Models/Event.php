@@ -23,6 +23,30 @@ class Event extends Model
         'slot_availability' => 'integer',
     ];
 
+    protected $appends = ['banner_url', 'seatplan_url'];
+
+    public function getBannerUrlAttribute(): ?string
+    {
+        if (!$this->banner_image) {
+            return null;
+        }
+        if (str_starts_with($this->banner_image, 'http://') || str_starts_with($this->banner_image, 'https://')) {
+            return $this->banner_image;
+        }
+        return \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'))->url($this->banner_image);
+    }
+
+    public function getSeatplanUrlAttribute(): ?string
+    {
+        if (!$this->seatplan_image) {
+            return null;
+        }
+        if (str_starts_with($this->seatplan_image, 'http://') || str_starts_with($this->seatplan_image, 'https://')) {
+            return $this->seatplan_image;
+        }
+        return \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'))->url($this->seatplan_image);
+    }
+
     public function salePhases()
     {
         return $this->hasMany(SalePhase::class)->orderBy('sort_order');

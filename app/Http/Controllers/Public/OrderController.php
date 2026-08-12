@@ -217,7 +217,7 @@ class OrderController extends Controller
 
             $screenshotPath = null;
             if ($request->hasFile('social_media_screenshot')) {
-                $screenshotPath = $request->file('social_media_screenshot')->store('social_media_screenshots', 'public');
+                $screenshotPath = $request->file('social_media_screenshot')->store('social_media_screenshots', config('filesystems.default'));
             }
 
             $order = Order::create([

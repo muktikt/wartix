@@ -148,8 +148,8 @@ class N8nService
             'phases'      => $phases,
             'categories'  => $categories,
             'order_url'   => url("/events/{$event->slug}"),
-            'banner_url'  => $event->banner_image ? asset("storage/{$event->banner_image}") : null,
-            'seatplan_url'=> $event->seatplan_image ? asset("storage/{$event->seatplan_image}") : null,
+            'banner_url'  => $event->banner_url,
+            'seatplan_url'=> $event->seatplan_url,
 
             // Format Telegram
             'telegram_message' => $this->buildAnnouncementMessage($event, $phases, $categories),
