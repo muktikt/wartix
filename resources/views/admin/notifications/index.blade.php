@@ -88,7 +88,7 @@
                     </svg>
                 </a>
                 @endif
-                <form method="POST" action="{{ route('admin.notifications.destroy', $notif->id) }}">
+                <form method="POST" action="{{ route('admin.notifications.destroy', $notif->id) }}" data-confirm="Yakin hapus notifikasi ini?">
                     @csrf
                     @method('DELETE')
                     <button type="submit"

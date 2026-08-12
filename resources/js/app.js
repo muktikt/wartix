@@ -2,10 +2,15 @@ import './bootstrap';
 import Alpine from 'alpinejs';
 import collapse from '@alpinejs/collapse';
 import './echo';
+import { initGlobalConfirmInterceptors, showConfirmPopup, showToast } from './swal';
 
 Alpine.plugin(collapse);
 window.Alpine = Alpine;
 Alpine.start();
+
+// Initialize modern SweetAlert confirm popups interceptor
+initGlobalConfirmInterceptors();
+
 
 /**
  * Scroll-triggered animations via Intersection Observer.

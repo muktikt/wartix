@@ -25,11 +25,15 @@ class EventBuilderController extends Controller
         $seatplanPath = null;
 
         if ($request->hasFile('banner_image')) {
-            $bannerPath = $request->file('banner_image')->store('banners', config('filesystems.default'));
+            $bannerFile = $request->file('banner_image');
+            $bannerName = uniqid() . '_' . time() . '.' . $bannerFile->getClientOriginalExtension();
+            $bannerPath = $bannerFile->storeAs('banners', $bannerName, config('filesystems.default'));
         }
 
         if ($request->hasFile('seatplan_image')) {
-            $seatplanPath = $request->file('seatplan_image')->store('seatplans', config('filesystems.default'));
+            $seatplanFile = $request->file('seatplan_image');
+            $seatplanName = uniqid() . '_' . time() . '.' . $seatplanFile->getClientOriginalExtension();
+            $seatplanPath = $seatplanFile->storeAs('seatplans', $seatplanName, config('filesystems.default'));
         }
 
         $event = Event::create([
@@ -88,11 +92,15 @@ class EventBuilderController extends Controller
         $request->validate($this->rules());
 
         if ($request->hasFile('banner_image')) {
-            $event->banner_image = $request->file('banner_image')->store('banners', config('filesystems.default'));
+            $bannerFile = $request->file('banner_image');
+            $bannerName = uniqid() . '_' . time() . '.' . $bannerFile->getClientOriginalExtension();
+            $event->banner_image = $bannerFile->storeAs('banners', $bannerName, config('filesystems.default'));
         }
 
         if ($request->hasFile('seatplan_image')) {
-            $event->seatplan_image = $request->file('seatplan_image')->store('seatplans', config('filesystems.default'));
+            $seatplanFile = $request->file('seatplan_image');
+            $seatplanName = uniqid() . '_' . time() . '.' . $seatplanFile->getClientOriginalExtension();
+            $event->seatplan_image = $seatplanFile->storeAs('seatplans', $seatplanName, config('filesystems.default'));
         }
 
         $event->update([

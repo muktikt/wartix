@@ -601,3 +601,94 @@ input:focus, select:focus, textarea:focus {
         transform: none !important;
     }
 }
+
+/* ============================================================
+   SWEETALERT2 CUSTOM STYLING & ANIMATIONS
+   ============================================================ */
+
+.swal2-container {
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    background-color: rgba(15, 23, 42, 0.45) !important;
+    z-index: 99999 !important;
+}
+
+.swal2-popup.wartix-swal-popup {
+    border-radius: 1.5rem !important; /* 24px */
+    padding: 1.75rem !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(226, 232, 240, 0.8) !important;
+    background: #ffffff !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+.swal2-title.wartix-swal-title {
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+    color: #0f172a !important;
+    padding-top: 0.5rem !important;
+}
+
+.swal2-html-container.wartix-swal-html {
+    font-size: 0.875rem !important;
+    color: #475569 !important;
+    margin-top: 0.5rem !important;
+    line-height: 1.6 !important;
+}
+
+.swal2-actions {
+    margin-top: 1.5rem !important;
+    gap: 0.75rem !important;
+}
+
+.swal2-confirm.wartix-swal-confirm-danger {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35) !important;
+    border-radius: 0.75rem !important;
+    padding: 0.625rem 1.25rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    border: none !important;
+    transition: all 0.2s ease !important;
+}
+.swal2-confirm.wartix-swal-confirm-danger:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 18px rgba(239, 68, 68, 0.45) !important;
+}
+
+.swal2-confirm.wartix-swal-confirm-primary {
+    background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35) !important;
+    border-radius: 0.75rem !important;
+    padding: 0.625rem 1.25rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    border: none !important;
+    transition: all 0.2s ease !important;
+}
+.swal2-confirm.wartix-swal-confirm-primary:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 18px rgba(79, 70, 229, 0.45) !important;
+}
+
+.swal2-cancel.wartix-swal-cancel {
+    background-color: #f1f5f9 !important;
+    color: #475569 !important;
+    border-radius: 0.75rem !important;
+    padding: 0.625rem 1.25rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    border: 1px solid #e2e8f0 !important;
+    transition: all 0.2s ease !important;
+}
+.swal2-cancel.wartix-swal-cancel:hover {
+    background-color: #e2e8f0 !important;
+    color: #1e293b !important;
+}
+
+.swal2-icon {
+    scale: 0.9;
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+}

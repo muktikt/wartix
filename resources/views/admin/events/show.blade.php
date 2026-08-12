@@ -17,7 +17,7 @@
             Edit Event
         </a>
         <form action="{{ route('admin.events.destroy', $event) }}" method="POST" class="inline"
-            onsubmit="return confirm('Yakin hapus event ini? Semua phase, kategori, dan order terkait akan ikut terhapus.');">
+            data-confirm="Yakin hapus event ini? Semua phase, kategori, dan order terkait akan ikut terhapus.">
             @csrf
             @method('DELETE')
             <button type="submit"

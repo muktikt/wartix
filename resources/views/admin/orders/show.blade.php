@@ -109,7 +109,7 @@
                 </div>
             </div>
             <div class="mt-4">
-                <form action="{{ route('admin.orders.destroy', $order) }}" method="POST" onsubmit="return confirm('Yakin hapus order ini?');">
+                <form action="{{ route('admin.orders.destroy', $order) }}" method="POST" data-confirm="Yakin hapus order ini? Semua detail transaksi dan tiket terkait akan ikut terhapus.">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="bg-red-600 hover:bg-red-700 text-white text-sm font-semibold px-4 py-2 rounded-xl">Hapus Order</button>

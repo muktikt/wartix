@@ -95,10 +95,10 @@
                     <div class="flex items-center justify-end gap-2">
                         <a href="{{ route('admin.orders.show', $order) }}"
                             class="text-xs text-indigo-600 hover:text-indigo-700 font-medium">Detail</a>
-                        <form action="{{ route('admin.orders.destroy', $order) }}" method="POST" class="inline">
+                        <form action="{{ route('admin.orders.destroy', $order) }}" method="POST" class="inline" data-confirm="Yakin hapus order ini?">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="text-xs text-red-600 hover:text-red-700 font-medium" onclick="return confirm('Yakin hapus order ini?')">Hapus</button>
+                            <button type="submit" class="text-xs text-red-600 hover:text-red-700 font-medium">Hapus</button>
                         </form>
                     </div>
                 </td>
