@@ -48,44 +48,44 @@ export default function Home({ stats, activeEvents, recentSuccess }) {
     return (
         <PublicLayout title="Warindong Priority Ticket Assistance">
             {/* HERO */}
-            <section className="relative overflow-hidden bg-gradient-to-r from-[#f8f9ff] via-[#f1f3fe] to-[#e8edff] py-10 sm:py-14 lg:py-20 px-6 sm:px-8 lg:px-12 border-b border-gray-100/80">
-                {/* Right 3D Blue-Purple Gradient Shape */}
-                <div className="absolute -right-20 -top-20 w-72 h-72 sm:w-[450px] sm:h-[450px] md:w-[620px] md:h-[620px] sm:-right-28 sm:-top-10 rounded-full bg-gradient-to-bl from-[#3b82f6] via-[#6366f1] to-[#7c3aed] opacity-25 sm:opacity-75 md:opacity-90 blur-3xl pointer-events-none"></div>
+            <section className="relative overflow-hidden bg-[#F8FAFC] py-10 sm:py-14 lg:py-20 px-6 sm:px-8 lg:px-12 border-b border-[#E2E8F0]">
+                {/* Accent Soft Indigo-Violet Top-Right Glow */}
+                <div className="absolute -right-20 -top-20 w-72 h-72 sm:w-[450px] sm:h-[450px] md:w-[600px] md:h-[600px] sm:-right-28 sm:-top-10 rounded-full bg-gradient-to-bl from-[#4F46E5]/15 via-[#7C3AED]/10 to-transparent blur-3xl pointer-events-none"></div>
 
-                {/* Bottom-Left Pink-Purple Soft Glow */}
-                <div className="absolute -left-20 -bottom-10 w-64 h-64 sm:w-[360px] sm:h-[360px] md:w-[480px] md:h-[480px] sm:-left-28 rounded-full bg-gradient-to-tr from-pink-300/35 via-purple-300/30 to-indigo-200/20 blur-3xl pointer-events-none"></div>
+                {/* Accent Soft Violet-Indigo Bottom-Left Glow */}
+                <div className="absolute -left-20 -bottom-10 w-64 h-64 sm:w-[360px] sm:h-[360px] md:w-[480px] md:h-[480px] sm:-left-28 rounded-full bg-gradient-to-tr from-[#7C3AED]/10 via-[#4F46E5]/10 to-transparent blur-3xl pointer-events-none"></div>
 
                 {/* Ambient Center Overlay */}
-                <div className="absolute inset-0 bg-white/40 sm:bg-transparent pointer-events-none"></div>
+                <div className="absolute inset-0 bg-[#F8FAFC]/30 pointer-events-none"></div>
 
                 <div className="relative z-10 max-w-7xl mx-auto grid md:grid-cols-2 gap-8 md:gap-10 items-start">
                     <div>
                         <div className="flex flex-wrap gap-2 mb-5">
-                            <span className="inline-flex items-center gap-1.5 text-xs font-semibold bg-indigo-50/90 border border-indigo-100/80 text-indigo-700 px-3.5 py-1.5 rounded-full animate-fade-in-down shadow-xs">
+                            <span className="inline-flex items-center gap-1.5 text-xs font-semibold bg-[#4F46E5]/10 border border-[#4F46E5]/20 text-[#4F46E5] px-3.5 py-1.5 rounded-full animate-fade-in-down shadow-xs">
                                 Priority Access
                             </span>
-                            <span className="inline-flex items-center gap-1.5 text-xs font-semibold bg-purple-50/90 border border-purple-100/80 text-purple-700 px-3.5 py-1.5 rounded-full animate-fade-in-down anim-delay-100 shadow-xs">
+                            <span className="inline-flex items-center gap-1.5 text-xs font-semibold bg-[#7C3AED]/10 border border-[#7C3AED]/20 text-[#7C3AED] px-3.5 py-1.5 rounded-full animate-fade-in-down anim-delay-100 shadow-xs">
                                 Ticket Assistance
                             </span>
-                            <span className="inline-flex items-center gap-1.5 text-xs font-semibold bg-green-50/90 border border-green-100/80 text-green-700 px-3.5 py-1.5 rounded-full animate-fade-in-down anim-delay-200 shadow-xs">
+                            <span className="inline-flex items-center gap-1.5 text-xs font-semibold bg-emerald-50 border border-emerald-200 text-emerald-700 px-3.5 py-1.5 rounded-full animate-fade-in-down anim-delay-200 shadow-xs">
                                 Realtime Monitoring
                             </span>
                         </div>
 
-                        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight mb-4 animate-fade-in-down anim-delay-150">
+                        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#0F172A] leading-tight mb-4 animate-fade-in-down anim-delay-150">
                             Priority Ticket Assistance<br />
-                            <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent animate-text-shine block sm:inline mt-1 sm:mt-0">for High-Demand Events</span>
+                            <span className="bg-gradient-to-r from-[#4F46E5] to-[#7C3AED] bg-clip-text text-transparent animate-text-shine block sm:inline mt-1 sm:mt-0">for High-Demand Events</span>
                         </h1>
 
-                        <p className="text-gray-700 sm:text-gray-600 text-sm sm:text-base leading-relaxed mb-8 max-w-md animate-fade-in anim-delay-300">
+                        <p className="text-[#64748B] text-sm sm:text-base leading-relaxed mb-8 max-w-md animate-fade-in anim-delay-300">
                             Warindong membantu kamu mendapatkan tiket konser, festival, dan fanmeeting impian dengan layanan Ticket Assistance, Realtime Monitoring, dan notifikasi langsung via Telegram.
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-3 animate-fade-in anim-delay-450">
-                            <a href="#active-events" className="w-full sm:w-auto text-center justify-center inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm px-6 py-3 rounded-xl transition-all duration-300 shadow-md shadow-indigo-200 hover-lift hover:shadow-lg hover:shadow-indigo-500/25 btn-press">
+                            <a href="#active-events" className="w-full sm:w-auto text-center justify-center inline-flex items-center gap-2 bg-gradient-to-r from-[#4F46E5] to-[#7C3AED] hover:opacity-95 text-white font-semibold text-sm px-6 py-3 rounded-xl transition-all duration-300 shadow-md shadow-[#4F46E5]/20 hover-lift hover:shadow-lg hover:shadow-[#4F46E5]/30 btn-press">
                                 View Active Events
                             </a>
-                            <a href={TELEGRAM_LINK} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto text-center justify-center inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 font-semibold text-sm px-6 py-3 rounded-xl transition-all duration-300 hover-lift hover:border-indigo-200 btn-press">
+                            <a href={TELEGRAM_LINK} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto text-center justify-center inline-flex items-center gap-2 bg-[#FFFFFF] hover:bg-[#F8FAFC] text-[#0F172A] border border-[#E2E8F0] font-semibold text-sm px-6 py-3 rounded-xl transition-all duration-300 hover-lift hover:border-[#4F46E5]/30 btn-press">
                                 Join Telegram Channel
                             </a>
                         </div>
@@ -93,44 +93,44 @@ export default function Home({ stats, activeEvents, recentSuccess }) {
 
                     <div className="flex justify-center md:justify-end animate-scale-in anim-delay-150">
                         <div className="w-full max-w-sm flex flex-col gap-4">
-                            <div className="bg-white/95 backdrop-blur-md border border-white/80 rounded-2xl p-5 w-full shadow-xl hover-glow transition-all duration-300">
+                            <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-5 w-full shadow-xl hover-glow transition-all duration-300">
                                 <div className="flex items-center justify-between mb-4">
                                     <div className="flex items-center gap-2">
-                                        <span className="text-sm font-semibold text-gray-900">Preview Realtime Monitor</span>
+                                        <span className="text-sm font-semibold text-[#0F172A]">Preview Realtime Monitor</span>
                                     </div>
-                                    <span className="flex items-center gap-1 text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded-full font-medium">
-                                        <span className="w-1.5 h-1.5 bg-green-500 rounded-full live-indicator"></span>
+                                    <span className="flex items-center gap-1 text-xs text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full font-medium border border-emerald-100">
+                                        <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full live-indicator"></span>
                                         Live
                                     </span>
                                 </div>
 
-                                <div className="text-xs text-gray-500 leading-relaxed mb-4">
-                                    Klik <span className="font-medium text-gray-700">Lihat detail</span> untuk langsung turun ke bagian Realtime Success Monitor di dashboard ini.
+                                <div className="text-xs text-[#64748B] leading-relaxed mb-4">
+                                    Klik <span className="font-medium text-[#0F172A]">Lihat detail</span> untuk langsung turun ke bagian Realtime Success Monitor di dashboard ini.
                                 </div>
 
                                 <div className="space-y-2">
                                     {previewSuccess.length ? previewSuccess.map((log) => (
-                                        <div key={log.id} className="rounded-xl border border-gray-100 bg-gray-50 px-3 py-2 transition-transform duration-300 hover:scale-[1.02]">
+                                        <div key={log.id} className="rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2 transition-transform duration-300 hover:scale-[1.02]">
                                             <div className="flex items-center gap-2 mb-1">
-                                                <span className="bg-green-500/15 text-green-600 text-[10px] font-semibold px-2 py-0.5 rounded">SUCCESS</span>
-                                                <span className="text-xs text-gray-500 truncate">{log.email}</span>
+                                                <span className="bg-emerald-500/15 text-emerald-600 text-[10px] font-semibold px-2 py-0.5 rounded">SUCCESS</span>
+                                                <span className="text-xs text-[#64748B] truncate">{log.email}</span>
                                             </div>
-                                            <div className="flex items-center gap-2 text-xs text-gray-700">
+                                            <div className="flex items-center gap-2 text-xs text-[#0F172A]">
                                                 <span className="font-medium truncate">{log.event?.title ?? '-'}</span>
-                                                <span className="text-gray-300">&bull;</span>
-                                                <span className="truncate">{log.sale_phase?.name ?? '-'}</span>
-                                                <span className="text-gray-300">&bull;</span>
-                                                <span>x{log.qty}</span>
+                                                <span className="text-slate-300">&bull;</span>
+                                                <span className="truncate text-[#64748B]">{log.sale_phase?.name ?? '-'}</span>
+                                                <span className="text-slate-300">&bull;</span>
+                                                <span className="text-[#64748B]">x{log.qty}</span>
                                             </div>
                                         </div>
                                     )) : (
-                                        <div className="rounded-xl border border-dashed border-gray-200 bg-gray-50 px-3 py-6 text-center text-xs text-gray-400">
+                                        <div className="rounded-xl border border-dashed border-[#E2E8F0] bg-[#F8FAFC] px-3 py-6 text-center text-xs text-[#64748B]">
                                             Belum ada data sukses untuk ditampilkan.
                                         </div>
                                     )}
                                 </div>
 
-                                <a href="#monitor" className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-indigo-600 hover:text-indigo-700 transition-colors duration-200 group btn-press">
+                                <a href="#monitor" className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-[#4F46E5] hover:text-[#7C3AED] transition-colors duration-200 group btn-press">
                                     Lihat detail
                                     <svg className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
