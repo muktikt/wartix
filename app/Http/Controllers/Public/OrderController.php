@@ -89,6 +89,14 @@ class OrderController extends Controller
             ]);
         }
 
+        // --- Kategori utama & cadangan gak boleh sama --- 
+        $duplicateCategoryIds = $categoryChoices->pluck('ticket_category_id')->duplicates(); 
+        if ($duplicateCategoryIds->isNotEmpty()) { 
+            return back()->withInput()->withErrors([ 
+                'category_choices' => 'Kategori utama dan cadangan tidak boleh sama. Silakan pilih kategori yang berbeda.', 
+            ]); 
+        }
+
         // --- Kategori UTAMA ---
         $primaryCategoryId = $categoryChoices->first()['ticket_category_id'];
         $category = TicketCategory::where('event_id', $event->id)->find($primaryCategoryId);
