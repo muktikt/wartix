@@ -1,0 +1,249 @@
+{
+  "name": "Wartix Admin Notify (Order Baru & Payment Fee)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "wartix-admin-notify",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -640,
+        0
+      ],
+      "id": "a972607c-4e94-47ff-a078-b0d1117c2162",
+      "name": "Webhook - Admin Notify",
+      "webhookId": "4ef0ae7b-98f5-46b2-bf47-05db128f0eaa"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "0102b11b-c907-4fba-87d7-34c011c10339",
+              "leftValue": "={{ $json.headers['x-wartix-secret'] }}",
+              "rightValue": "REPLACE_WITH_N8N_ADMIN_WEBHOOK_SECRET",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -400,
+        0
+      ],
+      "id": "d1d625dd-760b-4e05-b94b-0ea8d20e604b",
+      "name": "Cek Secret"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "ec8c2557-3867-404a-bceb-3b2da61e16af",
+                    "leftValue": "={{ $json.body.event_type }}",
+                    "rightValue": "order_created",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "order_created"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "7bfba8e7-e3ae-401b-b001-e1a88d6a32d1",
+                    "leftValue": "={{ $json.body.event_type }}",
+                    "rightValue": "payment_paid",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "payment_paid"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -160,
+        0
+      ],
+      "id": "478df3e4-1f8e-46c6-a04c-6c909629d289",
+      "name": "Route Event Type"
+    },
+    {
+      "parameters": {
+        "chatId": "7227989603",
+        "text": "={{ $json.body.telegram_message }}",
+        "additionalFields": {
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        160,
+        0
+      ],
+      "id": "d2bcf3e4-507d-4b09-a0b6-96947f41ea4f",
+      "name": "Kirim ke Telegram Admin",
+      "credentials": {
+        "telegramApi": {
+          "id": "REPLACE_ME",
+          "name": "Wartix Admin Notify Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"status\": \"ok\" } }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        400,
+        0
+      ],
+      "id": "50f47d70-5930-45bf-9afc-b3b570b1f81c",
+      "name": "Respond OK"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseCode": 401,
+        "responseBody": "={{ { \"error\": \"Unauthorized\" } }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -400,
+        200
+      ],
+      "id": "ba75e66e-ec3a-45a4-8769-e2aa79c5e8b6",
+      "name": "Respond Unauthorized"
+    }
+  ],
+  "connections": {
+    "Webhook - Admin Notify": {
+      "main": [
+        [
+          {
+            "node": "Cek Secret",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cek Secret": {
+      "main": [
+        [
+          {
+            "node": "Route Event Type",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond Unauthorized",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route Event Type": {
+      "main": [
+        [
+          {
+            "node": "Kirim ke Telegram Admin",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Kirim ke Telegram Admin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Kirim ke Telegram Admin": {
+      "main": [
+        [
+          {
+            "node": "Respond OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "05d8a502-26e4-4af8-abc2-cf811bd50ef8",
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "instanceId": "wartix-admin-notify"
+  },
+  "nodeGroups": [],
+  "id": "757ec54e-8fef-4169-8641-739adc4c4d19",
+  "tags": []
+}

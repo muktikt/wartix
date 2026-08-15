@@ -226,11 +226,13 @@ class Order extends Model
             ->values();
 
         if ($categories->count() > 1) {
-            $lines[] = "🎟️ Kategori Utama: {$categories[0]} x{$this->qty}";
+            $lines[] = "🎟️ Kategori Utama: {$categories[0]}";
             $lines[] = '🔁 Kategori Cadangan: ' . $categories->slice(1)->implode(', ');
         } else {
-            $lines[] = "🎟️ Kategori: " . ($categories->first() ?? '-') . " x{$this->qty}";
+            $lines[] = "🎟️ Kategori: " . ($categories->first() ?? '-');
         }
+
+        $lines[] = "🎫 Qty: {$this->qty}";
 
         // Field khusus platform yang punya gelar (tiket.com, fasticket)
         if (in_array($platform, self::PLATFORMS_WITH_TITLE, true) && $this->title_label) {
