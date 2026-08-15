@@ -48,10 +48,11 @@ class HandleInertiaRequests extends Middleware
                 if (!$request->user('admin')) {
                     return 0;
                 }
-                if (!\Illuminate\Support\Facades\Schema::hasTable('admin_notifications')) {
+                try {
+                    return \App\Models\AdminNotification::unread()->count();
+                } catch (\Throwable) {
                     return 0;
                 }
-                return \App\Models\AdminNotification::unread()->count();
             },
         ]);
     }

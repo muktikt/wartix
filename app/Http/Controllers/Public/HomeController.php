@@ -29,28 +29,31 @@ class HomeController extends Controller
         });
 
         $activeEvents = Cache::remember('active_events', 15, function () {
-            return Event::whereIn('status', ['upcoming', 'slot_penuh', 'ongoing'])
+            $events = Event::whereIn('status', ['upcoming', 'slot_penuh', 'ongoing'])
                 ->with(['salePhases', 'ticketCategories'])
                 ->latest()
                 ->limit(6)
                 ->get();
+
+            // Attach account stats inside cache to avoid N+1 on every request
+            return $events->map(fn (Event $event) => $this->attachAccountStats($event));
         });
 
-        $activeEvents = $activeEvents->map(fn (Event $event) => $this->attachAccountStats($event));
-
-        $recentSuccess = SuccessLog::with(['event', 'salePhase', 'ticketCategory'])
-            ->where('status', 'success')
-            ->latest()
-            ->limit(10)
-            ->get()
-            ->map(fn (SuccessLog $log) => [
-                'id'    => $log->id,
-                'email' => MaskService::email($log->email ?? 'us***@example.com'),
-                'qty'   => $log->qty,
-                'event' => $log->event ? ['title' => $log->event->title] : null,
-                'sale_phase' => $log->salePhase ? ['name' => $log->salePhase->name] : null,
-                'ticket_category' => $log->ticketCategory ? ['name' => $log->ticketCategory->name] : null,
-            ]);
+        $recentSuccess = Cache::remember('home_recent_success', 30, function () {
+            return SuccessLog::with(['event', 'salePhase', 'ticketCategory'])
+                ->where('status', 'success')
+                ->latest()
+                ->limit(10)
+                ->get()
+                ->map(fn (SuccessLog $log) => [
+                    'id'    => $log->id,
+                    'email' => MaskService::email($log->email ?? 'us***@example.com'),
+                    'qty'   => $log->qty,
+                    'event' => $log->event ? ['title' => $log->event->title] : null,
+                    'sale_phase' => $log->salePhase ? ['name' => $log->salePhase->name] : null,
+                    'ticket_category' => $log->ticketCategory ? ['name' => $log->ticketCategory->name] : null,
+                ]);
+        });
 
         return Inertia::render('Public/Home', [
             'stats'         => $stats,

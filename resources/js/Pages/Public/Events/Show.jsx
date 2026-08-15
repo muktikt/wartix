@@ -188,7 +188,7 @@ export default function EventShow({ event, totalSlots, availableSlots, eventStat
                     <div className="md:col-span-2 space-y-6 md:h-full md:overflow-y-auto md:pr-4">
                         <div className="rounded-2xl overflow-hidden bg-gradient-to-br from-indigo-900 to-purple-900 aspect-video flex items-center justify-center">
                             {event.banner_image ? (
-                                <img src={`/storage/${event.banner_image}`} className="w-full h-full object-cover" alt={event.title} />
+                                <img src={`/storage/${event.banner_image}`} loading="lazy" decoding="async" className="w-full h-full object-cover" alt={event.title} />
                             ) : (
                                 <span className="text-white/50 text-lg font-medium">{event.title}</span>
                             )}
@@ -240,7 +240,7 @@ export default function EventShow({ event, totalSlots, availableSlots, eventStat
                         {event.seatplan_image && (
                             <div className="bg-white border border-gray-100 rounded-2xl p-5">
                                 <h3 className="text-sm font-semibold text-gray-900 mb-3">Denah Tempat Duduk</h3>
-                                <img src={`/storage/${event.seatplan_image}`} className="w-full rounded-xl" alt="Seatplan" />
+                                <img src={`/storage/${event.seatplan_image}`} loading="lazy" decoding="async" className="w-full rounded-xl" alt="Seatplan" />
                             </div>
                         )}
 

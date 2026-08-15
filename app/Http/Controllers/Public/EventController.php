@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 
 class EventController extends Controller
@@ -44,16 +45,17 @@ class EventController extends Controller
             $query->whereMonth('event_date', $month);
         }
 
+        // Use subquery selects instead of N+1 per-event Order queries
+        $query->addSelect([
+            'events.*',
+            \Illuminate\Support\Facades\DB::raw('(SELECT COUNT(DISTINCT email) FROM orders WHERE orders.event_id = events.id) as total_accounts_count'),
+            \Illuminate\Support\Facades\DB::raw('(SELECT COUNT(DISTINCT email) FROM orders WHERE orders.event_id = events.id AND orders.order_status = \'success\') as success_accounts_count'),
+        ]);
+
         $events = $query->latest('event_date')->paginate(12)->withQueryString();
         $events->getCollection()->transform(function (Event $event) {
-            $totalAccounts = Order::where('event_id', $event->id)
-                ->distinct('email')
-                ->count('email');
-
-            $successAccounts = Order::where('event_id', $event->id)
-                ->where('order_status', 'success')
-                ->distinct('email')
-                ->count('email');
+            $totalAccounts = (int) ($event->total_accounts_count ?? 0);
+            $successAccounts = (int) ($event->success_accounts_count ?? 0);
 
             $event->setAttribute('total_accounts', $totalAccounts);
             $event->setAttribute('success_accounts', $successAccounts);
@@ -66,8 +68,12 @@ class EventController extends Controller
             return $event;
         });
 
-        $cities    = Event::whereIn('status', ['upcoming', 'slot_penuh', 'ongoing', 'finished'])->distinct()->pluck('city');
-        $types     = Event::whereIn('status', ['upcoming', 'slot_penuh', 'ongoing', 'finished'])->distinct()->pluck('event_type');
+        $cities = Cache::remember('event_filter_cities', 300, function () {
+            return Event::whereIn('status', ['upcoming', 'slot_penuh', 'ongoing', 'finished'])->distinct()->pluck('city');
+        });
+        $types = Cache::remember('event_filter_types', 300, function () {
+            return Event::whereIn('status', ['upcoming', 'slot_penuh', 'ongoing', 'finished'])->distinct()->pluck('event_type');
+        });
 
         return Inertia::render('Public/Events/Index', [
             'events'  => $events,

@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { Head, Link } from '@inertiajs/react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const TELEGRAM_LINK = 'https://t.me/wartixdotcom';
 const WHATSAPP_LINK = 'https://chat.whatsapp.com/CBgJ9tYH2F08OlteajZcBJ?s=cl&p=i&ilr=4';
@@ -16,7 +17,33 @@ function TelegramIcon({ className }) {
     );
 }
 
+function HamburgerIcon({ open }) {
+    return (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            {open ? (
+                <path d="M6 18L18 6M6 6l12 12" />
+            ) : (
+                <>
+                    <path d="M4 6h16" />
+                    <path d="M4 12h16" />
+                    <path d="M4 18h16" />
+                </>
+            )}
+        </svg>
+    );
+}
+
+const NAV_LINKS = [
+    { label: 'Home', href: () => route('home') },
+    { label: 'Events', href: () => `${route('home')}#active-events` },
+    { label: 'Realtime Monitor', href: () => `${route('home')}#monitor` },
+    { label: 'Cara Order', href: () => `${route('home')}#cara-order` },
+    { label: 'FAQ', href: () => `${route('home')}#faq` },
+];
+
 export default function PublicLayout({ children, title, description }) {
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
     return (
         <>
             <Head>
@@ -25,6 +52,7 @@ export default function PublicLayout({ children, title, description }) {
                     name="description"
                     content={description || 'Warindong membantu kamu mendapatkan tiket konser, festival, dan fanmeeting dengan Priority Access, Realtime Monitoring, dan update via Telegram.'}
                 />
+                <meta property="og:url" content={typeof window !== 'undefined' ? window.location.href : ''} />
             </Head>
 
             {/* NAVBAR */}
@@ -33,46 +61,101 @@ export default function PublicLayout({ children, title, description }) {
                     {/* Logo & Divider */}
                     <div className="flex items-center gap-3">
                         <Link href={route('home')} className="flex items-center gap-2">
-                            <img src="/images/logo-w.png" alt="Warindong" className="h-8 sm:h-9 w-auto max-w-[180px] object-contain" />
+                            <img src="/images/logo-w.png" alt="Warindong" width="180" height="36" className="h-8 sm:h-9 w-auto max-w-[180px] object-contain" />
                         </Link>
                         <div className="hidden sm:block h-4 w-px bg-gray-200"></div>
                         <span className="hidden lg:block text-[11px] font-medium text-gray-400 tracking-tight">Priority Assistance</span>
                     </div>
 
-                    {/* Nav Links */}
+                    {/* Nav Links (Desktop) */}
                     <div className="hidden md:flex items-center gap-6 lg:gap-8">
-                        <Link href={route('home')} className="relative py-1 text-xs font-semibold uppercase tracking-wider transition-colors btn-press text-gray-600 hover:text-indigo-600 active:text-indigo-700">
-                            Home
-                        </Link>
-                        <a href={`${route('home')}#active-events`} className="relative py-1 text-xs font-semibold uppercase tracking-wider transition-colors btn-press text-gray-600 hover:text-indigo-600 active:text-indigo-700">
-                            Events
-                        </a>
-                        <a href={`${route('home')}#monitor`} className="relative py-1 text-xs font-semibold uppercase tracking-wider transition-colors btn-press text-gray-600 hover:text-indigo-600 active:text-indigo-700">
-                            Realtime Monitor
-                        </a>
-                        <a href={`${route('home')}#cara-order`} className="relative py-1 text-xs font-semibold uppercase tracking-wider transition-colors btn-press text-gray-600 hover:text-indigo-600 active:text-indigo-700">
-                            Cara Order
-                        </a>
-                        <a href={`${route('home')}#faq`} className="relative py-1 text-xs font-semibold uppercase tracking-wider transition-colors btn-press text-gray-600 hover:text-indigo-600 active:text-indigo-700">
-                            FAQ
-                        </a>
+                        {NAV_LINKS.map((link) => (
+                            link.label === 'Home' ? (
+                                <Link key={link.label} href={link.href()} className="relative py-1 text-xs font-semibold uppercase tracking-wider transition-colors btn-press text-gray-600 hover:text-indigo-600 active:text-indigo-700">
+                                    {link.label}
+                                </Link>
+                            ) : (
+                                <a key={link.label} href={link.href()} className="relative py-1 text-xs font-semibold uppercase tracking-wider transition-colors btn-press text-gray-600 hover:text-indigo-600 active:text-indigo-700">
+                                    {link.label}
+                                </a>
+                            )
+                        ))}
                     </div>
 
-                    {/* CTA Button */}
+                    {/* Right side: CTA + Hamburger */}
                     <div className="flex items-center gap-2">
                         <a
                             href={TELEGRAM_LINK}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold pl-4 pr-1.5 py-1.5 rounded-full transition-all duration-300 shadow-md shadow-indigo-200 hover:shadow-indigo-300 group btn-press"
+                            className="hidden sm:flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold pl-4 pr-1.5 py-1.5 rounded-full transition-all duration-300 shadow-md shadow-indigo-200 hover:shadow-indigo-300 group btn-press"
                         >
                             <span>Join Telegram</span>
                             <span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
                                 <TelegramIcon className="w-3.5 h-3.5" />
                             </span>
                         </a>
+
+                        {/* Mobile Hamburger Button */}
+                        <button
+                            type="button"
+                            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                            className="md:hidden p-2 rounded-xl text-gray-600 hover:text-indigo-600 hover:bg-gray-50 transition-all duration-200 btn-press"
+                            aria-label="Toggle menu"
+                            aria-expanded={mobileMenuOpen}
+                        >
+                            <HamburgerIcon open={mobileMenuOpen} />
+                        </button>
                     </div>
                 </div>
+
+                {/* Mobile Menu Drawer */}
+                <AnimatePresence>
+                    {mobileMenuOpen && (
+                        <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                            className="md:hidden overflow-hidden"
+                        >
+                            <div className="py-4 space-y-1 border-t border-gray-100 mt-2.5">
+                                {NAV_LINKS.map((link) => (
+                                    link.label === 'Home' ? (
+                                        <Link
+                                            key={link.label}
+                                            href={link.href()}
+                                            onClick={() => setMobileMenuOpen(false)}
+                                            className="block px-3 py-2.5 text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50/50 rounded-xl transition-all duration-200"
+                                        >
+                                            {link.label}
+                                        </Link>
+                                    ) : (
+                                        <a
+                                            key={link.label}
+                                            href={link.href()}
+                                            onClick={() => setMobileMenuOpen(false)}
+                                            className="block px-3 py-2.5 text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50/50 rounded-xl transition-all duration-200"
+                                        >
+                                            {link.label}
+                                        </a>
+                                    )
+                                ))}
+                                <div className="pt-2 px-3">
+                                    <a
+                                        href={TELEGRAM_LINK}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center justify-center gap-2 w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold py-2.5 rounded-xl transition-all duration-300 shadow-md shadow-indigo-200 btn-press"
+                                    >
+                                        <TelegramIcon className="w-4 h-4" />
+                                        <span>Join Telegram</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </nav>
 
             {/* PAGE CONTENT */}

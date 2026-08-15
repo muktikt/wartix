@@ -2,6 +2,22 @@
 <html lang="id">
 <head>
 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="theme-color" content="#4F46E5">
+    <title>@yield('title', 'Warindong Priority Ticket Assistance')</title>
+    <meta name="description" content="@yield('meta-description', 'Warindong membantu kamu mendapatkan tiket konser, festival, dan fanmeeting dengan Priority Access, Realtime Monitoring, dan update via Telegram.')">
+
+    {{-- Preconnect hints for external domains --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+
+    {{-- Non-blocking Google Font loading --}}
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"></noscript>
+
     {{-- Favicon --}}
     <meta property="og:image" content="{{ asset('images/logo-full.png') }}">
     <meta name="twitter:image" content="{{ asset('images/logo-full.png') }}">
@@ -9,19 +25,16 @@
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/logo-w.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/logo-w.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('images/logo-w.png') }}">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Warindong Priority Ticket Assistance')</title>
-    <meta name="description" content="@yield('meta-description', 'Warindong membantu kamu mendapatkan tiket konser, festival, dan fanmeeting dengan Priority Access, Realtime Monitoring, dan update via Telegram.')">
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     {{-- SEO --}}
     <meta name="google-site-verification" content="7Et0CRs828pDWQuyFH_ygTCy8IbI6YDnFwWY4Jx780Y" />
     <meta name="robots" content="index, follow">
     <meta property="og:title" content="@yield('title', 'Warindong Priority Ticket Assistance')">
     <meta property="og:description" content="@yield('meta-description', 'Platform Ticket Assistance untuk event high-demand.')">
     <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:site_name" content="Warindong">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="@yield('title', 'Warindong')">
