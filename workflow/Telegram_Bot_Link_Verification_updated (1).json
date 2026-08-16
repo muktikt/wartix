@@ -409,30 +409,6 @@
     {
       "parameters": {
         "chatId": "7227989603",
-        "text": "=✅ <b>Order Berhasil Diproses</b>\n\nOrder:\n<code>{{ $json.order_code }}</code>\n\nKategori:\n{{ $json.category_name }}\n\nQRIS sedang diproses.",
-        "additionalFields": {
-          "parse_mode": "HTML"
-        }
-      },
-      "type": "n8n-nodes-base.telegram",
-      "typeVersion": 1.2,
-      "position": [
-        1072,
-        -96
-      ],
-      "id": "4746c0f5-8a7f-47e1-9515-bada10c93c83",
-      "name": "Send a text message4",
-      "webhookId": "89d4a69b-e0da-4b26-911b-7b31a7511092",
-      "credentials": {
-        "telegramApi": {
-          "id": "eL6cPtp0onxfp692",
-          "name": "Wartix Telegram Bot"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "chatId": "7227989603",
         "text": "=⚠️ Gagal proses laporan sukses.\n\nEmail:\n{{ $('Code in JavaScript1').item.json.email }}\n\nPlatform:\n{{ $('Code in JavaScript1').item.json.platform }}\n\nResponse:\n\n{{ JSON.stringify($json) }}",
         "additionalFields": {}
       },
@@ -595,13 +571,7 @@
     },
     "If5": {
       "main": [
-        [
-          {
-            "node": "Send a text message4",
-            "type": "main",
-            "index": 0
-          }
-        ],
+        [],
         [
           {
             "node": "Send a text message5",
