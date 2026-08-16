@@ -1,0 +1,371 @@
+{
+  "name": "Warindong Event Broadcast (Event Baru & Rekap Selesai)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "warindong-events",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -700,
+        0
+      ],
+      "id": "a1b2c3d4-e5f6-4a1b-8c2d-3e4f5a6b7c8d",
+      "name": "Webhook - Event Notification",
+      "webhookId": "warindong-events-webhook"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c1d2e3f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f",
+              "leftValue": "={{ $json.headers['x-wartix-secret'] }}",
+              "rightValue": "4JH2tJvXDuQpkkCRlONJoNhGS7dGZ1mMTmhlta1M",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -460,
+        0
+      ],
+      "id": "b2c3d4e5-f6a1-4b2c-9d3e-4f5a6b7c8d9e",
+      "name": "Cek Secret"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "e1f2a3b4-c5d6-4e7f-8a9b-0c1d2e3f4a5b",
+                    "leftValue": "={{ $json.body.event_type }}",
+                    "rightValue": "event_created",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "event_created"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "f2a3b4c5-d6e7-4f8a-9b0c-1d2e3f4a5b6c",
+                    "leftValue": "={{ $json.body.event_type }}",
+                    "rightValue": "event_finished",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "event_finished"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -220,
+        0
+      ],
+      "id": "c3d4e5f6-a1b2-4c3d-ae4f-5a6b7c8d9e0f",
+      "name": "Route Event Type"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "d4e5f6a1-b2c3-4d4e-bf5a-6b7c8d9e0f1a",
+              "leftValue": "={{ $json.body.banner_url }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        60,
+        -120
+      ],
+      "id": "d4e5f6a1-b2c3-4d4e-bf5a-6b7c8d9e0f1a",
+      "name": "Cek Banner URL"
+    },
+    {
+      "parameters": {
+        "operation": "sendPhoto",
+        "chatId": "-1003514955896",
+        "file": "={{ $json.body.banner_url }}",
+        "additionalFields": {
+          "caption": "={{ $json.body.telegram_message }}",
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        320,
+        -200
+      ],
+      "id": "e5f6a1b2-c3d4-4e5f-c0a1-7b8c9d0e1f2a",
+      "name": "Kirim Foto Event Baru",
+      "credentials": {
+        "telegramApi": {
+          "id": "eL6cPtp0onxfp692",
+          "name": "Wartix Telegram Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "-1003514955896",
+        "text": "={{ $json.body.telegram_message }}",
+        "additionalFields": {
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        320,
+        -40
+      ],
+      "id": "f6a1b2c3-d4e5-4f6a-d1b2-8c9d0e1f2a3b",
+      "name": "Kirim Teks Event Baru",
+      "credentials": {
+        "telegramApi": {
+          "id": "eL6cPtp0onxfp692",
+          "name": "Wartix Telegram Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "-1003514955896",
+        "text": "={{ $json.body.telegram_message }}",
+        "additionalFields": {
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        320,
+        140
+      ],
+      "id": "a2b3c4d5-e6f1-4a2b-e2c3-9d0e1f2a3b4c",
+      "name": "Kirim Rekap Selesai",
+      "credentials": {
+        "telegramApi": {
+          "id": "eL6cPtp0onxfp692",
+          "name": "Wartix Telegram Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"status\": \"ok\" } }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        580,
+        0
+      ],
+      "id": "b3c4d5e6-f1a2-4b3c-f3d4-0e1f2a3b4c5d",
+      "name": "Respond OK"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseCode": 401,
+        "responseBody": "={{ { \"error\": \"Unauthorized\" } }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -460,
+        200
+      ],
+      "id": "c4d5e6f1-a2b3-4c4d-a4e5-1f2a3b4c5d6e",
+      "name": "Respond Unauthorized"
+    }
+  ],
+  "connections": {
+    "Webhook - Event Notification": {
+      "main": [
+        [
+          {
+            "node": "Cek Secret",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cek Secret": {
+      "main": [
+        [
+          {
+            "node": "Route Event Type",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond Unauthorized",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route Event Type": {
+      "main": [
+        [
+          {
+            "node": "Cek Banner URL",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Kirim Rekap Selesai",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cek Banner URL": {
+      "main": [
+        [
+          {
+            "node": "Kirim Foto Event Baru",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Kirim Teks Event Baru",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Kirim Foto Event Baru": {
+      "main": [
+        [
+          {
+            "node": "Respond OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Kirim Teks Event Baru": {
+      "main": [
+        [
+          {
+            "node": "Respond OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Kirim Rekap Selesai": {
+      "main": [
+        [
+          {
+            "node": "Respond OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "warindong-event-broadcast-v1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "warindong-events"
+  },
+  "nodeGroups": [],
+  "id": "warindong-events-broadcast",
+  "tags": []
+}

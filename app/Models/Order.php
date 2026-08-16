@@ -213,7 +213,7 @@ class Order extends Model
         $platform = $event->platform_type ?? 'custom';
 
         $lines   = [];
-        $lines[] = '✅ <b>Order Diterima — Wartix</b>';
+        $lines[] = '✅ <b>Order Diterima — Warindong</b>';
         $lines[] = '';
         $lines[] = "Halo {$this->full_name}! Order kamu sudah dikonfirmasi.";
         $lines[] = '';

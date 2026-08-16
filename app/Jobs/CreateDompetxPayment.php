@@ -61,7 +61,7 @@ class CreateDompetxPayment implements ShouldQueue
             Log::error("CreateDompetxPayment: failed for order {$order->order_code}");
 
             $telegram->sendMessage($chatId,
-                "⚠️ <b>Info Pembayaran — Wartix</b>\n\n" .
+                "⚠️ <b>Info Pembayaran — Warindong</b>\n\n" .
                 "Tiket untuk order <code>{$order->order_code}</code> berhasil!\n\n" .
                 "Silakan hubungi admin untuk informasi pembayaran."
             );
@@ -84,7 +84,7 @@ class CreateDompetxPayment implements ShouldQueue
             $telegram->sendPhoto(
                 $chatId,
                 $qrisUrl,
-                "Scan QRIS untuk membayar fee jasa Wartix\n" .
+                "Scan QRIS untuk membayar fee jasa Warindong\n" .
                 "Order: {$order->order_code}\n" .
                 "Total: Rp " . number_format($order->grand_total)
             );

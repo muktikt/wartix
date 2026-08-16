@@ -107,7 +107,7 @@
     {
       "parameters": {
         "chatId": "={{ $json.chat_id }}",
-        "text": "Halo! 👋 Selamat datang di Bot Wartix.  Untuk konfirmasi order, silakan klik link yang muncul setelah kamu submit order di warindong.com",
+        "text": "Halo! 👋 Selamat datang di Bot Warindong.  Untuk konfirmasi order, silakan klik link yang muncul setelah kamu submit order di warindong.com",
         "additionalFields": {}
       },
       "type": "n8n-nodes-base.telegram",
@@ -218,7 +218,7 @@
     {
       "parameters": {
         "chatId": "={{ $('Code in JavaScript').item.json.chat_id }}",
-        "text": "=⚠️ {{ $json.message }}\n\nKalau kamu yakin ini error, hubungi admin Wartix.",
+        "text": "=⚠️ {{ $json.message }}\n\nKalau kamu yakin ini error, hubungi admin Warindong.",
         "additionalFields": {}
       },
       "type": "n8n-nodes-base.telegram",
@@ -250,20 +250,10 @@
             {
               "id": "195c254f-f0c5-441f-93e4-a9831365b30b",
               "leftValue": "={{ $json.message.chat.id }}",
-              "rightValue": 0,
-              "operator": {
-                "type": "number",
-                "operation": "equals"
-              }
-            },
-            {
-              "id": "ab1d6912-37b8-47fd-838b-5f54f542907d",
-              "leftValue": "7227989603",
-              "rightValue": "",
+              "rightValue": "7227989603",
               "operator": {
                 "type": "string",
-                "operation": "equals",
-                "name": "filter.operator.equals"
+                "operation": "equals"
               }
             }
           ],

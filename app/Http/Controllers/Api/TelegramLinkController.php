@@ -35,7 +35,7 @@ class TelegramLinkController extends Controller
         if (!$order) {
             return response()->json([
                 'valid'   => false,
-                'message' => 'Token tidak ditemukan. Pastikan kamu klik link dari halaman Wartix.',
+                'message' => 'Token tidak ditemukan. Pastikan kamu klik link dari halaman Warindong.',
             ]);
         }
 

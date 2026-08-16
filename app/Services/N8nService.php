@@ -178,11 +178,11 @@ class N8nService
             return "🎟 {$phase}\n{$cats}";
         })->join("\n\n");
 
-        $message  = "✅ EVENT FINISHED — Wartix\n\n";
+        $message  = "✅ EVENT FINISHED — Warindong\n\n";
         $message .= "{$event->title}\n\n";
         $message .= $byPhase . "\n\n";
         $message .= "📊 TOTAL SUCCESS: {$totalSuccess} Orders\n\n";
-        $message .= "Thank you for trusting Wartix.";
+        $message .= "Thank you for trusting Warindong.";
 
         return [
             'event_id'         => $event->id,
@@ -195,17 +195,17 @@ class N8nService
 
     private function buildFinishedThreadsCaption(Event $event, int $totalSuccess): string
     {
-        $hashtags = '#Wartix #WarTiket #' . str_replace(' ', '', $event->city);
+        $hashtags = '#Warindong #WarTiket #' . str_replace(' ', '', $event->city);
 
         return "✅ {$event->title} — SELESAI\n\n"
             . "📊 Total Success: {$totalSuccess} orders\n\n"
-            . "Terima kasih sudah mempercayai Wartix.\n\n"
+            . "Terima kasih sudah mempercayai Warindong.\n\n"
             . $hashtags;
     }
 
     private function buildAnnouncementMessage(Event $event, string $phases, string $categories): string
     {
-        return "🎫 NEW EVENT AVAILABLE — Wartix\n\n"
+        return "🎫 NEW EVENT AVAILABLE — Warindong\n\n"
             . "{$event->title}\n\n"
             . "🎟 {$phases}\n\n"
             . "{$categories}\n\n"

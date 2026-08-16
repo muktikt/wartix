@@ -58,7 +58,7 @@ class TelegramService
 
     public function sendPaymentInfo(string $chatId, array $data): bool
     {
-        $text = "💳 <b>PAYMENT INFORMATION — Wartix</b>\n\n";
+        $text = "💳 <b>PAYMENT INFORMATION — Warindong</b>\n\n";
         $text .= "Event: <b>{$data['event']}</b>\n";
         $text .= "Sale Phase: {$data['phase']}\n";
         $text .= "Kategori: {$data['category']}\n";
@@ -92,18 +92,18 @@ class TelegramService
 
     public function sendPaymentPaidNotif(string $chatId, string $orderCode): bool
     {
-        $text = "✅ <b>Pembayaran Diterima — Wartix</b>\n\n";
+        $text = "✅ <b>Pembayaran Diterima — Warindong</b>\n\n";
         $text .= "Order <code>{$orderCode}</code> telah lunas.\n";
-        $text .= "Terima kasih telah menggunakan layanan Wartix! 🎫";
+        $text .= "Terima kasih telah menggunakan layanan Warindong! 🎫";
 
         return $this->sendMessage($chatId, $text);
     }
 
     public function sendPaymentExpiredNotif(string $chatId, string $orderCode): bool
     {
-        $text = "❌ <b>Pembayaran Expired — Wartix</b>\n\n";
+        $text = "❌ <b>Pembayaran Expired — Warindong</b>\n\n";
         $text .= "QRIS untuk order <code>{$orderCode}</code> telah expired.\n";
-        $text .= "Hubungi admin Wartix untuk informasi lebih lanjut.";
+        $text .= "Hubungi admin Warindong untuk informasi lebih lanjut.";
 
         return $this->sendMessage($chatId, $text);
     }
