@@ -1,145 +1,185 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, router } from '@inertiajs/react';
 import PublicLayout from '../../../Layouts/PublicLayout';
 import EventCard from '../../../Components/EventCard';
 
-const PLATFORMS = [
-    { value: 'tiketcom', label: 'Tiket.com' },
-    { value: 'loket', label: 'Loket' },
-    { value: 'yesplis', label: 'Yesplis' },
-    { value: 'goers', label: 'Goers' },
-    { value: 'fasticket', label: 'Fasticket' },
-    { value: 'custom', label: 'Custom' },
-];
+export default function EventsIndex({ events, filters }) {
+    const [search, setSearch] = useState(filters?.q ?? '');
+    const [isLoading, setIsLoading] = useState(false);
+    const isInitialMount = useRef(true);
 
-const STATUSES = [
-    { value: 'upcoming', label: 'Upcoming' },
-    { value: 'ongoing', label: 'Ongoing' },
-    { value: 'finished', label: 'Finished' },
-];
+    useEffect(() => {
+        // Skip debounce on initial component mount
+        if (isInitialMount.current) {
+            isInitialMount.current = false;
+            return;
+        }
 
-export default function EventsIndex({ events, cities, types, filters }) {
-    const [form, setForm] = useState({
-        q: filters.q ?? '',
-        city: filters.city ?? '',
-        type: filters.type ?? '',
-        platform: filters.platform ?? '',
-        status: filters.status ?? '',
-    });
+        setIsLoading(true);
+        const timer = setTimeout(() => {
+            router.get(
+                route('events.index'),
+                search ? { q: search } : {},
+                {
+                    preserveState: true,
+                    preserveScroll: true,
+                    replace: true,
+                    only: ['events', 'filters'],
+                    onFinish: () => setIsLoading(false),
+                }
+            );
+        }, 350);
 
-    const hasActiveFilters = Object.values(filters).some(Boolean);
+        return () => {
+            clearTimeout(timer);
+            setIsLoading(false);
+        };
+    }, [search]);
 
-    function submit(e) {
-        e?.preventDefault();
-        router.get(route('events.index'), form, { preserveState: true, preserveScroll: true });
-    }
-
-    function reset() {
-        router.get(route('events.index'));
-    }
+    const handleClear = () => {
+        setSearch('');
+        if (filters?.q) {
+            setIsLoading(true);
+            router.get(
+                route('events.index'),
+                {},
+                {
+                    preserveState: true,
+                    preserveScroll: true,
+                    replace: true,
+                    only: ['events', 'filters'],
+                    onFinish: () => setIsLoading(false),
+                }
+            );
+        }
+    };
 
     return (
-        <PublicLayout title="Events Warindong">
+        <PublicLayout title="Explore Events | Warindong">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-                <div className="mb-8">
-                    <h1 className="text-2xl font-bold text-gray-900 mb-2">Explore Events</h1>
-                    <p className="text-sm text-gray-500">Temukan event konser, festival, dan fanmeeting</p>
+                {/* Header */}
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+                    <div>
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-semibold mb-3">
+                            <span className="w-2 h-2 rounded-full bg-indigo-600 animate-pulse"></span>
+                            Live Ticket Assistance
+                        </div>
+                        <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">Explore Events</h1>
+                        <p className="text-sm text-gray-500 mt-1">Temukan event konser, festival, dan fanmeeting favorit kamu</p>
+                    </div>
+
+                    {/* Total Events Counter */}
+                    <div className="text-xs font-medium text-gray-500 bg-white border border-gray-200 px-3.5 py-2 rounded-xl shadow-xs self-start md:self-auto">
+                        Total: <span className="font-bold text-gray-900">{events.total ?? events.data.length}</span> Event
+                    </div>
                 </div>
 
-                {/* Search */}
-                <form onSubmit={submit} className="mb-6">
-                    <div className="flex gap-3 mb-3">
-                        <div className="flex-1 relative">
-                            <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                            </svg>
-                            <input
-                                type="text"
-                                value={form.q}
-                                onChange={(e) => setForm({ ...form, q: e.target.value })}
-                                placeholder="Cari event, artis, kota, venue, sale phase, atau kategori tiket..."
-                                className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
-                            />
+                {/* Search Bar */}
+                <div className="relative mb-8">
+                    <div className="relative flex items-center">
+                        <div className="absolute left-4 pointer-events-none text-gray-400">
+                            {isLoading ? (
+                                <svg className="animate-spin w-5 h-5 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                            ) : (
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            )}
                         </div>
-                        <button type="submit" className="bg-indigo-600 text-white text-sm px-5 py-2.5 rounded-xl hover:bg-indigo-700">
-                            Cari
-                        </button>
-                        {hasActiveFilters && (
-                            <button type="button" onClick={reset} className="text-sm text-gray-500 px-4 py-2.5 border border-gray-200 rounded-xl hover:bg-gray-50">
-                                Reset
+
+                        <input
+                            type="text"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            placeholder="Cari event, artis, kota, venue..."
+                            className="w-full pl-12 pr-12 py-3.5 text-sm sm:text-base border border-gray-200 rounded-2xl bg-white shadow-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all placeholder:text-gray-400"
+                        />
+
+                        {search && (
+                            <button
+                                type="button"
+                                onClick={handleClear}
+                                title="Hapus pencarian"
+                                className="absolute right-4 p-1.5 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+                            >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
                             </button>
                         )}
                     </div>
 
-                    <div className="flex flex-wrap gap-2">
-                        <select
-                            value={form.city}
-                            onChange={(e) => setForm({ ...form, city: e.target.value })}
-                            className="text-xs border border-gray-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
-                        >
-                            <option value="">Semua Kota</option>
-                            {cities.map((city) => <option key={city} value={city}>{city}</option>)}
-                        </select>
-                        <select
-                            value={form.type}
-                            onChange={(e) => setForm({ ...form, type: e.target.value })}
-                            className="text-xs border border-gray-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
-                        >
-                            <option value="">Semua Jenis</option>
-                            {types.map((type) => <option key={type} value={type}>{type}</option>)}
-                        </select>
-                        <select
-                            value={form.platform}
-                            onChange={(e) => setForm({ ...form, platform: e.target.value })}
-                            className="text-xs border border-gray-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
-                        >
-                            <option value="">Semua Platform</option>
-                            {PLATFORMS.map((p) => <option key={p.value} value={p.value}>{p.label}</option>)}
-                        </select>
-                        <select
-                            value={form.status}
-                            onChange={(e) => setForm({ ...form, status: e.target.value })}
-                            className="text-xs border border-gray-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
-                        >
-                            <option value="">Semua Status</option>
-                            {STATUSES.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
-                        </select>
-                        <button type="submit" className="text-xs bg-gray-100 text-gray-600 px-3 py-1.5 rounded-lg hover:bg-gray-200">
-                            Apply Filter
-                        </button>
-                    </div>
-                </form>
+                    {/* Active search summary */}
+                    {filters?.q && (
+                        <div className="mt-3 flex items-center justify-between text-xs text-gray-500 px-1">
+                            <span>
+                                Hasil pencarian untuk: <strong className="text-gray-900 font-semibold">"{filters.q}"</strong> ({events.total ?? events.data.length} event ditemukan)
+                            </span>
+                            <button
+                                type="button"
+                                onClick={handleClear}
+                                className="text-indigo-600 hover:text-indigo-700 font-medium underline underline-offset-2"
+                            >
+                                Tampilkan Semua Event
+                            </button>
+                        </div>
+                    )}
+                </div>
 
                 {/* Results */}
                 {events.data.length === 0 ? (
-                    <div className="text-center py-16 bg-white border border-gray-100 rounded-2xl">
-                        <svg className="w-12 h-12 text-gray-200 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                        <p className="text-gray-400 text-sm">Tidak ada event yang ditemukan.</p>
-                        {filters.q && <p className="text-gray-400 text-xs mt-1">Coba kata kunci lain atau hapus filter.</p>}
+                    <div className="text-center py-20 bg-white border border-gray-100 rounded-3xl p-8 shadow-xs">
+                        <div className="w-16 h-16 bg-gray-50 text-gray-400 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-gray-100">
+                            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </div>
+                        <h3 className="text-base font-bold text-gray-900 mb-1">Event Tidak Ditemukan</h3>
+                        <p className="text-sm text-gray-500 max-w-md mx-auto mb-6">
+                            {filters?.q
+                                ? `Tidak ada event yang sesuai dengan kata kunci "${filters.q}". Coba gunakan kata kunci lain.`
+                                : 'Saat ini belum ada event yang tersedia.'}
+                        </p>
+                        {filters?.q && (
+                            <button
+                                type="button"
+                                onClick={handleClear}
+                                className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-5 py-2.5 rounded-xl transition-all shadow-sm hover:shadow"
+                            >
+                                Reset Pencarian
+                            </button>
+                        )}
                     </div>
                 ) : (
                     <>
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-                            {events.data.map((event) => <EventCard key={event.id} event={event} />)}
+                        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {events.data.map((event) => (
+                                <EventCard key={event.id} event={event} />
+                            ))}
                         </div>
 
-                        {events.links.length > 3 && (
-                            <div className="mt-6 flex flex-wrap items-center justify-center gap-1">
+                        {events.links && events.links.length > 3 && (
+                            <div className="mt-10 flex flex-wrap items-center justify-center gap-1.5">
                                 {events.links.map((link, i) => (
                                     link.url ? (
                                         <Link
                                             key={i}
                                             href={link.url}
                                             preserveScroll
-                                            className={`px-3 py-1.5 text-xs rounded-lg border ${link.active ? 'bg-indigo-600 text-white border-indigo-600' : 'border-gray-200 text-gray-600 hover:bg-gray-50'}`}
+                                            className={`px-3.5 py-2 text-xs font-medium rounded-xl border transition-all ${
+                                                link.active
+                                                    ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm'
+                                                    : 'border-gray-200 text-gray-600 bg-white hover:bg-gray-50'
+                                            }`}
                                             dangerouslySetInnerHTML={{ __html: link.label }}
                                         />
                                     ) : (
                                         <span
                                             key={i}
-                                            className="px-3 py-1.5 text-xs rounded-lg border border-gray-100 text-gray-300"
+                                            className="px-3.5 py-2 text-xs rounded-xl border border-gray-100 text-gray-300 bg-gray-50/50"
                                             dangerouslySetInnerHTML={{ __html: link.label }}
                                         />
                                     )

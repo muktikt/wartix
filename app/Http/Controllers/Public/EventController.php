@@ -15,13 +15,14 @@ class EventController extends Controller
         $query = Event::with(['salePhases', 'ticketCategories'])
             ->whereIn('status', ['upcoming', 'slot_penuh', 'ongoing', 'finished']);
 
-        if ($search = $request->get('q')) {
+        if ($search = trim($request->get('q', ''))) {
             $query->where(function ($q) use ($search) {
-                $q->whereFullText(['title', 'artist_name', 'description', 'venue', 'city', 'event_type'], $search)
-                  ->orWhere('title', 'like', "%{$search}%")
+                $q->where('title', 'like', "%{$search}%")
                   ->orWhere('artist_name', 'like', "%{$search}%")
                   ->orWhere('city', 'like', "%{$search}%")
-                  ->orWhere('venue', 'like', "%{$search}%");
+                  ->orWhere('venue', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%")
+                  ->orWhere('event_type', 'like', "%{$search}%");
             });
         }
 
@@ -52,7 +53,15 @@ class EventController extends Controller
             \Illuminate\Support\Facades\DB::raw('(SELECT COUNT(DISTINCT email) FROM orders WHERE orders.event_id = events.id AND orders.order_status = \'success\') as success_accounts_count'),
         ]);
 
-        $events = $query->latest('event_date')->paginate(12)->withQueryString();
+        // Prioritize active events (upcoming, ongoing, slot_penuh) first, finished at the bottom
+        $events = $query
+            ->orderByRaw("CASE WHEN status IN ('upcoming', 'ongoing', 'slot_penuh') THEN 0 ELSE 1 END ASC")
+            ->orderByRaw("CASE WHEN status IN ('upcoming', 'ongoing', 'slot_penuh') THEN event_date ELSE NULL END ASC")
+            ->orderByRaw("CASE WHEN status = 'finished' THEN event_date ELSE NULL END DESC")
+            ->orderBy('id', 'desc')
+            ->paginate(12)
+            ->withQueryString();
+
         $events->getCollection()->transform(function (Event $event) {
             $totalAccounts = (int) ($event->total_accounts_count ?? 0);
             $successAccounts = (int) ($event->success_accounts_count ?? 0);
@@ -68,18 +77,11 @@ class EventController extends Controller
             return $event;
         });
 
-        $cities = Cache::remember('event_filter_cities', 300, function () {
-            return Event::whereIn('status', ['upcoming', 'slot_penuh', 'ongoing', 'finished'])->distinct()->pluck('city');
-        });
-        $types = Cache::remember('event_filter_types', 300, function () {
-            return Event::whereIn('status', ['upcoming', 'slot_penuh', 'ongoing', 'finished'])->distinct()->pluck('event_type');
-        });
-
         return Inertia::render('Public/Events/Index', [
             'events'  => $events,
-            'cities'  => $cities,
-            'types'   => $types,
-            'filters' => $request->only(['q', 'city', 'type', 'platform', 'status', 'month']),
+            'filters' => [
+                'q' => $request->get('q', ''),
+            ],
         ]);
     }
 

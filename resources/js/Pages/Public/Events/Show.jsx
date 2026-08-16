@@ -7,7 +7,7 @@ const STATUS_LABEL = {
     ongoing: { label: 'Proses', className: 'bg-green-50 text-green-700' },
     slot_penuh: { label: 'Slot Penuh', className: 'bg-rose-50 text-rose-700' },
     finished: { label: 'Finished', className: 'bg-gray-100 text-gray-500' },
-    upcoming: { label: 'Upcoming', className: 'bg-indigo-50 text-indigo-700' },
+    upcoming: { label: 'Aktif', className: 'bg-indigo-50 text-indigo-700' },
 };
 
 function TcModal({ onClose }) {
