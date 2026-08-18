@@ -1,7 +1,8 @@
 import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 /**
- * Modern SweetAlert2 instance configured for Wartix design system.
+ * Modern SweetAlert2 instance configured for Warindong design system.
  */
 export const WartixSwal = Swal.mixin({
     customClass: {
@@ -10,16 +11,12 @@ export const WartixSwal = Swal.mixin({
         htmlContainer: 'wartix-swal-html',
         confirmButton: 'wartix-swal-confirm-primary',
         cancelButton: 'wartix-swal-cancel',
-        actions: 'flex items-center justify-end gap-2.5 mt-6',
+        actions: 'wartix-swal-actions',
     },
     buttonsStyling: false,
     focusCancel: true,
-    showClass: {
-        popup: 'animate-scale-in duration-200 ease-out',
-    },
-    hideClass: {
-        popup: 'animate-fade-out duration-150 ease-in',
-    }
+    allowOutsideClick: true,
+    allowEscapeKey: true,
 });
 
 /**
@@ -49,7 +46,7 @@ export function showConfirmPopup({
             htmlContainer: 'wartix-swal-html',
             confirmButton: confirmClass,
             cancelButton: cancelText ? 'wartix-swal-cancel' : 'hidden',
-            actions: 'flex items-center justify-end gap-2.5 mt-6',
+            actions: 'wartix-swal-actions',
         }
     });
 }

@@ -632,9 +632,17 @@ input:focus, select:focus, textarea:focus {
     line-height: 1.6 !important;
 }
 
-.swal2-actions {
+.swal2-actions,
+.wartix-swal-actions {
     margin-top: 1.5rem !important;
     gap: 0.75rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    width: 100% !important;
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 999999 !important;
 }
 
 .swal2-confirm.wartix-swal-confirm-danger {
@@ -646,6 +654,10 @@ input:focus, select:focus, textarea:focus {
     font-size: 0.875rem !important;
     font-weight: 600 !important;
     border: none !important;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 999999 !important;
     transition: all 0.2s ease !important;
 }
 .swal2-confirm.wartix-swal-confirm-danger:hover {
@@ -662,6 +674,10 @@ input:focus, select:focus, textarea:focus {
     font-size: 0.875rem !important;
     font-weight: 600 !important;
     border: none !important;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 999999 !important;
     transition: all 0.2s ease !important;
 }
 .swal2-confirm.wartix-swal-confirm-primary:hover {
@@ -677,6 +693,10 @@ input:focus, select:focus, textarea:focus {
     font-size: 0.875rem !important;
     font-weight: 600 !important;
     border: 1px solid #e2e8f0 !important;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 999999 !important;
     transition: all 0.2s ease !important;
 }
 .swal2-cancel.wartix-swal-cancel:hover {
