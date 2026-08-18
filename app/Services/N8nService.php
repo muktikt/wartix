@@ -193,6 +193,21 @@ class N8nService
         ];
     }
 
+    /**
+     * Caption Threads buat pengumuman event BARU (dipanggil dari buildEventCreatedPayload).
+     */
+    private function buildThreadsCaption(Event $event, string $phases, string $categories): string
+    {
+        $hashtags = '#Warindong #WarTiket #' . str_replace(' ', '', $event->city);
+
+        return "🎫 {$event->title} udah bisa di-order!\n\n"
+            . "📍 {$event->venue}, {$event->city}\n"
+            . "📅 {$event->event_date->format('d M Y')}\n"
+            . "🎟 {$phases}\n\n"
+            . "Order sekarang di link bio / DM kami 👆\n\n"
+            . $hashtags;
+    }
+
     private function buildFinishedThreadsCaption(Event $event, int $totalSuccess): string
     {
         $hashtags = '#Warindong #WarTiket #' . str_replace(' ', '', $event->city);
