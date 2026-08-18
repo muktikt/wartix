@@ -147,6 +147,7 @@
                 <thead class="bg-gray-50 border-b border-gray-100">
                     <tr>
                         <th class="text-left text-xs font-medium text-gray-500 px-4 py-3">Phase</th>
+                        <th class="text-left text-xs font-medium text-gray-500 px-4 py-3">Membership</th>
                         <th class="text-left text-xs font-medium text-gray-500 px-4 py-3">Start</th>
                         <th class="text-left text-xs font-medium text-gray-500 px-4 py-3">End</th>
                         <th class="text-left text-xs font-medium text-gray-500 px-4 py-3">Slot</th>
@@ -157,6 +158,15 @@
                     @forelse($event->salePhases as $phase)
                     <tr>
                         <td class="px-4 py-3 text-sm font-medium text-gray-900">{{ $phase->name }}</td>
+                        <td class="px-4 py-3 text-xs">
+                            @if($phase->is_membership)
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-50 text-purple-700 border border-purple-200">
+                                    Membership
+                                </span>
+                            @else
+                                <span class="text-gray-400">-</span>
+                            @endif
+                        </td>
                         <td class="px-4 py-3 text-xs text-gray-500">
                             {{ $phase->start_time?->format('d M Y H:i') ?? '-' }}
                         </td>
@@ -172,7 +182,7 @@
                         </td>
                     </tr>
                     @empty
-                    <tr><td colspan="5" class="text-center py-8 text-sm text-gray-400">Belum ada phase.</td></tr>
+                    <tr><td colspan="6" class="text-center py-8 text-sm text-gray-400">Belum ada phase.</td></tr>
                     @endforelse
                 </tbody>
             </table>

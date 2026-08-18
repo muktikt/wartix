@@ -7,12 +7,13 @@ class SalePhase extends Model
 {
     protected $fillable = [
         'event_id', 'name', 'start_time', 'end_time',
-        'status', 'slot_limit', 'description', 'sort_order',
+        'status', 'slot_limit', 'is_membership', 'description', 'sort_order',
     ];
 
     protected $casts = [
-        'start_time' => 'datetime',
-        'end_time' => 'datetime',
+        'start_time'    => 'datetime',
+        'end_time'      => 'datetime',
+        'is_membership' => 'boolean',
     ];
 
     protected $appends = ['available_slots'];

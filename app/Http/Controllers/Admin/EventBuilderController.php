@@ -169,6 +169,7 @@ class EventBuilderController extends Controller
             'max_ticket_per_order'=> 'required|integer|min:1|max:10',
             'phases'              => 'required|array|min:1',
             'phases.*.name'       => 'required|string|max:100',
+            'phases.*.is_membership' => 'nullable|boolean',
             'categories.*.keyword'=> 'nullable|string|max:50',
             'categories'                         => 'required|array|min:1',
             'categories.*.name'                  => 'required|string|max:100',
@@ -190,14 +191,15 @@ class EventBuilderController extends Controller
 
         foreach ($phasesInput as $i => $phase) {
             $data = [
-                'event_id'    => $event->id,
-                'name'        => $phase['name'],
-                'start_time'  => $phase['start_time'] ?? null,
-                'end_time'    => $phase['end_time'] ?? null,
-                'status'      => $phase['status'] ?? 'open',
-                'slot_limit'  => $phase['slot_limit'] ?? null,
-                'description' => $phase['description'] ?? null,
-                'sort_order'  => $i,
+                'event_id'      => $event->id,
+                'name'          => $phase['name'],
+                'is_membership' => !empty($phase['is_membership']),
+                'start_time'    => $phase['start_time'] ?? null,
+                'end_time'      => $phase['end_time'] ?? null,
+                'status'        => $phase['status'] ?? 'open',
+                'slot_limit'    => $phase['slot_limit'] ?? null,
+                'description'   => $phase['description'] ?? null,
+                'sort_order'    => $i,
             ];
 
             $id       = $phase['id'] ?? null;

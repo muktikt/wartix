@@ -140,6 +140,13 @@
                     @if($isEdit && $event->salePhases->count())
                         @foreach($event->salePhases as $i => $phase)
                         <div class="border border-gray-100 rounded-xl p-4 phase-item">
+                            @if($i > 0)
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-xs text-gray-500">Phase {{ $i + 1 }}</span>
+                                <button type="button" onclick="this.closest('.phase-item').remove()"
+                                    class="text-xs text-red-400 hover:text-red-600">Hapus</button>
+                            </div>
+                            @endif
                             <div class="grid grid-cols-4 gap-3">
                                 <div>
                                     <label class="block text-xs text-gray-600 mb-1">Nama Phase *</label>
@@ -169,6 +176,16 @@
                                         class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                 </div>
                             </div>
+                            <div class="mt-3 pt-2.5 border-t border-gray-100 flex items-center justify-between">
+                                <label class="inline-flex items-center gap-2 cursor-pointer select-none">
+                                    <input type="hidden" name="phases[{{ $i }}][is_membership]" value="0">
+                                    <input type="checkbox" name="phases[{{ $i }}][is_membership]" value="1"
+                                        {{ ($phase->is_membership ?? false) ? 'checked' : '' }}
+                                        class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                                    <span class="text-xs font-medium text-gray-700">Phase Membership</span>
+                                    <span class="text-xs text-gray-400 font-normal">(Centang jika phase ini mewajibkan pembeli mengisi Kode Membership)</span>
+                                </label>
+                            </div>
                         </div>
                         @endforeach
                     @else
@@ -197,6 +214,15 @@
                                     min="0"
                                     class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                             </div>
+                        </div>
+                        <div class="mt-3 pt-2.5 border-t border-gray-100 flex items-center justify-between">
+                            <label class="inline-flex items-center gap-2 cursor-pointer select-none">
+                                <input type="hidden" name="phases[0][is_membership]" value="0">
+                                <input type="checkbox" name="phases[0][is_membership]" value="1"
+                                    class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                                <span class="text-xs font-medium text-gray-700">Phase Membership</span>
+                                <span class="text-xs text-gray-400 font-normal">(Centang jika phase ini mewajibkan pembeli mengisi Kode Membership)</span>
+                            </label>
                         </div>
                     </div>
                     @endif
@@ -500,6 +526,15 @@ function addPhase() {
                     min="0"
                     class="w-full text-sm border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
             </div>
+        </div>
+        <div class="mt-3 pt-2.5 border-t border-gray-100 flex items-center justify-between">
+            <label class="inline-flex items-center gap-2 cursor-pointer select-none">
+                <input type="hidden" name="phases[${phaseIndex}][is_membership]" value="0">
+                <input type="checkbox" name="phases[${phaseIndex}][is_membership]" value="1"
+                    class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                <span class="text-xs font-medium text-gray-700">Phase Membership</span>
+                <span class="text-xs text-gray-400 font-normal">(Centang jika phase ini mewajibkan pembeli mengisi Kode Membership)</span>
+            </label>
         </div>`;
     container.appendChild(div);
     phaseIndex++;

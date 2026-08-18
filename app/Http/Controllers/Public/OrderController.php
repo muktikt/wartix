@@ -127,7 +127,7 @@ class OrderController extends Controller
             $rules['identity_number'] = 'required|digits:16';
         }
 
-        if (str_contains(strtolower($phase->name ?? ''), 'membership')) {
+        if ($phase && $phase->is_membership) {
             $rules['membership_code'] = 'required|string|max:255';
         }
 

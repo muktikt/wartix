@@ -37,7 +37,7 @@ export default function EventShow({ event, totalSlots, availableSlots, eventStat
     const [guestNiks, setGuestNiks] = useState({});
     const [clientError, setClientError] = useState('');
 
-    const hasMembershipPhase = event.sale_phases?.some((p) => p.name.toLowerCase().includes('membership'));
+    const hasMembershipPhase = event.sale_phases?.some((p) => Boolean(p.is_membership));
 
     const form = useForm({
         event_id: event.id,
@@ -59,7 +59,7 @@ export default function EventShow({ event, totalSlots, availableSlots, eventStat
     });
 
     const selectedPhase = event.sale_phases?.find((p) => String(p.id) === String(form.data.sale_phase_id));
-    const showMembershipField = selectedPhase && selectedPhase.name.toLowerCase().includes('membership');
+    const showMembershipField = selectedPhase && Boolean(selectedPhase.is_membership);
 
     const primaryCategory = event.ticket_categories?.find((c) => String(c.id) === String(categoryChoices[0]?.ticket_category_id));
 
