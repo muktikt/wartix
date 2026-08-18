@@ -85,8 +85,8 @@
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-gray-700 mb-1.5">Tanggal Event *</label>
-                        <input type="datetime-local" name="event_date"
-                            value="{{ old('event_date', isset($event) ? $event->event_date->format('Y-m-d\TH:i') : '') }}"
+                        <input type="date" name="event_date"
+                            value="{{ old('event_date', isset($event) ? $event->event_date?->format('Y-m-d') : '') }}"
                             class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             required>
                     </div>

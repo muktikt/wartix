@@ -15,12 +15,12 @@ class Event extends Model
     ];
 
     protected $casts = [
-        'event_date' => 'datetime',
-        'guest_enabled' => 'boolean',
-        'guest_identity_only' => 'boolean',
-        'same_title_for_guest' => 'boolean',
+        'event_date'                     => 'date:Y-m-d',
+        'guest_enabled'                  => 'boolean',
+        'guest_identity_only'            => 'boolean',
+        'same_title_for_guest'           => 'boolean',
         'require_unique_identity_number' => 'boolean',
-        'slot_availability' => 'integer',
+        'slot_availability'              => 'integer',
     ];
 
     protected $appends = ['banner_url', 'seatplan_url'];

@@ -152,7 +152,7 @@ class N8nService
             'seatplan_url'=> $event->seatplan_url,
 
             // Format Telegram
-            'telegram_message' => $this->buildAnnouncementMessage($event, $phases, $categories),
+            'telegram_message' => $this->buildAnnouncementMessage($event, $phases),
 
             // Format Threads caption
             'threads_caption'  => $this->buildThreadsCaption($event, $phases, $categories),
@@ -218,12 +218,11 @@ class N8nService
             . $hashtags;
     }
 
-    private function buildAnnouncementMessage(Event $event, string $phases, string $categories): string
+    private function buildAnnouncementMessage(Event $event, string $phases): string
     {
         return "🎫 NEW EVENT AVAILABLE — Warindong\n\n"
             . "{$event->title}\n\n"
             . "🎟 {$phases}\n\n"
-            . "{$categories}\n\n"
             . "📍 Venue:\n{$event->venue}, {$event->city}\n\n"
             . "📅 {$event->event_date->format('d M Y')}\n\n"
             . "🔗 Order sekarang:\n" . url("/events/{$event->slug}");
