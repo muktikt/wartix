@@ -58,13 +58,12 @@ export default function PublicLayout({ children, title, description }) {
             {/* NAVBAR */}
             <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-100 py-2.5 px-4 sm:px-6 lg:px-8 w-full">
                 <div className="flex items-center justify-between">
-                    {/* Logo & Divider */}
-                    <div className="flex items-center gap-3">
-                        <Link href={route('home')} className="flex items-center gap-2">
+                    {/* Logo & Brand */}
+                    <div className="flex items-center">
+                        <Link href={route('home')} className="flex items-center gap-2 group">
                             <img src="/images/logo-w.png" alt="Warindong" width="180" height="36" className="h-8 sm:h-9 w-auto max-w-[180px] object-contain" />
+                            <span className="text-base sm:text-lg font-bold text-gray-900 tracking-tight group-hover:text-indigo-600 transition-colors">warindong</span>
                         </Link>
-                        <div className="hidden sm:block h-4 w-px bg-gray-200"></div>
-                        <span className="hidden lg:block text-[11px] font-medium text-gray-400 tracking-tight">Priority Assistance</span>
                     </div>
 
                     {/* Nav Links (Desktop) */}

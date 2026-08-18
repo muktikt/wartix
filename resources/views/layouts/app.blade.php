@@ -55,15 +55,14 @@
 <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-100 py-2.5 px-4 sm:px-6 lg:px-8 w-full">
     <div class="flex items-center justify-between">
 
-        {{-- Logo & Divider --}}
-        <div class="flex items-center gap-3">
-            <div class="flex items-center gap-2">
+        {{-- Logo & Brand --}}
+        <div class="flex items-center">
+            <a href="{{ route('home') }}" class="flex items-center gap-2 group">
                 <img src="{{ asset('images/logo-w.png') }}"
                     alt="Warindong"
                     class="h-8 sm:h-9 w-auto max-w-[180px] object-contain">
-            </div>
-            <div class="hidden sm:block h-4 w-px bg-gray-200"></div>
-            <span class="hidden lg:block text-[11px] font-medium text-gray-400 tracking-tight">Priority Assistance</span>
+                <span class="text-base sm:text-lg font-bold text-gray-900 tracking-tight group-hover:text-indigo-600 transition-colors">warindong</span>
+            </a>
         </div>
 
         {{-- Nav Links --}}
