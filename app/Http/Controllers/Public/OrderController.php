@@ -352,6 +352,8 @@ class OrderController extends Controller
 
     public function success(string $orderCode)
     {
+        Order::cancelExpiredUnlinkedOrders();
+
         $order = Order::withoutGlobalScope(\App\Models\Scopes\HideUnlinkedOrdersScope::class)
             ->where('order_code', $orderCode)
             ->with(['event', 'salePhase', 'ticketCategory', 'guests', 'categoryChoices.ticketCategory'])

@@ -14,21 +14,7 @@ class CancelUnlinkedOrders extends Command
 
     public function handle(): void
     {
-        $expired = Order::withoutGlobalScope(HideUnlinkedOrdersScope::class)
-            ->where('order_status', 'pending_link')
-            ->where('created_at', '<', now()->subMinutes(10))
-            ->get();
-
-        foreach ($expired as $order) {
-            $order->update(['order_status' => 'cancelled']);
-            Log::info("Order auto-cancelled (unlinked Telegram timeout): {$order->order_code}");
-        }
-
-        if ($expired->isNotEmpty()) {
-            Cache::forget('active_events');
-            Cache::forget('home_stats');
-        }
-
-        $this->info("Cancelled {$expired->count()} unlinked orders.");
+        $count = Order::cancelExpiredUnlinkedOrders();
+        $this->info("Cancelled {$count} unlinked orders.");
     }
 }

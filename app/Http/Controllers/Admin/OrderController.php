@@ -22,6 +22,8 @@ class OrderController extends Controller
 
     public function index(Request $request)
     {
+        Order::cancelExpiredUnlinkedOrders();
+
         $query = Order::withoutGlobalScope(HideUnlinkedOrdersScope::class)
             ->with(['event', 'salePhase', 'ticketCategory'])
             ->latest();

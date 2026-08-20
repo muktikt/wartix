@@ -12,17 +12,19 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        Order::cancelExpiredUnlinkedOrders();
+
         $stats = [
-        'total_orders'    => Order::withoutGlobalScope(HideUnlinkedOrdersScope::class)->count(),
-        'success_orders'  => Order::withoutGlobalScope(HideUnlinkedOrdersScope::class)->where('order_status', 'success')->count(),
-        'pending_orders'  => Order::withoutGlobalScope(HideUnlinkedOrdersScope::class)->where('order_status', 'waiting')->count(),
-        'failed_orders'   => Order::withoutGlobalScope(HideUnlinkedOrdersScope::class)->whereIn('order_status', ['failed', 'cancelled'])->count(),
-        'active_events'   => Event::whereIn('status', ['upcoming', 'ongoing'])->count(),
-        'total_revenue'   => Order::withoutGlobalScope(HideUnlinkedOrdersScope::class)->where('payment_status', 'paid')->sum('grand_total'),
-        'pending_link_count' => Order::withoutGlobalScope(HideUnlinkedOrdersScope::class)
-            ->where('order_status', 'pending_link')->count(),
-        'success_rate'    => 0,
-    ];
+            'total_orders'    => Order::withoutGlobalScope(HideUnlinkedOrdersScope::class)->count(),
+            'success_orders'  => Order::withoutGlobalScope(HideUnlinkedOrdersScope::class)->where('order_status', 'success')->count(),
+            'pending_orders'  => Order::withoutGlobalScope(HideUnlinkedOrdersScope::class)->where('order_status', 'waiting')->count(),
+            'failed_orders'   => Order::withoutGlobalScope(HideUnlinkedOrdersScope::class)->whereIn('order_status', ['failed', 'cancelled'])->count(),
+            'active_events'   => Event::whereIn('status', ['upcoming', 'ongoing'])->count(),
+            'total_revenue'   => Order::withoutGlobalScope(HideUnlinkedOrdersScope::class)->where('payment_status', 'paid')->sum('grand_total'),
+            'pending_link_count' => Order::withoutGlobalScope(HideUnlinkedOrdersScope::class)
+                ->where('order_status', 'pending_link')->count(),
+            'success_rate'    => 0,
+        ];
 
         $total = $stats['total_orders'];
         $stats['success_rate'] = $total > 0

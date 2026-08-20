@@ -154,6 +154,48 @@ class Order extends Model
         }
     }
 
+    /**
+     * Cancel orders yang belum klik Telegram link setelah 10 menit,
+     * hapus/mark read notifikasi admin terkait, dan bersihkan cache.
+     */
+    public static function cancelExpiredUnlinkedOrders(): int
+    {
+        try {
+            $expired = static::withoutGlobalScope(HideUnlinkedOrdersScope::class)
+                ->where('order_status', 'pending_link')
+                ->where('created_at', '<', now()->subMinutes(10))
+                ->get();
+
+            if ($expired->isEmpty()) {
+                return 0;
+            }
+
+            $orderIds = $expired->pluck('id');
+
+            foreach ($expired as $order) {
+                $order->update(['order_status' => 'cancelled']);
+                \Illuminate\Support\Facades\Log::info("Order auto-cancelled (unlinked Telegram timeout): {$order->order_code}");
+            }
+
+            // Mark read atau bersihkan notifikasi admin terkait order yang sudah expired/cancelled
+            try {
+                \App\Models\AdminNotification::whereIn('order_id', $orderIds)
+                    ->whereNull('read_at')
+                    ->update(['read_at' => now()]);
+            } catch (\Throwable $e) {
+                \Illuminate\Support\Facades\Log::warning('Failed to update AdminNotification for expired orders: ' . $e->getMessage());
+            }
+
+            \Illuminate\Support\Facades\Cache::forget('active_events');
+            \Illuminate\Support\Facades\Cache::forget('home_stats');
+
+            return $expired->count();
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('cancelExpiredUnlinkedOrders error: ' . $e->getMessage());
+            return 0;
+        }
+    }
+
     public function event()
     {
         return $this->belongsTo(Event::class);

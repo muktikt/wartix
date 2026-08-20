@@ -27,6 +27,8 @@ class TelegramLinkController extends Controller
 
         $token = $request->input('token');
 
+        Order::cancelExpiredUnlinkedOrders();
+
         $order = Order::withoutGlobalScope(HideUnlinkedOrdersScope::class)
             ->where('telegram_link_token', $token)
             ->with(['event', 'salePhase', 'ticketCategory', 'categoryChoices.ticketCategory'])
@@ -42,7 +44,9 @@ class TelegramLinkController extends Controller
         if ($order->order_status !== 'pending_link') {
             return response()->json([
                 'valid'   => false,
-                'message' => 'Token ini sudah pernah digunakan atau order sudah tidak aktif.',
+                'message' => $order->order_status === 'cancelled' 
+                    ? 'Waktu konfirmasi Telegram telah berakhir (lebih dari 10 menit) atau order sudah dibatalkan.' 
+                    : 'Token ini sudah pernah digunakan atau order sudah tidak aktif.',
             ]);
         }
 
